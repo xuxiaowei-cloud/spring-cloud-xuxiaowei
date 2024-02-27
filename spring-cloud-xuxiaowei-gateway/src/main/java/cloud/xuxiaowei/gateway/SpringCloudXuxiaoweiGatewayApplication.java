@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringCloudXuxiaoweiGatewayApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(SpringCloudXuxiaoweiGatewayApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(SpringCloudXuxiaoweiGatewayApplication.class, args);
+	}
 
 }
