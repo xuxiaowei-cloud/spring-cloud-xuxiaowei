@@ -19,7 +19,7 @@ build:
       -DinstallAtEnd=true
       -DdeployAtEnd=true
   script:
-    - mvn clean package -DskipTests=false
+    - mvn clean package -DskipTests=false -s settings.xml
   cache:
     key: "${CI_JOB_NAME}"
     paths:
