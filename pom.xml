@@ -12,7 +12,7 @@
     <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>spring-cloud-xuxiaowei</name>
+    <name>spring-cloud-xuxiaowei-parent</name>
     <description>顶级项目</description>
     <properties>
         <java.version>1.8</java.version>
