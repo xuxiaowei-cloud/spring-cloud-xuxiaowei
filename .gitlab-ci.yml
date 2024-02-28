@@ -47,6 +47,7 @@ build:mvnw:
       -DinstallAtEnd=true
       -DdeployAtEnd=true
   script:
+    - chmod +x mvnw
     - ./mvnw clean package -DskipTests=false -s settings.xml
   cache:
     key: "${CI_JOB_NAME}"
