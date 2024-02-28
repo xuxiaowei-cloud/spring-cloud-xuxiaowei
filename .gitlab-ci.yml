@@ -61,3 +61,10 @@ build:mvnw:
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+
+gemnasium-maven-dependency_scanning:
+  rules:
+    - changes:
+        - pom.xml
+        - "**/pom.xml"
+    - if: $DEPENDENCY_SCANNING == "true"
