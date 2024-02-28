@@ -57,7 +57,7 @@ build:mvnw:
       - .m2/repository
   only:
     variables:
-      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $MVNW == "true"
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
