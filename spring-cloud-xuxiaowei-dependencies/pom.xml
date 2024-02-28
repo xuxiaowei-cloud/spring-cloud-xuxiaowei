@@ -14,6 +14,7 @@
         <spring-cloud.version>2021.0.9</spring-cloud.version>
 
         <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -51,6 +52,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
