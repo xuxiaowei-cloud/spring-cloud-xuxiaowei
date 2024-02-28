@@ -2,7 +2,7 @@ stages:
   - build
   - test
 
-build:
+build:mvn:
   stage: build
   image: maven:3-openjdk-8
   variables:
@@ -21,6 +21,33 @@ build:
       -DdeployAtEnd=true
   script:
     - mvn clean package -DskipTests=false -s settings.xml
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .m2/repository
+  only:
+    variables:
+      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+build:mvnw:
+  stage: build
+  image: openjdk:8
+  variables:
+    MAVEN_OPTS: >-
+      -Dhttps.protocols=TLSv1.2
+      -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+      -Dorg.slf4j.simpleLogger.showDateTime=true
+      -Djava.awt.headless=true
+    MAVEN_CLI_OPTS: >-
+      --batch-mode
+      --errors
+      --fail-at-end
+      --show-version
+      --no-transfer-progress
+      -DinstallAtEnd=true
+      -DdeployAtEnd=true
+  script:
+    - ./mvnw clean package -DskipTests=false -s settings.xml
   cache:
     key: "${CI_JOB_NAME}"
     paths:
