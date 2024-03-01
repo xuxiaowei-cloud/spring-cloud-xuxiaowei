@@ -21,7 +21,7 @@ build:mvn:
       -DdeployAtEnd=true
   script:
     - mvn -v
-    - mvn clean package -DskipTests=false -s settings.xml
+    - mvn clean package -U -DskipTests=false -s settings.xml
   cache:
     key: "${CI_JOB_NAME}"
     paths:
@@ -50,7 +50,7 @@ build:mvnw:
   script:
     - chmod +x mvnw
     - ./mvnw -v
-    - ./mvnw clean package -DskipTests=false -s settings.xml
+    - ./mvnw clean package -U -DskipTests=false -s settings.xml
   cache:
     key: "${CI_JOB_NAME}"
     paths:
