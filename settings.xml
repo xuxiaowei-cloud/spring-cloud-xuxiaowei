@@ -158,6 +158,13 @@ under the License.
      -->
 
     <mirror>
+      <id>tencent-settings</id>
+      <name>tencent-settings</name>
+      <mirrorOf>central</mirrorOf>
+      <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+    </mirror>
+
+    <mirror>
       <id>aliyun-settings</id>
       <name>aliyun-settings</name>
       <mirrorOf>central</mirrorOf>
