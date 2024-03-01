@@ -27,6 +27,7 @@
         <module>nacos</module>
         <module>spring-cloud-xuxiaowei-dependencies</module>
         <module>spring-cloud-xuxiaowei-gateway</module>
+        <module>spring-cloud-xuxiaowei-passport</module>
     </modules>
 
     <build>
