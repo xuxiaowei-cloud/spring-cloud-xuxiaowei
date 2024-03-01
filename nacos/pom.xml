@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <nacos.version>2.3.0-SNAPSHOT</nacos.version>
+        <nacos.version>2.3.0</nacos.version>
         <slf4j.version>1.7.36</slf4j.version>
         <spring-boot.version>2.7.15</spring-boot.version>
 
@@ -115,13 +115,146 @@
 
     <repositories>
         <repository>
-            <id>oss-snapshots-s01</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>ioxuxiaowei-1025</id>
+            <name>nacos-auth</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1025/</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
             <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1026</id>
+            <name>nacos-cmdb</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1026/</url>
+            <releases>
                 <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1027</id>
+            <name>nacos-consistency</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1027/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1028</id>
+            <name>nacos-config</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1028/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1029</id>
+            <name>nacos-core</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1029/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1030</id>
+            <name>nacos-istio</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1030/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1032</id>
+            <name>nacos-persistence</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1032/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1033</id>
+            <name>default-auth-plugin</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1033/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1034</id>
+            <name>nacos-naming</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1034/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1035</id>
+            <name>nacos-prometheus</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1035/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1036</id>
+            <name>nacos-default-plugin-all</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1036/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1037</id>
+            <name>default-control-plugin</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1037/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1038</id>
+            <name>nacos-sys</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1038/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
     </repositories>
