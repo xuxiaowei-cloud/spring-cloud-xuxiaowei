@@ -31,7 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-/derby.log
-/logs/
-/work/

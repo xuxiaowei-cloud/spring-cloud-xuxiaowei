@@ -24,6 +24,7 @@
     </properties>
 
     <modules>
+        <module>nacos</module>
         <module>spring-cloud-xuxiaowei-dependencies</module>
         <module>spring-cloud-xuxiaowei-gateway</module>
     </modules>
