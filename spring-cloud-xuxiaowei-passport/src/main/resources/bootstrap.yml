@@ -26,6 +26,10 @@ spring:
       config:
         server-addr: ${XUXIAOWEI_NACOS_CONFIG_SERVER_ADDR:127.0.0.1:8848}
         namespace: ${XUXIAOWEI_NACOS_CONFIG_NAMESPACE:public}
+        file-extension: yml
+        shared-configs:
+          - data-id: ${spring.application.name}.${spring.cloud.nacos.config.file-extension}
+            refresh: true
 
 logging:
   level:

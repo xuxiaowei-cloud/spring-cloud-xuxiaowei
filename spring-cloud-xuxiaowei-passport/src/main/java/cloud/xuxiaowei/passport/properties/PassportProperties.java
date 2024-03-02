@@ -15,6 +15,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("xuxiaowei.cloud.passport")
 public class PassportProperties {
 
-    private String title;
+	private String title;
 
 }
