@@ -12,6 +12,7 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.7.18</spring-boot.version>
         <spring-cloud.version>2021.0.9</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.0.6.0</spring-cloud-alibaba.version>
         <spring-security-oauth2-authorization-server.version>0.4.5</spring-security-oauth2-authorization-server.version>
 
         <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
@@ -31,6 +32,13 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

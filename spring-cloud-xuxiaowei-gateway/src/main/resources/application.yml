@@ -1,9 +1,9 @@
 server:
-  port: ${XUXIAOWEI_PASSPORT_PORT:9000}
+  port: ${XUXIAOWEI_GATEWAY_PORT:8000}
 
 spring:
   application:
-    name: xuxiaowei-passport
+    name: xuxiaowei-gateway
 
 ---
 
@@ -27,6 +27,25 @@ spring:
         server-addr: ${XUXIAOWEI_NACOS_CONFIG_SERVER_ADDR:127.0.0.1:8848}
         namespace: ${XUXIAOWEI_NACOS_CONFIG_NAMESPACE:public}
 
+---
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        - id: passport
+          uri: lb://xuxiaowei-passport
+          predicates:
+            - Path=/passport/**
+          filters:
+            StripPrefix=1
+
 logging:
   level:
-    org.apache.coyote.http11.Http11InputBuffer: debug
+    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: debug
+    org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler: debug
+    org.springframework.core.codec.CharSequenceEncoder: debug
