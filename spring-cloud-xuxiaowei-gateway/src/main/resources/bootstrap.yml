@@ -53,3 +53,9 @@ logging:
     org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: debug
     org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler: debug
     org.springframework.core.codec.CharSequenceEncoder: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

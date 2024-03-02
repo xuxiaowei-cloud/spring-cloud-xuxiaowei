@@ -39,7 +39,9 @@ public class DefaultSecurityConfig {
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests(authorizeRequests ->
-				authorizeRequests.anyRequest().authenticated()
+				authorizeRequests
+						  .regexMatchers("^/actuator(/.*)?$").permitAll()
+						.anyRequest().authenticated()
 			)
 			.formLogin(withDefaults());
 
