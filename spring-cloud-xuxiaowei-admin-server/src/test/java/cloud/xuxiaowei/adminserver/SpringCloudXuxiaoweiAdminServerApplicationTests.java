@@ -1,4 +1,4 @@
-package cloud.xuxiaowei.passport;
+package cloud.xuxiaowei.adminserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

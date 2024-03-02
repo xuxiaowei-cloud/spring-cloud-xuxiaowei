@@ -1,4 +1,4 @@
-package cloud.xuxiaowei.passport;
+package cloud.xuxiaowei.adminserver;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
