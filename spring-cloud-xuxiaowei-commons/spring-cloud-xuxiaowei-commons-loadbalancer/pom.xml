@@ -4,34 +4,31 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cloud.xuxiaowei</groupId>
-        <artifactId>spring-cloud-xuxiaowei-dependencies</artifactId>
+        <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>./spring-cloud-xuxiaowei-dependencies/pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
-    <groupId>cloud.xuxiaowei</groupId>
-    <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
+    <groupId>cloud.xuxiaowei.commons</groupId>
+    <artifactId>spring-cloud-xuxiaowei-commons-loadbalancer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>spring-cloud-xuxiaowei-parent</name>
-    <description>顶级项目</description>
+    <name>spring-cloud-xuxiaowei-commons-loadbalancer</name>
+    <description>公共模块-负载均衡器</description>
     <properties>
         <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <skipTests>true</skipTests>
     </properties>
+    <dependencies>
 
-    <modules>
-        <module>nacos</module>
-        <module>spring-cloud-xuxiaowei-admin-server</module>
-        <module>spring-cloud-xuxiaowei-commons</module>
-        <module>spring-cloud-xuxiaowei-dependencies</module>
-        <module>spring-cloud-xuxiaowei-file</module>
-        <module>spring-cloud-xuxiaowei-gateway</module>
-        <module>spring-cloud-xuxiaowei-passport</module>
-    </modules>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <plugins>

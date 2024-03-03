@@ -9,7 +9,9 @@ spring:
 
 spring:
   config:
-    import: nacos:xuxiaowei.yml
+    import:
+      - nacos:xuxiaowei.yml
+      - optional:common-core.yml
   cloud:
     inetutils:
       ignored-interfaces:

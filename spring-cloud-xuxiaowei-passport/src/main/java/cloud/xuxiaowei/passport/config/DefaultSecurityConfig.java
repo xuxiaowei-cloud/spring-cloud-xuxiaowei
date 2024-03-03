@@ -15,15 +15,21 @@
  */
 package cloud.xuxiaowei.passport.config;
 
+import cloud.xuxiaowei.core.properties.SecurityProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.security.interfaces.RSAPublicKey;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -34,22 +40,37 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class DefaultSecurityConfig {
 
-	// @formatter:off
+	private SecurityProperties securityProperties;
+
+	@Autowired
+	public void setSecurityProperties(SecurityProperties securityProperties) {
+		this.securityProperties = securityProperties;
+	}
+
+	@Bean
+	public BearerTokenResolver bearerTokenResolver() {
+		DefaultBearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
+		bearerTokenResolver.setAllowUriQueryParameter(true);
+		return bearerTokenResolver;
+	}
+
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-		http
-			.authorizeRequests(authorizeRequests ->
-				authorizeRequests
-						  .regexMatchers("^/actuator(/.*)?$").permitAll()
-						.anyRequest().authenticated()
-			)
-			.formLogin(withDefaults());
+		http.authorizeRequests(authorizeRequests -> authorizeRequests.regexMatchers("^/actuator(/.*)?$")
+			.permitAll()
+			.anyRequest()
+			.authenticated()).formLogin(withDefaults());
 
-		http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+		http.oauth2ResourceServer().jwt(oauth2ResourceServer -> {
+			RSAPublicKey rsaPublicKey = securityProperties.rsaPublicKey();
+			NimbusJwtDecoder.PublicKeyJwtDecoderBuilder publicKeyJwtDecoderBuilder = NimbusJwtDecoder
+				.withPublicKey(rsaPublicKey);
+			NimbusJwtDecoder nimbusJwtDecoder = publicKeyJwtDecoderBuilder.build();
+			oauth2ResourceServer.decoder(nimbusJwtDecoder);
+		});
 
 		return http.build();
 	}
-	// @formatter:on
 
 	// @formatter:off
 	@Bean

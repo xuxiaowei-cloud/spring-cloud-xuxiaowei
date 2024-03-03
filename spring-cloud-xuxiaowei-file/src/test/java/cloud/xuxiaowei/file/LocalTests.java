@@ -7,15 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -33,10 +40,28 @@ class LocalTests {
 	@Autowired
 	private FileProperties fileProperties;
 
+	@Autowired
+	private RestTemplate restTemplate;
+
 	@Test
 	void restTemplate() throws IOException {
 
-		RestTemplate restTemplate = new RestTemplate();
+		String clientId = "messaging-client";
+		String clientSecret = "secret";
+
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		httpHeaders.setBasicAuth(clientId, clientSecret);
+		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+		requestBody.put("grant_type", Collections.singletonList("client_credentials"));
+		requestBody.put("scope", Collections.singletonList("openid profile message.read message.write"));
+		HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
+
+		Map map = restTemplate.postForObject("http://xuxiaowei-passport/oauth2/token", httpEntity, Map.class);
+
+		log.info(String.valueOf(map));
+
+		String accessToken = map.get("access_token").toString();
 
 		List<FileProperties.ResourceHandler> resourceHandlers = fileProperties.getResourceHandlers();
 
@@ -49,8 +74,8 @@ class LocalTests {
 
 			String fileName = UUID.randomUUID() + ".txt";
 			String filePath = path + fileName;
-			String fileUrl = String.format("http://127.0.0.1:%d%s%s", serverPort, addResourceHandler.replace("**", ""),
-					fileName);
+			String fileUrl = String.format("http://127.0.0.1:%d%s%s?access_token=%s", serverPort,
+					addResourceHandler.replace("**", ""), fileName, accessToken);
 			String fileContext = fileName + "-123";
 
 			File file = new File(filePath);
@@ -60,7 +85,7 @@ class LocalTests {
 			writer.close();
 			log.info("文件已创建: {}", filePath);
 
-			ResponseEntity<String> entity = restTemplate.getForEntity(fileUrl, String.class);
+			ResponseEntity<String> entity = new RestTemplate().getForEntity(fileUrl, String.class);
 
 			Assert.isTrue(entity.getStatusCodeValue() == 200, String.format("文件: %s HTTP 状态码不正常", filePath));
 

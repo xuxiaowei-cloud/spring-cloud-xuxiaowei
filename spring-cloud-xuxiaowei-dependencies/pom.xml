@@ -16,6 +16,8 @@
         <spring-boot-admin.version>2.7.15</spring-boot-admin.version>
         <spring-security-oauth2-authorization-server.version>0.4.5</spring-security-oauth2-authorization-server.version>
 
+        <hutool-all.version>5.8.26</hutool-all.version>
+
         <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     </properties>
@@ -54,6 +56,23 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-oauth2-authorization-server</artifactId>
                 <version>${spring-security-oauth2-authorization-server.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cloud.xuxiaowei.commons</groupId>
+                <artifactId>spring-cloud-xuxiaowei-commons-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cloud.xuxiaowei.commons</groupId>
+                <artifactId>spring-cloud-xuxiaowei-commons-loadbalancer</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

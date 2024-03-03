@@ -24,7 +24,10 @@ build:mvn:
     - mvn clean package -U -pl nacos -DskipTests=false -s settings.xml
     - nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
     - sleep 10s
-    - mvn clean package -U -pl !nacos -DskipTests=false -s settings.xml
+    - mvn clean package -U -pl spring-cloud-xuxiaowei-passport -DskipTests=false -s settings.xml
+    - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
+    - sleep 10s
+    - mvn clean package -U -pl !nacos,!spring-cloud-xuxiaowei-passport -DskipTests=false -s settings.xml
   cache:
     key: "${CI_JOB_NAME}"
     paths:
@@ -55,7 +58,11 @@ build:mvnw:
     - ./mvnw -v
     - ./mvnw clean package -U -pl nacos -DskipTests=false -s settings.xml
     - nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
-    - ./mvnw clean package -U -pl !nacos -DskipTests=false -s settings.xml
+    - sleep 10s
+    - ./mvnw clean package -U -pl spring-cloud-xuxiaowei-passport -DskipTests=false -s settings.xml
+    - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
+    - sleep 10s
+    - ./mvnw clean package -U -pl !nacos,!spring-cloud-xuxiaowei-passport -DskipTests=false -s settings.xml
   cache:
     key: "${CI_JOB_NAME}"
     paths:
