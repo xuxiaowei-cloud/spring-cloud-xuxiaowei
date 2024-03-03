@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-cloud-xuxiaowei-commons-core</name>
     <description>公共模块-核心模块</description>
+    <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
     </properties>

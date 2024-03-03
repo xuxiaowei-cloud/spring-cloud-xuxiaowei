@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-cloud-xuxiaowei-admin-server</name>
     <description>监控服务</description>
+    <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
     </properties>

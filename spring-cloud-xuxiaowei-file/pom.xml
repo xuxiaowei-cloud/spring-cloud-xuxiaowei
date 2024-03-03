@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-cloud-xuxiaowei-file</name>
     <description>文件服务</description>
+    <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
     </properties>

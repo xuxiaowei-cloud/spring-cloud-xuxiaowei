@@ -8,6 +8,7 @@
     <packaging>pom</packaging>
     <name>spring-cloud-xuxiaowei-dependencies</name>
     <description>依赖版本控制</description>
+    <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
         <spring-boot.version>2.7.18</spring-boot.version>
