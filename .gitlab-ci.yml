@@ -24,6 +24,10 @@ build:mvn:
     - mvn clean package -U -pl nacos -DskipTests=false -s settings.xml
     - nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
     - sleep 10s
+    - >-
+      mvn clean install -U 
+      -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-core
+      -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-loadbalancer
     - mvn clean package -U -pl spring-cloud-xuxiaowei-passport -DskipTests=false -s settings.xml
     - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
     - sleep 10s
@@ -59,6 +63,10 @@ build:mvnw:
     - ./mvnw clean package -U -pl nacos -DskipTests=false -s settings.xml
     - nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
     - sleep 10s
+    - >-
+      ./mvnw clean install -U 
+      -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-core
+      -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-loadbalancer
     - ./mvnw clean package -U -pl spring-cloud-xuxiaowei-passport -DskipTests=false -s settings.xml
     - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
     - sleep 10s
