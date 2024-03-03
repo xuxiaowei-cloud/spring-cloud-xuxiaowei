@@ -59,7 +59,9 @@ build:mvn:
 
 build:mvnw:
   stage: build
-  image: openjdk:8
+  image: xuxiaoweicomcn/openjdk-mysql-client:8
+  services:
+    - mysql:8.0.36
   variables:
     MAVEN_OPTS: >-
       -Dhttps.protocols=TLSv1.2
@@ -74,12 +76,26 @@ build:mvnw:
       --no-transfer-progress
       -DinstallAtEnd=true
       -DdeployAtEnd=true
+    MYSQL_DATABASE: nacos
+    MYSQL_ROOT_PASSWORD: nacos
+    XUXIAOWEI_NACOS_MYSQL_IP: mysql
+    XUXIAOWEI_NACOS_MYSQL_USERNAME: root
+    XUXIAOWEI_NACOS_MYSQL_DATABASE: nacos
+  before_script:
+    - if [ $CI_SERVER_HOST == 'gitlab.helm.xuxiaowei.cn' ]; then
+      sleep 20s;
+      fi
+    - mysql -u root -p${MYSQL_ROOT_PASSWORD} --host=mysql ${MYSQL_DATABASE} < sql/1-nacos-mysql-schema.sql
+    - mysql -u root -p${MYSQL_ROOT_PASSWORD} --host=mysql ${MYSQL_DATABASE} < sql/2-nacos-mysql-data.sql
   script:
     - chmod +x mvnw
     - ./mvnw -v
     - ./mvnw clean package -U -pl nacos -DskipTests=false -s settings.xml
     - nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
-    - sleep 10s
+    - sleep 15s
+    - cat nohup.out
+    - curl "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=&search=blur" && echo
+    - cat nohup.out
     - >-
       ./mvnw clean package -U
       -pl spring-cloud-xuxiaowei-passport
