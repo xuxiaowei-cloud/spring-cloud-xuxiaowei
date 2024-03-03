@@ -1,6 +1,8 @@
 package cloud.xuxiaowei.file;
 
 import cloud.xuxiaowei.file.properties.FileProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +59,12 @@ class LocalTests {
 		requestBody.put("scope", Collections.singletonList("openid profile message.read message.write"));
 		HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
 
+		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+
 		Map map = restTemplate.postForObject("http://xuxiaowei-passport/oauth2/token", httpEntity, Map.class);
 
-		log.info(String.valueOf(map));
+		log.info("token:\n{}", objectWriter.writeValueAsString(map));
 
 		String accessToken = map.get("access_token").toString();
 

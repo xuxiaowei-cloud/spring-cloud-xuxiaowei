@@ -1,5 +1,7 @@
 package cloud.xuxiaowei.passport.oauth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlButton;
@@ -93,8 +95,11 @@ class AuthorizationCodeTests {
 
 		String tokenUrl = String.format("http://127.0.0.1:%d/oauth2/token", serverPort);
 
+		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+
 		Map<?, ?> token = getToken(clientId, clientSecret, code, redirectUri, tokenUrl);
-		log.info("token: {}", token);
+		log.info("token:\n{}", objectWriter.writeValueAsString(token));
 
 		String accessToken = token.get("access_token").toString();
 
@@ -105,7 +110,7 @@ class AuthorizationCodeTests {
 		Assert.isTrue(entity.getStatusCodeValue() == 200, "HTTP 状态码不正常");
 
 		Map body = entity.getBody();
-		log.info(String.valueOf(body));
+		log.info("\n{}", objectWriter.writeValueAsString(body));
 		String title = body.get("title").toString();
 
 		Assert.isTrue("徐晓伟微服务".equals(title), "title 数据验证失败");
@@ -113,7 +118,7 @@ class AuthorizationCodeTests {
 		String refreshToken = token.get("refresh_token").toString();
 
 		Map<?, ?> refresh = refreshToken(clientId, clientSecret, refreshToken, tokenUrl);
-		log.info("refresh: {}", refresh);
+		log.info("refresh:\n{}", objectWriter.writeValueAsString(refresh));
 	}
 
 	private Map<?, ?> getToken(String clientId, String clientSecret, String code, String redirectUri, String tokenUrl) {

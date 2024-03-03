@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: xuxiaowei-passport
+  profiles:
+    active: ${XUXIAOWEI_PASSPORT_ACTIVE:dev}
 
 ---
 
@@ -12,7 +14,6 @@ spring:
   config:
     import:
       - nacos:xuxiaowei.yml
-      - optional:common-core.yml
   cloud:
     inetutils:
       ignored-interfaces:
@@ -33,13 +34,3 @@ spring:
         shared-configs:
           - data-id: ${spring.application.name}.${spring.cloud.nacos.config.file-extension}
             refresh: true
-
-logging:
-  level:
-    org.apache.coyote.http11.Http11InputBuffer: debug
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'

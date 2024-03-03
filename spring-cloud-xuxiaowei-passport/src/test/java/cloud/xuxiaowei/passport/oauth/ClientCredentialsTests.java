@@ -1,5 +1,8 @@
 package cloud.xuxiaowei.passport.oauth;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,7 +31,7 @@ class ClientCredentialsTests {
 	private int serverPort;
 
 	@Test
-	void start() {
+	void start() throws JsonProcessingException {
 
 		String clientId = "messaging-client";
 		String clientSecret = "secret";
@@ -45,7 +48,10 @@ class ClientCredentialsTests {
 		Map map = restTemplate.postForObject(String.format("http://127.0.0.1:%d/oauth2/token", serverPort), httpEntity,
 				Map.class);
 
-		log.info(String.valueOf(map));
+		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+
+		log.info("token:\n{}", objectWriter.writeValueAsString(map));
 	}
 
 }

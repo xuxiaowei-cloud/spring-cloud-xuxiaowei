@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: xuxiaowei-gateway
+  profiles:
+    active: ${XUXIAOWEI_GATEWAY_ACTIVE:dev}
 
 ---
 
@@ -30,32 +32,3 @@ spring:
         shared-configs:
           - data-id: ${spring.application.name}.${spring.cloud.nacos.config.file-extension}
             refresh: true
-
----
-
-spring:
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-          lowerCaseServiceId: true
-      routes:
-        - id: passport
-          uri: lb://xuxiaowei-passport
-          predicates:
-            - Path=/passport/**
-          filters:
-            StripPrefix=1
-
-logging:
-  level:
-    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: debug
-    org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler: debug
-    org.springframework.core.codec.CharSequenceEncoder: debug
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'

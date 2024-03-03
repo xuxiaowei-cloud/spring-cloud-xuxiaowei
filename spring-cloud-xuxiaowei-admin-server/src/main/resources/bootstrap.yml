@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: xuxiaowei-admin-server
+  profiles:
+    active: ${XUXIAOWEI_ADMIN_SERVER_ACTIVE:dev}
 
 ---
 
@@ -30,13 +32,3 @@ spring:
         shared-configs:
           - data-id: ${spring.application.name}.${spring.cloud.nacos.config.file-extension}
             refresh: true
-
-logging:
-  level:
-    org.apache.coyote.http11.Http11InputBuffer: debug
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
