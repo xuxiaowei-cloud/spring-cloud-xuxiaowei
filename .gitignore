@@ -32,6 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
+/pom.xml.versionsBackup
+
 /derby.log
 /logs/
 /work/
