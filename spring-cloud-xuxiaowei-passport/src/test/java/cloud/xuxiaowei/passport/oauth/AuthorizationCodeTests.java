@@ -15,6 +15,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -93,6 +95,20 @@ class AuthorizationCodeTests {
 
 		Map<?, ?> token = getToken(clientId, clientSecret, code, redirectUri, tokenUrl);
 		log.info("token: {}", token);
+
+		String accessToken = token.get("access_token").toString();
+
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Map> entity = restTemplate
+			.getForEntity(String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken), Map.class);
+
+		Assert.isTrue(entity.getStatusCodeValue() == 200, "HTTP 状态码不正常");
+
+		Map body = entity.getBody();
+		log.info(String.valueOf(body));
+		String title = body.get("title").toString();
+
+		Assert.isTrue("徐晓伟微服务".equals(title), "title 数据验证失败");
 
 		String refreshToken = token.get("refresh_token").toString();
 
