@@ -1,0 +1,57 @@
+sync-gitee:
+  stage: sync
+  variables:
+    GIT_DEPTH: 0
+  image: bitnami/git:2.40.1
+  script:
+    - git config --global user.email $GITLAB_USER_EMAIL
+    - git config --global user.name $GITLAB_USER_NAME
+    - git config --global user.email
+    - git config --global user.name
+    - GITEE_REPOSITORY=$(echo $CI_PROJECT_PATH | sed 's/xuxiaowei-jihu\///')
+    - git remote add gitee https://xuxiaowei-com-cn:$GITEE_PRIVATE_TOKEN@gitee.com/$GITEE_REPOSITORY.git
+    - echo 当前分支：$CI_COMMIT_BRANCH
+    - echo 当前标签：$CI_COMMIT_TAG
+    - if [ "$CI_COMMIT_BRANCH" ]; then
+      git checkout -b $CI_COMMIT_BRANCH;
+      git pull --progress -v --no-rebase gitee $CI_COMMIT_BRANCH || echo 远端不存在$CI_COMMIT_BRANCH分支;
+      git push -u gitee $CI_COMMIT_BRANCH;
+      fi
+    - if [ "$CI_COMMIT_TAG" ]; then
+      git push -u gitee $CI_COMMIT_TAG;
+      fi
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^dependabot*/
+      when: never
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == null
+  retry: 2
+  allow_failure: true
+
+sync-github:
+  stage: sync
+  variables:
+    GIT_DEPTH: 0
+  image: bitnami/git:2.40.1
+  script:
+    - git config --global user.email $GITLAB_USER_EMAIL
+    - git config --global user.name $GITLAB_USER_NAME
+    - git config --global user.email
+    - git config --global user.name
+    - GITHUB_REPOSITORY=$(echo $CI_PROJECT_PATH | sed 's/xuxiaowei-jihu\///')
+    - git remote add github https://xuxiaowei-com-cn:$GITHUB_PRIVATE_TOKEN@github.com/$GITHUB_REPOSITORY.git
+    - echo 当前分支：$CI_COMMIT_BRANCH
+    - echo 当前标签：$CI_COMMIT_TAG
+    - if [ "$CI_COMMIT_BRANCH" ]; then
+      git checkout -b $CI_COMMIT_BRANCH;
+      git pull --progress -v --no-rebase github $CI_COMMIT_BRANCH || echo 远端不存在$CI_COMMIT_BRANCH分支;
+      git push -u github $CI_COMMIT_BRANCH;
+      fi
+    - if [ "$CI_COMMIT_TAG" ]; then
+      git push -u github $CI_COMMIT_TAG;
+      fi
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^dependabot*/
+      when: never
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == null
+  retry: 2
+  allow_failure: true
