@@ -18,6 +18,9 @@
         <spring-security-oauth2-authorization-server.version>0.4.5</spring-security-oauth2-authorization-server.version>
 
         <hutool-all.version>5.8.26</hutool-all.version>
+        <commons-lang3.version>3.14.0</commons-lang3.version>
+
+        <unit.version>0.0.3</unit.version>
 
         <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
@@ -63,6 +66,17 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.com.xuxiaowei.utils</groupId>
+                <artifactId>unit</artifactId>
+                <version>${unit.version}</version>
             </dependency>
 
             <dependency>
