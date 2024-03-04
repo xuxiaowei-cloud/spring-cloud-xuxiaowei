@@ -77,7 +77,7 @@ jobs:
         run: mvn -v
 
       - name: Build/Test Nacos
-        run: mvn clean package -U -pl nacos -DskipTests=false
+        run: mvn clean package source:jar javadoc:jar -U -pl nacos -DskipTests=false
 
       - name: Run Nacos
         run: |
@@ -89,7 +89,7 @@ jobs:
 
       - name: Build/Test Passport
         run: >-
-          mvn clean package -U
+          mvn clean package source:jar javadoc:jar -U
           -pl spring-cloud-xuxiaowei-passport
           -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-core
           -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-loadbalancer
@@ -102,4 +102,4 @@ jobs:
 
       - name: Build/Test Other
         run: |
-          sudo mvn clean package -U -pl !nacos,!spring-cloud-xuxiaowei-passport -DskipTests=false
+          sudo mvn clean package source:jar javadoc:jar -U -pl !nacos,!spring-cloud-xuxiaowei-passport -DskipTests=false
