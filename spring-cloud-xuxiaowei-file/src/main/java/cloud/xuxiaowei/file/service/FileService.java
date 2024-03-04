@@ -1,6 +1,6 @@
 package cloud.xuxiaowei.file.service;
 
-import org.springframework.lang.NonNull;
+import lombok.NonNull;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public interface FileService {
 	 * @param file 文件
 	 * @param domainName 上传文件后 域名
 	 * @param urlPrefix 上传文件后返回的 URL 前缀，可为空（为空时不处理）
-	 * @param filePrefix 本地储存：上传文件后 本地储存 前缀，不可为空
+	 * @param filePrefix 本地储存：上传文件后 前缀，不可为空
 	 * @return 返回上传结果的 URL
 	 */
 	String upload(HttpServletRequest request, HttpServletResponse response, MultipartFile file, String domainName,

@@ -54,7 +54,7 @@ public class LocalFileService implements FileService {
 		String originalFileName = file.getOriginalFilename();
 
 		if (originalFileName == null) {
-			throw new RuntimeException("文件后缀名不能为空");
+			throw new RuntimeException("文件名不能为空");
 		}
 
 		String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
