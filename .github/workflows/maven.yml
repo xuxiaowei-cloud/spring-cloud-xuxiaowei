@@ -19,12 +19,17 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      MYSQL_DATABASE: nacos
+      MYSQL_ROOT_PASSWORD: nacos
+      XUXIAOWEI_NACOS_MYSQL_DATABASE: nacos
+
     services:
       mysql:
         image: mysql:8.0.36
         env:
-          MYSQL_DATABASE: nacos
-          MYSQL_ROOT_PASSWORD: nacos
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
 
     steps:
       - name: Checkout repository
@@ -57,6 +62,12 @@ jobs:
         shell: sh
         run: |
           echo ${{ env.XUXIAOWEI_NACOS_MYSQL_IP }}
+
+      - name: Init MySQL
+        run: |
+          mysql --version
+          mysql -u root -p${{ env.MYSQL_ROOT_PASSWORD }} --host=${{ env.XUXIAOWEI_NACOS_MYSQL_IP }} ${{ env.XUXIAOWEI_NACOS_MYSQL_DATABASE }} < sql/1-nacos-mysql-schema.sql
+          mysql -u root -p${{ env.MYSQL_ROOT_PASSWORD }} --host=${{ env.XUXIAOWEI_NACOS_MYSQL_IP }} ${{ env.XUXIAOWEI_NACOS_MYSQL_DATABASE }} < sql/2-nacos-mysql-data.sql
 
       - name: Java version
         run: java -version
