@@ -15,9 +15,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <nacos.version>2.3.0</nacos.version>
+        <nacos.version>2.3.1</nacos.version>
         <slf4j.version>1.7.36</slf4j.version>
-        <spring-boot.version>2.7.15</spring-boot.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
 
         <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
 
@@ -113,5 +113,30 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>ioxuxiaowei-1039</id>
+            <name>nacos</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1039/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ioxuxiaowei-1040</id>
+            <name>nacos-console-ui</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1040/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
