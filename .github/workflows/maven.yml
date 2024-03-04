@@ -102,4 +102,4 @@ jobs:
 
       - name: Build/Test Other
         run: |
-          mvn clean package -U -pl !nacos,!spring-cloud-xuxiaowei-passport -DskipTests=false
+          sudo mvn clean package -U -pl !nacos,!spring-cloud-xuxiaowei-passport -DskipTests=false
