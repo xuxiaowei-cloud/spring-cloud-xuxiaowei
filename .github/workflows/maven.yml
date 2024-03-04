@@ -22,6 +22,7 @@ jobs:
     env:
       MYSQL_DATABASE: nacos
       MYSQL_ROOT_PASSWORD: nacos
+      XUXIAOWEI_NACOS_MYSQL_USERNAME: root
       XUXIAOWEI_NACOS_MYSQL_DATABASE: nacos
 
     services:
@@ -66,8 +67,8 @@ jobs:
       - name: Init MySQL
         run: |
           mysql --version
-          mysql -u root -p${{ env.MYSQL_ROOT_PASSWORD }} --host=${{ env.XUXIAOWEI_NACOS_MYSQL_IP }} ${{ env.XUXIAOWEI_NACOS_MYSQL_DATABASE }} < sql/1-nacos-mysql-schema.sql
-          mysql -u root -p${{ env.MYSQL_ROOT_PASSWORD }} --host=${{ env.XUXIAOWEI_NACOS_MYSQL_IP }} ${{ env.XUXIAOWEI_NACOS_MYSQL_DATABASE }} < sql/2-nacos-mysql-data.sql
+          mysql -u ${{ env.XUXIAOWEI_NACOS_MYSQL_USERNAME }} -p${{ env.MYSQL_ROOT_PASSWORD }} --host=${{ env.XUXIAOWEI_NACOS_MYSQL_IP }} ${{ env.XUXIAOWEI_NACOS_MYSQL_DATABASE }} < sql/1-nacos-mysql-schema.sql
+          mysql -u ${{ env.XUXIAOWEI_NACOS_MYSQL_USERNAME }} -p${{ env.MYSQL_ROOT_PASSWORD }} --host=${{ env.XUXIAOWEI_NACOS_MYSQL_IP }} ${{ env.XUXIAOWEI_NACOS_MYSQL_DATABASE }} < sql/2-nacos-mysql-data.sql
 
       - name: Java version
         run: java -version
@@ -75,5 +76,30 @@ jobs:
       - name: Maven version
         run: mvn -v
 
-      - name: Build with Maven
-        run: mvn clean package -U
+      - name: Build/Test Nacos
+        run: mvn clean package -U -pl nacos -DskipTests=false
+
+      - name: Run Nacos
+        run: |
+          nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
+          sleep 15
+          cat nohup.out
+          curl "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=&search=blur" && echo
+          cat nohup.out
+
+      - name: Build/Test Passport
+        run: >-
+          mvn clean package -U
+          -pl spring-cloud-xuxiaowei-passport
+          -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-core
+          -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-loadbalancer
+          -DskipTests=false
+
+      - name: Run Passport
+        run: |
+          nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
+          sleep 10s
+
+      - name: Build/Test Other
+        run: |
+          mvn clean package -U -pl !nacos,!spring-cloud-xuxiaowei-passport -DskipTests=false
