@@ -68,9 +68,10 @@ public class LocalFileService implements FileService {
 
 		String now = LocalDate.now().toString();
 
-		String parent = filePrefix + now;
+		UriComponentsBuilder parentBuilder = UriComponentsBuilder.newInstance().path(filePrefix).path("/").path(now);
+		String parent = parentBuilder.toUriString();
 		String fileName = UUID.randomUUID() + fileExtension;
-		String filePath = parent + File.separator + fileName;
+		String filePath = parentBuilder.path("/").path(fileName).toUriString();
 
 		log.info("上传文件路径: {}", filePath);
 
