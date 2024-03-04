@@ -19,6 +19,13 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0.36
+        env:
+          MYSQL_DATABASE: nacos
+          MYSQL_ROOT_PASSWORD: nacos
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -29,6 +36,27 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
           cache: maven
+
+      - name: Wait for MySQL
+        run: |
+          sleep 10
+          until docker exec $(docker ps -qf "ancestor=mysql:8.0.36") mysqladmin ping --silent; do
+              echo 'Waiting for MySQL to be available...'
+              sleep 10
+          done
+          sleep 10
+
+      - name: Set ENV
+        shell: sh
+        run: |
+          docker ps
+          echo "XUXIAOWEI_NACOS_MYSQL_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -qf 'ancestor=mysql:8.0.36')`" >> $GITHUB_ENV
+          echo ${{ env.XUXIAOWEI_NACOS_MYSQL_IP }}
+
+      - name: Get ENV
+        shell: sh
+        run: |
+          echo ${{ env.XUXIAOWEI_NACOS_MYSQL_IP }}
 
       - name: Java version
         run: java -version
