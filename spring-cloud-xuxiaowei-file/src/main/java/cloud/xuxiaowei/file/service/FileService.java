@@ -1,6 +1,5 @@
 package cloud.xuxiaowei.file.service;
 
-import lombok.NonNull;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
