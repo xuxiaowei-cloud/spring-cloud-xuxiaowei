@@ -1,14 +1,13 @@
 package cloud.xuxiaowei.passport.controller;
 
 import cloud.xuxiaowei.passport.properties.PassportProperties;
+import cloud.xuxiaowei.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author xuxiaowei
@@ -25,14 +24,14 @@ public class IndexRestController {
 	}
 
 	@RequestMapping
-	public Map<String, Object> index(HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> map = new HashMap<>();
+	public Response<String> index(HttpServletRequest request, HttpServletResponse response) {
 
 		String title = passportProperties.getTitle();
 
-		map.put("title", title);
+		Response<String> resp = Response.ok();
+		resp.setData(title);
 
-		return map;
+		return resp;
 	}
 
 }

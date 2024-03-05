@@ -25,6 +25,6 @@ public interface FileService {
 	 * @return 返回上传结果的 URL
 	 */
 	String upload(HttpServletRequest request, HttpServletResponse response, MultipartFile file, String domainName,
-			String urlPrefix, @NonNull String filePrefix);
+			String urlPrefix, String filePrefix);
 
 }

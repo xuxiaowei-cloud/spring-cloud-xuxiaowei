@@ -1,10 +1,11 @@
 package cloud.xuxiaowei.file.service.impl;
 
 import cloud.xuxiaowei.file.service.FileService;
+import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
 import cn.com.xuxiaowei.utils.unit.DataSize;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -44,17 +45,21 @@ public class LocalFileService implements FileService {
 	@Override
 	public String upload(HttpServletRequest request, HttpServletResponse response, MultipartFile file,
 
-			String domainName, String urlPrefix, @NonNull String filePrefix) {
+			String domainName, String urlPrefix, String filePrefix) {
+
+		if (!StringUtils.hasText(filePrefix)) {
+			throw new CloudRuntimeException("本地储存：上传文件前缀配置不可为空");
+		}
 
 		if (file == null) {
-			throw new RuntimeException("上传文件不能为空");
+			throw new CloudRuntimeException("本地储存：上传文件不能为空");
 		}
 
 		String contentType = file.getContentType();
 		String originalFileName = file.getOriginalFilename();
 
 		if (originalFileName == null) {
-			throw new RuntimeException("文件名不能为空");
+			throw new CloudRuntimeException("本地储存：文件名不能为空");
 		}
 
 		String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
@@ -87,7 +92,7 @@ public class LocalFileService implements FileService {
 			Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 		}
 		catch (IOException e) {
-			throw new RuntimeException(String.format("本地储存文件: %s 异常：", filePath), e);
+			throw new CloudRuntimeException(String.format("本地储存文件: %s 异常：", filePath), e);
 		}
 
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
@@ -102,7 +107,7 @@ public class LocalFileService implements FileService {
 				builder = UriComponentsBuilder.newInstance().uri(new URI(domainName));
 			}
 			catch (URISyntaxException e) {
-				throw new RuntimeException("上传文件配置的域名不合法", e);
+				throw new CloudRuntimeException("上传文件配置的域名不合法", e);
 			}
 		}
 

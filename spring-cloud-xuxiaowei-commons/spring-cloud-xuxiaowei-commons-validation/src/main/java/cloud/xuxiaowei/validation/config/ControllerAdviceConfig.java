@@ -1,0 +1,71 @@
+package cloud.xuxiaowei.validation.config;
+
+import cloud.xuxiaowei.utils.Response;
+import cloud.xuxiaowei.utils.exception.CloudException;
+import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * {@link org.springframework.stereotype.Controller}、{@link org.springframework.web.bind.annotation.RestController}
+ * 异常处理
+ * <p>
+ * 1. {@link ControllerAdvice} 不支持通配符
+ * <p>
+ * 2. 直接扫描
+ * {@link org.springframework.stereotype.Controller}、{@link org.springframework.web.bind.annotation.RestController}
+ * 父包
+ *
+ * @author xuxiaowei
+ * @since 0.0.1
+ */
+@Slf4j
+@ControllerAdvice({ "cloud.xuxiaowei" })
+public class ControllerAdviceConfig {
+
+	/**
+	 * 微服务运行时父异常 处理
+	 * @param exception 微服务运行时父异常
+	 * @param request 请求
+	 * @param response 响应
+	 * @return 返回 异常消息
+	 */
+	@ResponseBody
+	@ExceptionHandler(CloudRuntimeException.class)
+	public Response<?> cloudRuntimeException(CloudRuntimeException exception, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		String code = exception.getCode();
+		String message = exception.getMessage();
+
+		log.error(String.format("%s：%s", code, message), exception);
+
+		return Response.error(code, message);
+	}
+
+	/**
+	 * 微服务父异常 处理
+	 * @param exception 微服务父异常
+	 * @param request 请求
+	 * @param response 响应
+	 * @return 返回 异常消息
+	 */
+	@ResponseBody
+	@ExceptionHandler(CloudException.class)
+	public Response<?> cloudException(CloudException exception, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		String code = exception.getCode();
+		String message = exception.getMessage();
+
+		log.error(String.format("%s：%s", code, message), exception);
+
+		return Response.error(code, message);
+	}
+
+}

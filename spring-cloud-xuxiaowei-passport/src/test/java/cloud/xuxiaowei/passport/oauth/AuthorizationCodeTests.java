@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.passport.oauth;
 
+import cloud.xuxiaowei.utils.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.gargoylesoftware.htmlunit.Page;
@@ -104,14 +105,18 @@ class AuthorizationCodeTests {
 		String accessToken = token.get("access_token").toString();
 
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Map> entity = restTemplate
-			.getForEntity(String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken), Map.class);
+		@SuppressWarnings("all")
+		ResponseEntity<Response> entity = restTemplate.getForEntity(
+				String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken), Response.class);
 
 		Assert.isTrue(entity.getStatusCodeValue() == 200, "HTTP 状态码不正常");
 
-		Map body = entity.getBody();
-		log.info("\n{}", objectWriter.writeValueAsString(body));
-		String title = body.get("title").toString();
+		@SuppressWarnings("unchecked")
+		Response<String> response = entity.getBody();
+		log.info("\n{}", objectWriter.writeValueAsString(response));
+		assert response != null;
+		String title = response.getData();
+		assert title != null;
 
 		Assert.isTrue("徐晓伟微服务".equals(title), "title 数据验证失败");
 

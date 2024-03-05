@@ -89,6 +89,16 @@
                 <artifactId>spring-cloud-xuxiaowei-commons-loadbalancer</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cloud.xuxiaowei.commons</groupId>
+                <artifactId>spring-cloud-xuxiaowei-commons-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cloud.xuxiaowei.commons</groupId>
+                <artifactId>spring-cloud-xuxiaowei-commons-validation</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

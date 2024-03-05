@@ -2,6 +2,7 @@ package cloud.xuxiaowei.file.controller;
 
 import cloud.xuxiaowei.file.properties.FileProperties;
 import cloud.xuxiaowei.file.service.FileService;
+import cloud.xuxiaowei.utils.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 上传文件：本地储存
@@ -47,7 +46,7 @@ public class UploadLocalRestController {
 	 * @return 返回上传结果
 	 */
 	@PostMapping
-	public Map<String, Object> post(HttpServletRequest request, HttpServletResponse response, MultipartFile file) {
+	public Response<String> post(HttpServletRequest request, HttpServletResponse response, MultipartFile file) {
 
 		String localDomainName = fileProperties.getLocalDomainName();
 		String localUrlPrefix = fileProperties.getLocalUrlPrefix();
@@ -55,10 +54,10 @@ public class UploadLocalRestController {
 
 		String url = fileService.upload(request, response, file, localDomainName, localUrlPrefix, localFilePrefix);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("url", url);
+		Response<String> resp = Response.ok();
+		resp.setData(url);
 
-		return map;
+		return resp;
 	}
 
 }
