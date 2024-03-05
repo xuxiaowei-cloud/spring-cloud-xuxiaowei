@@ -18,4 +18,9 @@ public class UserInfoVO implements Serializable {
 	 */
 	private String username;
 
+	/**
+	 * 名字
+	 */
+	private String name;
+
 }
