@@ -23,6 +23,11 @@
             <artifactId>spring-cloud-xuxiaowei-commons-utils</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
         <!-- 提供日志功能 -->
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -3,13 +3,22 @@ package cloud.xuxiaowei.validation.config;
 import cloud.xuxiaowei.utils.Response;
 import cloud.xuxiaowei.utils.exception.CloudException;
 import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
+import com.google.common.base.Joiner;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.MethodParameter;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@link org.springframework.stereotype.Controller}、{@link org.springframework.web.bind.annotation.RestController}
@@ -66,6 +75,54 @@ public class ControllerAdviceConfig {
 		log.error(String.format("%s：%s", code, message), exception);
 
 		return Response.error(code, message);
+	}
+
+	/**
+	 * 方法参数验证异常 处理
+	 * @param exception 方法参数验证异常
+	 * @param request 请求
+	 * @param response 相应
+	 * @return 返回 异常消息
+	 */
+	@ResponseBody
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Response<?> methodArgumentNotValidException(MethodArgumentNotValidException exception,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		String objectName = exception.getObjectName();
+
+		FieldError fieldError = exception.getFieldError();
+		List<ObjectError> allErrors = exception.getAllErrors();
+
+		int errorCount = exception.getErrorCount();
+		Map<String, Object> model = exception.getModel();
+
+		BindingResult bindingResult = exception.getBindingResult();
+		MethodParameter parameter = exception.getParameter();
+
+		int fieldErrorCount = exception.getFieldErrorCount();
+
+		String message = exception.getMessage();
+
+		if (fieldErrorCount == 1) {
+			if (fieldError == null) {
+				return Response.error(message);
+			}
+			else {
+				String defaultMessage = fieldError.getDefaultMessage();
+				return Response.error(defaultMessage);
+			}
+		}
+		else {
+			List<String> list = new ArrayList<>();
+			for (ObjectError objectError : allErrors) {
+				String defaultMessage = objectError.getDefaultMessage();
+				list.add(defaultMessage);
+			}
+			String result = Joiner.on(",").join(list);
+			return Response.error(result);
+		}
+
 	}
 
 }

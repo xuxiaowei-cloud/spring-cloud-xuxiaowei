@@ -19,6 +19,7 @@
 
         <hutool-all.version>5.8.26</hutool-all.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
+        <guava.version>33.0.0-jre</guava.version>
 
         <unit.version>0.0.3</unit.version>
 
@@ -71,6 +72,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
 
             <dependency>
