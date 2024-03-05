@@ -87,6 +87,11 @@
 
             <dependency>
                 <groupId>cloud.xuxiaowei.commons</groupId>
+                <artifactId>spring-cloud-xuxiaowei-commons-aop</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cloud.xuxiaowei.commons</groupId>
                 <artifactId>spring-cloud-xuxiaowei-commons-core</artifactId>
                 <version>${project.version}</version>
             </dependency>

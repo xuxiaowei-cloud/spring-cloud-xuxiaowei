@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.passport.controller;
 
+import cloud.xuxiaowei.core.annotation.ControllerAnnotation;
 import cloud.xuxiaowei.passport.dto.UserInfoDTO;
 import cloud.xuxiaowei.passport.vo.UserInfoVO;
 import cloud.xuxiaowei.utils.Response;
@@ -39,6 +40,7 @@ public class UserRestController {
 	 * @return
 	 */
 	@PostMapping("/info")
+	@ControllerAnnotation("用户信息")
 	public Response<UserInfoVO> info(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication, @Valid @RequestBody UserInfoDTO userInfo) {
 

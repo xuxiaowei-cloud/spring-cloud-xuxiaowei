@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.file.controller;
 
+import cloud.xuxiaowei.core.annotation.ControllerAnnotation;
 import cloud.xuxiaowei.file.properties.FileProperties;
 import cloud.xuxiaowei.file.service.FileService;
 import cloud.xuxiaowei.utils.Response;
@@ -46,6 +47,7 @@ public class UploadLocalRestController {
 	 * @return 返回上传结果
 	 */
 	@PostMapping
+	@ControllerAnnotation("上传文件(本地储存)")
 	public Response<String> post(HttpServletRequest request, HttpServletResponse response, MultipartFile file) {
 
 		String localDomainName = fileProperties.getLocalDomainName();

@@ -9,37 +9,38 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>cloud.xuxiaowei.commons</groupId>
-    <artifactId>spring-cloud-xuxiaowei-commons-core</artifactId>
+    <artifactId>spring-cloud-xuxiaowei-commons-aop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-cloud-xuxiaowei-commons-core</name>
-    <description>公共模块-核心模块</description>
+    <name>spring-cloud-xuxiaowei-commons-aop</name>
+    <description>公共模块-AOP组件</description>
     <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
-
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
+            <groupId>cloud.xuxiaowei.commons</groupId>
+            <artifactId>spring-cloud-xuxiaowei-commons-core</artifactId>
+        </dependency>
+
+        <!-- 提供日志功能 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- 提供：org.springframework.web.bind.annotation.RequestMapping -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

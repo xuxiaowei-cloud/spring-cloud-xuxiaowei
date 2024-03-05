@@ -20,6 +20,10 @@
     <dependencies>
         <dependency>
             <groupId>cloud.xuxiaowei.commons</groupId>
+            <artifactId>spring-cloud-xuxiaowei-commons-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cloud.xuxiaowei.commons</groupId>
             <artifactId>spring-cloud-xuxiaowei-commons-core</artifactId>
         </dependency>
         <dependency>
