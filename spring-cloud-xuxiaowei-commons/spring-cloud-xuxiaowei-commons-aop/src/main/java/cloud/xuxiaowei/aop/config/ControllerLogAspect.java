@@ -43,9 +43,9 @@ public class ControllerLogAspect {
 			Duration between = Duration.between(start, end);
 
 			String duration = between.toString();
-			long seconds = between.toSeconds();
+			long millis = between.toMillis();
 
-			log.info("环绕通知: {}, 执行耗时: {}({})", methodName, seconds, duration);
+			log.info("环绕通知: {}, 执行耗时: {}ms({})", methodName, millis, duration);
 
 			return proceed;
 		}
@@ -53,9 +53,9 @@ public class ControllerLogAspect {
 			Instant end = Instant.now();
 			Duration between = Duration.between(start, end);
 			String duration = between.toString();
-			long seconds = between.toSeconds();
+			long millis = between.toMillis();
 
-			log.error("异常通知: {} 执行耗时: {}({})", methodName, seconds, duration, e);
+			log.error("异常通知: {} 执行耗时: {}ms({})", methodName, millis, duration, e);
 			throw e;
 		}
 	}
