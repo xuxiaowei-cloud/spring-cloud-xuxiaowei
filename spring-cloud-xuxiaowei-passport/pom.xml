@@ -28,6 +28,10 @@
         </dependency>
         <dependency>
             <groupId>cloud.xuxiaowei.commons</groupId>
+            <artifactId>spring-cloud-xuxiaowei-commons-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cloud.xuxiaowei.commons</groupId>
             <artifactId>spring-cloud-xuxiaowei-commons-validation</artifactId>
         </dependency>
 
