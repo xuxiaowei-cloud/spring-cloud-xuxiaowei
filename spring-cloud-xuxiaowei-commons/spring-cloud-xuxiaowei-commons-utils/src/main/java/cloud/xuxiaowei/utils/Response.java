@@ -49,7 +49,7 @@ public class Response<T> implements Serializable {
 	}
 
 	public static <T> Response<T> error() {
-		return new Response<T>().setMessage("系统异常");
+		return new Response<T>().setCode("500").setMessage("系统异常");
 	}
 
 	public static <T> Response<T> error(String message) {
