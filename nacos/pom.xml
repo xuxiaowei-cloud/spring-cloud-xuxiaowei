@@ -114,29 +114,4 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>ioxuxiaowei-1039</id>
-            <name>nacos</name>
-            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1039/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>ioxuxiaowei-1040</id>
-            <name>nacos-console-ui</name>
-            <url>https://s01.oss.sonatype.org/content/repositories/ioxuxiaowei-1040/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
 </project>
