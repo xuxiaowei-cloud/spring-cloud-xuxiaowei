@@ -47,9 +47,6 @@ public class UserRestController {
 		UserInfoVO userInfoVO = new UserInfoVO();
 		BeanUtils.copyProperties(userInfo, userInfoVO);
 
-		Response<UserInfoVO> ok = Response.ok();
-		ok.setData(userInfoVO);
-
 		SecurityContext context = SecurityContextHolder.getContext();
 		Authentication contextAuthentication = context.getAuthentication();
 
@@ -81,7 +78,7 @@ public class UserRestController {
 		String remoteHost = request.getRemoteHost();
 		log.info("remoteHost: {}", remoteHost);
 
-		return ok;
+		return new Response<>(userInfoVO).setSuccess(true);
 	}
 
 }

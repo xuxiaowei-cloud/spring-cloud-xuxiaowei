@@ -40,6 +40,13 @@ public class Response<T> implements Serializable {
 	 */
 	private T data;
 
+	public Response() {
+	}
+
+	public Response(T data) {
+		this.data = data;
+	}
+
 	public static <T> Response<T> ok() {
 		return new Response<T>().setSuccess(true);
 	}
