@@ -4,6 +4,8 @@ import cloud.xuxiaowei.core.annotation.ControllerAnnotation;
 import cloud.xuxiaowei.passport.dto.UserInfoDTO;
 import cloud.xuxiaowei.passport.vo.UserInfoVO;
 import cloud.xuxiaowei.utils.Response;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
@@ -25,10 +27,13 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
+ * 用户接口
+ *
  * @author xuxiaowei
  * @since 0.0.1
  */
 @Slf4j
+@Tag(name = "用户接口", description = "主要功能：获取用户信息")
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
@@ -39,6 +44,7 @@ public class UserRestController {
 	 * @param userInfo
 	 * @return
 	 */
+	@Operation(summary = "用户信息", description = "获取用户信息（未完成，仅测试）")
 	@PostMapping("/info")
 	@ControllerAnnotation("用户信息")
 	public Response<UserInfoVO> info(HttpServletRequest request, HttpServletResponse response,

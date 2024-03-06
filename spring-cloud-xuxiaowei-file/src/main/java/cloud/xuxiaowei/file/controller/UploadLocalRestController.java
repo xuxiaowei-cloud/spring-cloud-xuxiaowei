@@ -4,6 +4,8 @@ import cloud.xuxiaowei.core.annotation.ControllerAnnotation;
 import cloud.xuxiaowei.file.properties.FileProperties;
 import cloud.xuxiaowei.file.service.FileService;
 import cloud.xuxiaowei.utils.Response;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 0.0.1
  */
 @Slf4j
+@Tag(name = "上传文件：本地储存", description = "主要功能：使用本机硬盘储存文件")
 @RestController
 @RequestMapping("/upload/local")
 public class UploadLocalRestController {
@@ -46,6 +49,7 @@ public class UploadLocalRestController {
 	 * @param file 文件
 	 * @return 返回上传结果
 	 */
+	@Operation(summary = "上传文件(本地储存)", description = "将文件上传至服务器，服务器使用本机硬盘保存文件，并通过网络映射提供访问功能")
 	@PostMapping
 	@ControllerAnnotation("上传文件(本地储存)")
 	public Response<String> post(HttpServletRequest request, HttpServletResponse response, MultipartFile file) {

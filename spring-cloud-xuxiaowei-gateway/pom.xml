@@ -19,6 +19,11 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webflux-ui</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>cloud.xuxiaowei.commons</groupId>
             <artifactId>spring-cloud-xuxiaowei-commons-core</artifactId>
         </dependency>
