@@ -3,6 +3,7 @@ package cloud.xuxiaowei.passport.controller;
 import cloud.xuxiaowei.passport.properties.PassportProperties;
 import cloud.xuxiaowei.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 0.0.1
  */
 @Tag(name = "首页", description = "未完成，仅测试")
+@SecurityRequirement(name = "oauth2_clientCredentials")
 @RestController
 public class IndexRestController {
 

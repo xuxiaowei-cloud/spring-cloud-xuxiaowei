@@ -5,6 +5,7 @@ import cloud.xuxiaowei.passport.dto.UserInfoDTO;
 import cloud.xuxiaowei.passport.vo.UserInfoVO;
 import cloud.xuxiaowei.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -34,6 +35,7 @@ import java.util.Map;
  */
 @Slf4j
 @Tag(name = "用户接口", description = "主要功能：获取用户信息")
+@SecurityRequirement(name = "oauth2_clientCredentials")
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
