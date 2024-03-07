@@ -9,7 +9,7 @@ updates:
     ignore:
       - dependency-name: org.springframework.cloud:spring-cloud-dependencies
         versions:
-          - ">= 2023"
+          - ">= 2022"
       - dependency-name: org.springframework.security:spring-security-oauth2-authorization-server
         versions:
           - ">= 1"
