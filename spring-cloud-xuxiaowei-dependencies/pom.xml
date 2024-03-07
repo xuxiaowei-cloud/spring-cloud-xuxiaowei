@@ -15,7 +15,7 @@
         <spring-cloud.version>2021.0.9</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.6.0</spring-cloud-alibaba.version>
         <spring-boot-admin.version>2.7.15</spring-boot-admin.version>
-        <spring-security-oauth2-authorization-server.version>0.4.5</spring-security-oauth2-authorization-server.version>
+        <spring-security-oauth2-authorization-server.version>1.2.2</spring-security-oauth2-authorization-server.version>
 
         <hutool-all.version>5.8.26</hutool-all.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
