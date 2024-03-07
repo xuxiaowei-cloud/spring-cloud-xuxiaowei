@@ -16,6 +16,9 @@ updates:
       - dependency-name: org.springframework.boot:spring-boot-dependencies
         versions:
           - ">= 3"
+      - dependency-name: org.springframework.boot:spring-boot-starter-security
+        versions:
+          - ">= 3"
       - dependency-name: com.alibaba.cloud:spring-cloud-alibaba-dependencies
         versions:
           - ">= 2022"
