@@ -2,6 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.7.18</version>
+        <relativePath/>
+    </parent>
     <groupId>cloud.xuxiaowei</groupId>
     <artifactId>spring-cloud-xuxiaowei-dependencies</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -11,7 +17,6 @@
     <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
-        <spring-boot.version>2.7.18</spring-boot.version>
         <spring-cloud.version>2021.0.9</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.6.0</spring-cloud-alibaba.version>
         <spring-boot-admin.version>2.7.15</spring-boot-admin.version>
@@ -23,24 +28,14 @@
 
         <springdoc.version>1.7.0</springdoc.version>
         <therapi-runtime-javadoc-scribe.version>0.15.0</therapi-runtime-javadoc-scribe.version>
-        <lombok.version>1.18.30</lombok.version>
 
         <unit.version>0.0.3</unit.version>
 
         <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -187,11 +182,6 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
