@@ -31,3 +31,17 @@
 4. 原始项目地址:
     1. Gitee: https://gitee.com/xuxiaowei-cloud/xuxiaowei-cloud
     2. GitHub: https://github.com/xuxiaowei-cloud/xuxiaowei-cloud
+
+## 项目功能
+
+### API 文档
+
+- [Spring Boot 2.x](https://springdoc.org/v1)
+- [Spring Boot 3.x](https://springdoc.org)
+- [demos](https://github.com/springdoc/springdoc-openapi-demos/)
+
+| 服务       | 地址                                                  | 说明               |
+|----------|-----------------------------------------------------|------------------|
+| 网关       | http://127.0.0.1:8000/webjars/swagger-ui/index.html | 网关聚合所有服务的 API 文档 |
+| passport | http://127.0.0.1:9000/swagger-ui/index.html         |                  |
+| file     | http://127.0.0.1:12000/swagger-ui/index.html        |                  |
