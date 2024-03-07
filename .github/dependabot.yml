@@ -21,6 +21,7 @@ updates:
           - ">= 3"
       - dependency-name: com.alibaba.cloud:spring-cloud-alibaba-dependencies
         versions:
+          - "= 2021.1"
           - ">= 2022"
       - dependency-name: de.codecentric:spring-boot-admin-dependencies
         versions:
