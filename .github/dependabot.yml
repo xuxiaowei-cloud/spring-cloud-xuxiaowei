@@ -13,3 +13,6 @@ updates:
       - dependency-name: org.springframework.security:spring-security-oauth2-authorization-server
         versions:
           - ">= 1"
+      - dependency-name: org.springframework.boot:spring-boot-dependencies
+        versions:
+          - ">= 3"
