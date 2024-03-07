@@ -6,3 +6,7 @@ updates:
       interval: "daily"
       time: "20:00"
       timezone: "Asia/Shanghai"
+    ignore:
+      - dependency-name: org.springframework.cloud:spring-cloud-dependencies
+        versions:
+          - ">= 2023"
