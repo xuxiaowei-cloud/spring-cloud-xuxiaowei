@@ -23,7 +23,7 @@ sync-gitee:
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^dependabot*/
       when: never
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == null
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == null && $ENABLE_SYNC == "true"
   retry: 2
   allow_failure: true
 
@@ -52,6 +52,6 @@ sync-github:
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^dependabot*/
       when: never
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == null
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == null && $ENABLE_SYNC == "true"
   retry: 2
   allow_failure: true
