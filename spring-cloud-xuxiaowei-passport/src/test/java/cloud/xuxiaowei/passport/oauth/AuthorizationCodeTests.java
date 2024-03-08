@@ -48,16 +48,17 @@ class AuthorizationCodeTests {
 	@Test
 	void start() throws IOException {
 
+		String username = "user1";
+		String password = "password";
+
+		String redirectUri = "https://home.baidu.com/home/index/contact_us";
+		String scope = "openid profile message.read message.write";
+
+		String clientId = "messaging-client";
+		String clientSecret = "secret";
+
 		for (int i = 0; i < 3; i++) {
-			String username = "user1";
-			String password = "password";
-
-			String redirectUri = "https://home.baidu.com/home/index/contact_us";
-			String scope = "openid profile message.read message.write";
 			String state = UUID.randomUUID().toString();
-
-			String clientId = "messaging-client";
-			String clientSecret = "secret";
 
 			HtmlPage loginPage = webClient.getPage("/login");
 

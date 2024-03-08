@@ -50,15 +50,10 @@ class SwaggerGlobalFilterTests {
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> servers = (List<Map<String, Object>>) body.get("servers");
 
-		boolean equals = false;
 		for (Map<String, Object> server : servers) {
 			Object urlObj = server.get("url");
-			if (urlObj != null) {
-				equals = expectResult.equals(urlObj);
-			}
+			Assert.isTrue(expectResult.equals(urlObj), "网关修改 Swagger 接口响应结果失败");
 		}
-
-		Assert.isTrue(equals, "网关修改 Swagger 接口响应结果失败");
 	}
 
 }
