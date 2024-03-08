@@ -10,11 +10,14 @@ import org.springdoc.webmvc.ui.SwaggerWebMvcConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,14 +80,39 @@ public class WebMvcConfigurationSupportConfig extends WebMvcConfigurationSupport
 		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 
 		List<FileProperties.ResourceHandler> resourceHandlers = fileProperties.getResourceHandlers();
+		String localFilePrefix = fileProperties.getLocalFilePrefix();
+		String localUrlPrefix = fileProperties.getLocalUrlPrefix();
 
-		if (resourceHandlers == null || resourceHandlers.isEmpty()) {
+		ArrayList<FileProperties.ResourceHandler> resourceHandlerList = new ArrayList<>(resourceHandlers);
+		if (StringUtils.hasText(localFilePrefix) && StringUtils.hasText(localUrlPrefix)) {
+			FileProperties.ResourceHandler resourceHandler = new FileProperties.ResourceHandler();
+			resourceHandler.setAddResourceHandler(localUrlPrefix);
+			resourceHandler.setAddResourceLocations(localFilePrefix);
+			resourceHandlerList.add(resourceHandler);
+		}
+
+		if (resourceHandlers.isEmpty()) {
 			log.warn("本地静态资源配置为空");
 		}
 		else {
-			for (FileProperties.ResourceHandler resourceHandler : resourceHandlers) {
+			for (FileProperties.ResourceHandler resourceHandler : resourceHandlerList) {
 				String addResourceHandler = resourceHandler.getAddResourceHandler();
 				String addResourceLocations = resourceHandler.getAddResourceLocations();
+
+				if (!addResourceHandler.endsWith("/**")) {
+					addResourceHandler = UriComponentsBuilder.newInstance()
+						.path(addResourceHandler)
+						.path("/**")
+						.toUriString();
+				}
+
+				if (!addResourceLocations.startsWith("file:")) {
+					addResourceLocations = "file:" + addResourceLocations;
+				}
+
+				if (!addResourceLocations.endsWith("/")) {
+					addResourceLocations += "/";
+				}
 
 				log.info("网路路径: {} 映射到本地路径: {}", addResourceHandler, addResourceLocations);
 

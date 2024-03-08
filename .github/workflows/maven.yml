@@ -20,17 +20,20 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      MYSQL_DATABASE: nacos
-      MYSQL_ROOT_PASSWORD: nacos
+      XUXIAOWEI_DATABASE_USERNAME: root
+      XUXIAOWEI_DATABASE_PASSWORD: xuxiaowei.com.cn
+      XUXIAOWEI_DATABASE: spring_cloud_xuxiaowei
+
       XUXIAOWEI_NACOS_MYSQL_USERNAME: root
-      XUXIAOWEI_NACOS_MYSQL_DATABASE: nacos
+      XUXIAOWEI_NACOS_MYSQL_PASSWORD: xuxiaowei.com.cn
+      XUXIAOWEI_NACOS_MYSQL_DATABASE: spring_cloud_xuxiaowei_nacos
 
     services:
       mysql:
         image: mysql:8.0.36
         env:
-          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
-          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.XUXIAOWEI_DATABASE }}
+          MYSQL_ROOT_PASSWORD: ${{ env.XUXIAOWEI_DATABASE_PASSWORD }}
 
     steps:
       - name: Checkout repository
@@ -56,19 +59,37 @@ jobs:
         shell: sh
         run: |
           docker ps
-          echo "XUXIAOWEI_NACOS_MYSQL_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -qf 'ancestor=mysql:8.0.36')`" >> $GITHUB_ENV
-          echo ${{ env.XUXIAOWEI_NACOS_MYSQL_IP }}
+          XUXIAOWEI_DATABASE_HOST=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -qf 'ancestor=mysql:8.0.36')`
+          echo "XUXIAOWEI_DATABASE_HOST=$XUXIAOWEI_DATABASE_HOST"
+          echo "XUXIAOWEI_DATABASE_HOST=$XUXIAOWEI_DATABASE_HOST" >> $GITHUB_ENV
+          echo "XUXIAOWEI_NACOS_MYSQL_HOST=$XUXIAOWEI_DATABASE_HOST"
+          echo "XUXIAOWEI_NACOS_MYSQL_HOST=$XUXIAOWEI_DATABASE_HOST" >> $GITHUB_ENV
+          echo "XUXIAOWEI_FILE_LOCAL_FILE_PREFIX=$GITHUB_WORKSPACE"
+          echo "XUXIAOWEI_FILE_LOCAL_FILE_PREFIX=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+          echo "XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS=$GITHUB_WORKSPACE"
+          echo "XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+          echo ${{ env.XUXIAOWEI_DATABASE_HOST }}
+          echo ${{ env.XUXIAOWEI_NACOS_MYSQL_HOST }}
+          echo ${{ env.XUXIAOWEI_FILE_LOCAL_FILE_PREFIX }}
+          echo ${{ env.XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS }}
 
       - name: Get ENV
         shell: sh
         run: |
-          echo ${{ env.XUXIAOWEI_NACOS_MYSQL_IP }}
+          echo ${{ env.XUXIAOWEI_DATABASE_HOST }}
+          echo ${{ env.XUXIAOWEI_NACOS_MYSQL_HOST }}
+          echo ${{ env.XUXIAOWEI_FILE_LOCAL_FILE_PREFIX }}
+          echo ${{ env.XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS }}
 
       - name: Init MySQL
         run: |
           mysql --version
-          mysql -u ${{ env.XUXIAOWEI_NACOS_MYSQL_USERNAME }} -p${{ env.MYSQL_ROOT_PASSWORD }} --host=${{ env.XUXIAOWEI_NACOS_MYSQL_IP }} ${{ env.XUXIAOWEI_NACOS_MYSQL_DATABASE }} < sql/1-nacos-mysql-schema.sql
-          mysql -u ${{ env.XUXIAOWEI_NACOS_MYSQL_USERNAME }} -p${{ env.MYSQL_ROOT_PASSWORD }} --host=${{ env.XUXIAOWEI_NACOS_MYSQL_IP }} ${{ env.XUXIAOWEI_NACOS_MYSQL_DATABASE }} < sql/2-nacos-mysql-data.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/1-nacos-mysql-schema.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/2-nacos-mysql-data.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/3-security-mysql-schema.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/4-security-mysql-data.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/5-oauth-2.1-mysql-schema.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/6-oauth-2.1-mysql-data.sql
 
       - name: Java version
         run: java -version
@@ -94,4 +115,4 @@ jobs:
           cat nohup-passport.out
 
       - name: Test
-        run: sudo mvn test -DskipTests=false
+        run: mvn test -DskipTests=false

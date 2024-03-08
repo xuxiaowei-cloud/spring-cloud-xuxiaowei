@@ -3,11 +3,26 @@ stages:
   - test
   - sync
 
+variables:
+  XUXIAOWEI_DATABASE_HOST: mysql
+  XUXIAOWEI_DATABASE_USERNAME: root
+  XUXIAOWEI_DATABASE_PASSWORD: xuxiaowei.com.cn
+  XUXIAOWEI_DATABASE: spring_cloud_xuxiaowei
+
+  XUXIAOWEI_NACOS_MYSQL_HOST: $XUXIAOWEI_DATABASE_HOST
+  XUXIAOWEI_NACOS_MYSQL_USERNAME: $XUXIAOWEI_DATABASE_USERNAME
+  XUXIAOWEI_NACOS_MYSQL_PASSWORD: $XUXIAOWEI_DATABASE_PASSWORD
+  XUXIAOWEI_NACOS_MYSQL_DATABASE: spring_cloud_xuxiaowei_nacos
+
 build:mvn:
   stage: build
   image: xuxiaoweicomcn/maven-mysql-client:3.6.3-jdk-8
   services:
-    - mysql:8.0.36
+    - name: mysql:8.0.36
+      alias: $XUXIAOWEI_DATABASE_HOST
+      variables:
+        MYSQL_ROOT_PASSWORD: $XUXIAOWEI_DATABASE_PASSWORD
+        MYSQL_DATABASE: $XUXIAOWEI_DATABASE
   variables:
     MAVEN_OPTS: >-
       -Dhttps.protocols=TLSv1.2
@@ -22,17 +37,16 @@ build:mvn:
       --no-transfer-progress
       -DinstallAtEnd=true
       -DdeployAtEnd=true
-    MYSQL_DATABASE: nacos
-    MYSQL_ROOT_PASSWORD: nacos
-    XUXIAOWEI_NACOS_MYSQL_IP: mysql
-    XUXIAOWEI_NACOS_MYSQL_USERNAME: root
-    XUXIAOWEI_NACOS_MYSQL_DATABASE: nacos
   before_script:
     - if [ $CI_SERVER_HOST == 'gitlab.helm.xuxiaowei.cn' ]; then
       sleep 20s;
       fi
-    - mysql -u root -p${MYSQL_ROOT_PASSWORD} --host=mysql ${MYSQL_DATABASE} < sql/1-nacos-mysql-schema.sql
-    - mysql -u root -p${MYSQL_ROOT_PASSWORD} --host=mysql ${MYSQL_DATABASE} < sql/2-nacos-mysql-data.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/1-nacos-mysql-schema.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/2-nacos-mysql-data.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/3-security-mysql-schema.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/4-security-mysql-data.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/5-oauth-2.1-mysql-schema.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/6-oauth-2.1-mysql-data.sql
   script:
     - mvn -v
     - mvn clean package source:jar javadoc:jar -U -DskipTests=true -s settings.xml
@@ -57,7 +71,11 @@ build:mvnw:
   stage: build
   image: xuxiaoweicomcn/openjdk-mysql-client:8
   services:
-    - mysql:8.0.36
+    - name: mysql:8.0.36
+      alias: $XUXIAOWEI_DATABASE_HOST
+      variables:
+        MYSQL_ROOT_PASSWORD: $XUXIAOWEI_DATABASE_PASSWORD
+        MYSQL_DATABASE: $XUXIAOWEI_DATABASE
   variables:
     MAVEN_OPTS: >-
       -Dhttps.protocols=TLSv1.2
@@ -72,17 +90,16 @@ build:mvnw:
       --no-transfer-progress
       -DinstallAtEnd=true
       -DdeployAtEnd=true
-    MYSQL_DATABASE: nacos
-    MYSQL_ROOT_PASSWORD: nacos
-    XUXIAOWEI_NACOS_MYSQL_IP: mysql
-    XUXIAOWEI_NACOS_MYSQL_USERNAME: root
-    XUXIAOWEI_NACOS_MYSQL_DATABASE: nacos
   before_script:
     - if [ $CI_SERVER_HOST == 'gitlab.helm.xuxiaowei.cn' ]; then
       sleep 20s;
       fi
-    - mysql -u root -p${MYSQL_ROOT_PASSWORD} --host=mysql ${MYSQL_DATABASE} < sql/1-nacos-mysql-schema.sql
-    - mysql -u root -p${MYSQL_ROOT_PASSWORD} --host=mysql ${MYSQL_DATABASE} < sql/2-nacos-mysql-data.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/1-nacos-mysql-schema.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/2-nacos-mysql-data.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/3-security-mysql-schema.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/4-security-mysql-data.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/5-oauth-2.1-mysql-schema.sql
+    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/6-oauth-2.1-mysql-data.sql
   script:
     - chmod +x mvnw
     - ./mvnw -v

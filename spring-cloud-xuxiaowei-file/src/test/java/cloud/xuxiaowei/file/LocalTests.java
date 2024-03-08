@@ -10,6 +10,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -53,7 +54,7 @@ class LocalTests {
 			String path = addResourceLocations.replaceFirst("file:", "");
 
 			String fileName = UUID.randomUUID() + ".txt";
-			String filePath = path + fileName;
+			String filePath = UriComponentsBuilder.newInstance().path(path).path("/").path(fileName).toUriString();
 			String fileUrl = String.format("http://127.0.0.1:%d%s%s?access_token=%s", serverPort,
 					addResourceHandler.replace("**", ""), fileName, accessToken);
 			String fileContext = fileName + "-123";
