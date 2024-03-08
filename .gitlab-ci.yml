@@ -133,3 +133,11 @@ gemnasium-maven-dependency_scanning:
         - pom.xml
         - "**/pom.xml"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $DEPENDENCY_SCANNING == "true"
+
+secret_detection:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $SECRET_DETECTION == "true"
+
+semgrep-sast:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $SEMGREP_SAST == "true"
