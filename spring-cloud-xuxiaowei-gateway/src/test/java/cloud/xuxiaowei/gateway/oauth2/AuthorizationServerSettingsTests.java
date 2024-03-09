@@ -35,19 +35,27 @@ class AuthorizationServerSettingsTests {
 	@Test
 	void localPassport() throws JsonProcessingException {
 
+		// @formatter:off
+		List<String> list = Arrays.asList(
+				String.format("http://127.0.0.1:%d/xuxiaowei-passport/.well-known/oauth-authorization-server", serverPort),
+				String.format("http://127.0.0.1:%d/passport/.well-known/oauth-authorization-server", serverPort));
+		// @formatter:on
+
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Map> entity = restTemplate.getForEntity(
-				String.format("http://127.0.0.1:%d/passport/.well-known/oauth-authorization-server", serverPort),
-				Map.class);
 
-		Assert.isTrue(entity.getStatusCodeValue() == 200, "HTTP 状态码不正常");
+		for (String url : list) {
 
-		Map body = entity.getBody();
+			ResponseEntity<Map> entity = restTemplate.getForEntity(String.format(url), Map.class);
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+			Assert.isTrue(entity.getStatusCodeValue() == 200, "HTTP 状态码不正常");
 
-		log.info("AuthorizationServerSettings:\n{}", objectWriter.writeValueAsString(body));
+			Map body = entity.getBody();
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+
+			log.info("AuthorizationServerSettings:\n{}", objectWriter.writeValueAsString(body));
+		}
 	}
 
 	@Test
