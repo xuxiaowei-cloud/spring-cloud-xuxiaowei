@@ -14,51 +14,77 @@ variables:
   XUXIAOWEI_NACOS_MYSQL_PASSWORD: $XUXIAOWEI_DATABASE_PASSWORD
   XUXIAOWEI_NACOS_MYSQL_DATABASE: spring_cloud_xuxiaowei_nacos
 
+  GLOBAL_MAVEN_OPTS: >-
+    -Dhttps.protocols=TLSv1.2
+    -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+    -Dorg.slf4j.simpleLogger.showDateTime=true
+    -Djava.awt.headless=true
+  GLOBAL_MAVEN_CLI_OPTS: >-
+    --batch-mode
+    --errors
+    --fail-at-end
+    --show-version
+    --no-transfer-progress
+    -DinstallAtEnd=true
+    -DdeployAtEnd=true
+
+.mysql: &mysql
+  - name: mysql:8.0.36
+    alias: $XUXIAOWEI_DATABASE_HOST
+    variables:
+      MYSQL_ROOT_PASSWORD: $XUXIAOWEI_DATABASE_PASSWORD
+      MYSQL_DATABASE: $XUXIAOWEI_DATABASE
+
+.before_script: &before_script
+  - if [ $CI_SERVER_HOST == 'gitlab.helm.xuxiaowei.cn' ]; then
+    sleep 20s;
+    fi
+  - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/1-nacos-mysql-schema.sql
+  - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/2-nacos-mysql-data.sql
+  - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/3-security-mysql-schema.sql
+  - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/4-security-mysql-data.sql
+  - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/5-oauth-2.1-mysql-schema.sql
+  - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/6-oauth-2.1-mysql-data.sql
+
+.mvn: &mvn
+  - mvn -v
+  - mvn clean package source:jar javadoc:jar -U -DskipTests=true -s settings.xml
+  - nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup-nacos.out 2>&1 &
+  - sleep 20s
+  - cat nohup-nacos.out
+  - curl "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=&search=blur" && echo
+  - cat nohup-nacos.out
+  - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup-passport.out 2>&1 &
+  - sleep 15s
+  - cat nohup-passport.out
+  - mvn test -DskipTests=false -s settings.xml
+
+.mvnw: &mvnw
+  - chmod +x mvnw
+  - ./mvnw -v
+  - ./mvnw clean package source:jar javadoc:jar -U -DskipTests=true -s settings.xml
+  - nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup-nacos.out 2>&1 &
+  - sleep 20s
+  - cat nohup-nacos.out
+  - curl "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=&search=blur" && echo
+  - cat nohup-nacos.out
+  - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup-passport.out 2>&1 &
+  - sleep 15s
+  - cat nohup-passport.out
+  - ./mvnw test -DskipTests=false -s settings.xml
+
 build:mvn:
   stage: build
   image: xuxiaoweicomcn/maven-mysql-client:3.6.3-jdk-8
   services:
-    - name: mysql:8.0.36
-      alias: $XUXIAOWEI_DATABASE_HOST
-      variables:
-        MYSQL_ROOT_PASSWORD: $XUXIAOWEI_DATABASE_PASSWORD
-        MYSQL_DATABASE: $XUXIAOWEI_DATABASE
+    - *mysql
   variables:
-    MAVEN_OPTS: >-
-      -Dhttps.protocols=TLSv1.2
-      -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
-      -Dorg.slf4j.simpleLogger.showDateTime=true
-      -Djava.awt.headless=true
-    MAVEN_CLI_OPTS: >-
-      --batch-mode
-      --errors
-      --fail-at-end
-      --show-version
-      --no-transfer-progress
-      -DinstallAtEnd=true
-      -DdeployAtEnd=true
+    MAVEN_OPTS: $GLOBAL_MAVEN_OPTS
+    MAVEN_CLI_OPTS: $GLOBAL_MAVEN_CLI_OPTS
   before_script:
-    - if [ $CI_SERVER_HOST == 'gitlab.helm.xuxiaowei.cn' ]; then
-      sleep 20s;
-      fi
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/1-nacos-mysql-schema.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/2-nacos-mysql-data.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/3-security-mysql-schema.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/4-security-mysql-data.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/5-oauth-2.1-mysql-schema.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/6-oauth-2.1-mysql-data.sql
+    - *before_script
   script:
-    - mvn -v
-    - mvn clean package source:jar javadoc:jar -U -DskipTests=true -s settings.xml
-    - nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup-nacos.out 2>&1 &
-    - sleep 20s
-    - cat nohup-nacos.out
-    - curl "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=&search=blur" && echo
-    - cat nohup-nacos.out
-    - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup-passport.out 2>&1 &
-    - sleep 15s
-    - cat nohup-passport.out
-    - mvn test -DskipTests=false -s settings.xml
+    - *mvn
   cache:
     key: "${CI_JOB_NAME}"
     paths:
@@ -71,48 +97,14 @@ build:mvnw:
   stage: build
   image: xuxiaoweicomcn/openjdk-mysql-client:8
   services:
-    - name: mysql:8.0.36
-      alias: $XUXIAOWEI_DATABASE_HOST
-      variables:
-        MYSQL_ROOT_PASSWORD: $XUXIAOWEI_DATABASE_PASSWORD
-        MYSQL_DATABASE: $XUXIAOWEI_DATABASE
+    - *mysql
   variables:
-    MAVEN_OPTS: >-
-      -Dhttps.protocols=TLSv1.2
-      -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
-      -Dorg.slf4j.simpleLogger.showDateTime=true
-      -Djava.awt.headless=true
-    MAVEN_CLI_OPTS: >-
-      --batch-mode
-      --errors
-      --fail-at-end
-      --show-version
-      --no-transfer-progress
-      -DinstallAtEnd=true
-      -DdeployAtEnd=true
+    MAVEN_OPTS: $GLOBAL_MAVEN_OPTS
+    MAVEN_CLI_OPTS: $GLOBAL_MAVEN_CLI_OPTS
   before_script:
-    - if [ $CI_SERVER_HOST == 'gitlab.helm.xuxiaowei.cn' ]; then
-      sleep 20s;
-      fi
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/1-nacos-mysql-schema.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/2-nacos-mysql-data.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/3-security-mysql-schema.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/4-security-mysql-data.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/5-oauth-2.1-mysql-schema.sql
-    - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/6-oauth-2.1-mysql-data.sql
+    - *before_script
   script:
-    - chmod +x mvnw
-    - ./mvnw -v
-    - ./mvnw clean package source:jar javadoc:jar -U -DskipTests=true -s settings.xml
-    - nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup-nacos.out 2>&1 &
-    - sleep 20s
-    - cat nohup-nacos.out
-    - curl "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=&search=blur" && echo
-    - cat nohup-nacos.out
-    - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup-passport.out 2>&1 &
-    - sleep 15s
-    - cat nohup-passport.out
-    - ./mvnw test -DskipTests=false -s settings.xml
+    - *mvnw
   cache:
     key: "${CI_JOB_NAME}"
     paths:
