@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -123,6 +124,21 @@ public class ControllerAdviceConfig {
 			return Response.error(result);
 		}
 
+	}
+
+	/**
+	 * multipart/form-data 请求 方法参数验证异常 处理
+	 * @param exception multipart/form-data 请求 方法参数验证异常
+	 * @param request 请求
+	 * @param response 相应
+	 * @return 返回 异常消息
+	 */
+	@ResponseBody
+	@ExceptionHandler(MissingServletRequestPartException.class)
+	public Response<?> MissingServletRequestPartException(MissingServletRequestPartException exception,
+			HttpServletRequest request, HttpServletResponse response) {
+		String requestPartName = exception.getRequestPartName();
+		return Response.error(String.format("缺少参数: %s", requestPartName));
 	}
 
 }

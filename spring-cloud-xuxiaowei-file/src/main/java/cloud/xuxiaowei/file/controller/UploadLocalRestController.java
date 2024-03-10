@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,7 +55,8 @@ public class UploadLocalRestController {
 	@Operation(summary = "上传文件(本地储存)", description = "将文件上传至服务器，服务器使用本机硬盘保存文件，并通过网络映射提供访问功能")
 	@PostMapping
 	@ControllerAnnotation("上传文件(本地储存)")
-	public Response<String> post(HttpServletRequest request, HttpServletResponse response, MultipartFile file) {
+	public Response<String> post(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("file") MultipartFile file) {
 
 		String localDomainName = fileProperties.getLocalDomainName();
 		String localUrlPrefix = fileProperties.getLocalUrlPrefix();
