@@ -160,6 +160,8 @@ include:
   - /sync.yml
 
 gemnasium-maven-dependency_scanning:
+  variables:
+    GEMNASIUM_DB_REMOTE_URL: https://jihulab.com/mirrors/security-products/gemnasium-db.git
   rules:
     - changes:
         - pom.xml
