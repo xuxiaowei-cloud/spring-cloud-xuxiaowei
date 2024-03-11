@@ -29,6 +29,7 @@
 
         <springdoc.version>2.3.0</springdoc.version>
         <therapi-runtime-javadoc-scribe.version>0.15.0</therapi-runtime-javadoc-scribe.version>
+        <therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
 
         <unit.version>0.0.3</unit.version>
 
@@ -89,6 +90,11 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.therapi</groupId>
+                <artifactId>therapi-runtime-javadoc</artifactId>
+                <version>${therapi-runtime-javadoc.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
