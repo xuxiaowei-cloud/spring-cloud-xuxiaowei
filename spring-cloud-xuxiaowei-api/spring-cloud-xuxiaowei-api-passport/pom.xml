@@ -15,7 +15,7 @@
     <description>API模块-passport模块</description>
     <inceptionYear>2024</inceptionYear>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
 
