@@ -6,13 +6,13 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Java CI with Maven Spring Boot 2
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "spring-boot-2" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "spring-boot-2" ]
 
 jobs:
   build:

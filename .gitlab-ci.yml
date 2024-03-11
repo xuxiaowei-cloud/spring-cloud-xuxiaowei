@@ -73,7 +73,7 @@ variables:
   - cat nohup-passport.out
   - ./mvnw test -DskipTests=false -s settings.xml
 
-build:mvn:
+build:mvn:spring-boot-2:
   stage: build
   image: xuxiaoweicomcn/maven-mysql-client:3.6.3-jdk-8
   services:
@@ -91,9 +91,9 @@ build:mvn:
       - .m2/repository
   only:
     variables:
-      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - $CI_COMMIT_BRANCH == "spring-boot-2"
 
-build:mvnw:
+build:mvnw:spring-boot-2:
   stage: build
   image: xuxiaoweicomcn/openjdk-mysql-client:8
   services:
@@ -111,7 +111,7 @@ build:mvnw:
       - .m2/repository
   only:
     variables:
-      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $MVNW == "true"
+      - $CI_COMMIT_BRANCH == "spring-boot-2" && $MVNW == "true"
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
