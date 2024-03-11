@@ -1,1 +1,3 @@
+cloud.xuxiaowei.loadbalancer.config.HttpExchangeConfig
+cloud.xuxiaowei.loadbalancer.config.WebClientLoadBalancedConfig
 cloud.xuxiaowei.loadbalancer.config.LoadBalancedConfig
