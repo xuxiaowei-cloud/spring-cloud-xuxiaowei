@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cloud.xuxiaowei</groupId>
+        <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <groupId>cloud.xuxiaowei.api</groupId>
+    <artifactId>spring-cloud-xuxiaowei-api-passport</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>spring-cloud-xuxiaowei-api-passport</name>
+    <description>API模块-passport模块</description>
+    <inceptionYear>2024</inceptionYear>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+    <dependencies>
+
+        <!-- 提供日志功能 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cloud.xuxiaowei.commons</groupId>
+            <artifactId>spring-cloud-xuxiaowei-commons-utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+        <license>
+            <name>996.ICU</name>
+            <url>https://github.com/996icu/996.ICU/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+            <comments>The name 996.ICU refers to "Work by '996', sick in ICU", an ironic saying among Chinese
+                developers, which means that by following the "996" work schedule, you are risking yourself getting into
+                the ICU (Intensive Care Unit).
+            </comments>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>徐晓伟工作室</name>
+        <url>http://xuxiaowei.com.cn</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>徐晓伟</name>
+            <email>xuxiaowei@xuxiaowei.com.cn</email>
+            <organization>徐晓伟工作室</organization>
+            <organizationUrl>http://xuxiaowei.com.cn</organizationUrl>
+        </developer>
+    </developers>
+
+</project>

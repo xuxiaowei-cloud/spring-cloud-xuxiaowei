@@ -137,6 +137,12 @@
                 <artifactId>spring-cloud-xuxiaowei-commons-validation</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>cloud.xuxiaowei.api</groupId>
+                <artifactId>spring-cloud-xuxiaowei-api-passport</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

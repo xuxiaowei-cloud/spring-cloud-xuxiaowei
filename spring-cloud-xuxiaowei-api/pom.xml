@@ -4,36 +4,28 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cloud.xuxiaowei</groupId>
-        <artifactId>spring-cloud-xuxiaowei-dependencies</artifactId>
+        <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>./spring-cloud-xuxiaowei-dependencies/pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>cloud.xuxiaowei</groupId>
-    <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
+    <artifactId>spring-cloud-xuxiaowei-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>spring-cloud-xuxiaowei-parent</name>
-    <description>顶级项目</description>
+    <name>spring-cloud-xuxiaowei-api</name>
+    <description>API模块-顶级项目</description>
     <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <skipTests>true</skipTests>
     </properties>
 
     <modules>
-        <module>nacos</module>
-        <module>spring-cloud-xuxiaowei-admin-server</module>
-        <module>spring-cloud-xuxiaowei-api</module>
-        <module>spring-cloud-xuxiaowei-commons</module>
-        <module>spring-cloud-xuxiaowei-dependencies</module>
-        <module>spring-cloud-xuxiaowei-file</module>
-        <module>spring-cloud-xuxiaowei-gateway</module>
-        <module>spring-cloud-xuxiaowei-passport</module>
+        <module>spring-cloud-xuxiaowei-api-passport</module>
     </modules>
+
+    <dependencies>
+
+    </dependencies>
 
     <licenses>
         <license>
@@ -66,24 +58,5 @@
             <organizationUrl>http://xuxiaowei.com.cn</organizationUrl>
         </developer>
     </developers>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>io.spring.javaformat</groupId>
-                <artifactId>spring-javaformat-maven-plugin</artifactId>
-                <version>${spring-javaformat-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <inherited>true</inherited>
-                        <goals>
-                            <goal>validate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
