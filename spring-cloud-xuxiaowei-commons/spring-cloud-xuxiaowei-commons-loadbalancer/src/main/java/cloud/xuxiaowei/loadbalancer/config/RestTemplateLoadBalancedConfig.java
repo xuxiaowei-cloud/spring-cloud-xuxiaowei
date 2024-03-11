@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
  * @since 0.0.1
  */
 @Configuration
-public class LoadBalancedConfig {
+public class RestTemplateLoadBalancedConfig {
 
 	@Bean
 	@LoadBalanced
