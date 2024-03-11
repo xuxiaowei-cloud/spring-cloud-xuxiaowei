@@ -93,6 +93,26 @@ build:mvn:spring-boot-2:
     variables:
       - $CI_COMMIT_BRANCH == "spring-boot-2"
 
+build:mvn:spring-boot-3:
+  stage: build
+  image: xuxiaoweicomcn/maven-mysql-client:3.6.3-openjdk-17
+  services:
+    - *mysql
+  variables:
+    MAVEN_OPTS: $GLOBAL_MAVEN_OPTS
+    MAVEN_CLI_OPTS: $GLOBAL_MAVEN_CLI_OPTS
+  before_script:
+    - *before_script
+  script:
+    - *mvn
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .m2/repository
+  only:
+    variables:
+      - $CI_COMMIT_BRANCH == "spring-boot-3"
+
 build:mvnw:spring-boot-2:
   stage: build
   image: xuxiaoweicomcn/openjdk-mysql-client:8
@@ -112,6 +132,26 @@ build:mvnw:spring-boot-2:
   only:
     variables:
       - $CI_COMMIT_BRANCH == "spring-boot-2" && $MVNW == "true"
+
+build:mvnw:spring-boot-3:
+  stage: build
+  image: xuxiaoweicomcn/openjdk-mysql-client:17.0-buster
+  services:
+    - *mysql
+  variables:
+    MAVEN_OPTS: $GLOBAL_MAVEN_OPTS
+    MAVEN_CLI_OPTS: $GLOBAL_MAVEN_CLI_OPTS
+  before_script:
+    - *before_script
+  script:
+    - *mvnw
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .m2/repository
+  only:
+    variables:
+      - $CI_COMMIT_BRANCH == "spring-boot-3" && $MVNW == "true"
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml

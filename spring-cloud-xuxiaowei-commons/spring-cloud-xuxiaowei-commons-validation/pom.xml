@@ -15,7 +15,7 @@
     <description>公共模块-验证组件</description>
     <inceptionYear>2024</inceptionYear>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -52,7 +52,7 @@
             <artifactId>spring-context</artifactId>
             <scope>compile</scope>
         </dependency>
-        <!-- 提供 javax.servlet.http 包，仅编译 -->
+        <!-- 提供 jakarta.servlet.http 包，仅编译 -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
@@ -97,5 +97,18 @@
             <organizationUrl>http://xuxiaowei.com.cn</organizationUrl>
         </developer>
     </developers>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

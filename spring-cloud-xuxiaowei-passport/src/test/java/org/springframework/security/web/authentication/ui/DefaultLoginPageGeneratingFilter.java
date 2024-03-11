@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,27 @@
 
 package org.springframework.security.web.authentication.ui;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.util.HtmlUtils;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.WebAttributes;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
-import org.springframework.util.Assert;
-import org.springframework.web.filter.GenericFilterBean;
-import org.springframework.web.util.HtmlUtils;
 
 /**
  * For internal use with namespace configuration in the case where a user doesn't
@@ -63,8 +62,6 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 
 	private boolean formLoginEnabled;
 
-	private boolean openIdEnabled;
-
 	private boolean oauth2LoginEnabled;
 
 	private boolean saml2LoginEnabled;
@@ -77,12 +74,6 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 
 	private String rememberMeParameter;
 
-	private String openIDauthenticationUrl;
-
-	private String openIDusernameParameter;
-
-	private String openIDrememberMeParameter;
-
 	private Map<String, String> oauth2AuthenticationUrlToClientName;
 
 	private Map<String, String> saml2AuthenticationUrlToProviderName;
@@ -92,30 +83,12 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 	public DefaultLoginPageGeneratingFilter() {
 	}
 
-	public DefaultLoginPageGeneratingFilter(AbstractAuthenticationProcessingFilter filter) {
-		if (filter instanceof UsernamePasswordAuthenticationFilter) {
-			init((UsernamePasswordAuthenticationFilter) filter, null);
-		}
-		else {
-			init(null, filter);
-		}
-	}
-
-	public DefaultLoginPageGeneratingFilter(UsernamePasswordAuthenticationFilter authFilter,
-			AbstractAuthenticationProcessingFilter openIDFilter) {
-		init(authFilter, openIDFilter);
-	}
-
-	private void init(UsernamePasswordAuthenticationFilter authFilter,
-			AbstractAuthenticationProcessingFilter openIDFilter) {
+	public DefaultLoginPageGeneratingFilter(UsernamePasswordAuthenticationFilter authFilter) {
 		this.loginPageUrl = DEFAULT_LOGIN_PAGE_URL;
 		this.logoutSuccessUrl = DEFAULT_LOGIN_PAGE_URL + "?logout";
 		this.failureUrl = DEFAULT_LOGIN_PAGE_URL + "?" + ERROR_PARAMETER_NAME;
 		if (authFilter != null) {
 			initAuthFilter(authFilter);
-		}
-		if (openIDFilter != null) {
-			initOpenIdFilter(openIDFilter);
 		}
 	}
 
@@ -123,17 +96,8 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 		this.formLoginEnabled = true;
 		this.usernameParameter = authFilter.getUsernameParameter();
 		this.passwordParameter = authFilter.getPasswordParameter();
-		if (authFilter.getRememberMeServices() instanceof AbstractRememberMeServices) {
-			this.rememberMeParameter = ((AbstractRememberMeServices) authFilter.getRememberMeServices()).getParameter();
-		}
-	}
-
-	private void initOpenIdFilter(AbstractAuthenticationProcessingFilter openIDFilter) {
-		this.openIdEnabled = true;
-		this.openIDusernameParameter = "openid_identifier";
-		if (openIDFilter.getRememberMeServices() instanceof AbstractRememberMeServices) {
-			this.openIDrememberMeParameter = ((AbstractRememberMeServices) openIDFilter.getRememberMeServices())
-				.getParameter();
+		if (authFilter.getRememberMeServices() instanceof AbstractRememberMeServices rememberMeServices) {
+			this.rememberMeParameter = rememberMeServices.getParameter();
 		}
 	}
 
@@ -149,7 +113,7 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 	}
 
 	public boolean isEnabled() {
-		return this.formLoginEnabled || this.openIdEnabled || this.oauth2LoginEnabled || this.saml2LoginEnabled;
+		return this.formLoginEnabled || this.oauth2LoginEnabled || this.saml2LoginEnabled;
 	}
 
 	public void setLogoutSuccessUrl(String logoutSuccessUrl) {
@@ -170,10 +134,6 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 
 	public void setFormLoginEnabled(boolean formLoginEnabled) {
 		this.formLoginEnabled = formLoginEnabled;
-	}
-
-	public void setOpenIdEnabled(boolean openIdEnabled) {
-		this.openIdEnabled = openIdEnabled;
 	}
 
 	public void setOauth2LoginEnabled(boolean oauth2LoginEnabled) {
@@ -198,15 +158,6 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 
 	public void setRememberMeParameter(String rememberMeParameter) {
 		this.rememberMeParameter = rememberMeParameter;
-		this.openIDrememberMeParameter = rememberMeParameter;
-	}
-
-	public void setOpenIDauthenticationUrl(String openIDauthenticationUrl) {
-		this.openIDauthenticationUrl = openIDauthenticationUrl;
-	}
-
-	public void setOpenIDusernameParameter(String openIDusernameParameter) {
-		this.openIDusernameParameter = openIDusernameParameter;
 	}
 
 	public void setOauth2AuthenticationUrlToClientName(Map<String, String> oauth2AuthenticationUrlToClientName) {
@@ -238,15 +189,7 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 	}
 
 	private String generateLoginPageHtml(HttpServletRequest request, boolean loginError, boolean logoutSuccess) {
-		String errorMsg = "Invalid credentials";
-		if (loginError) {
-			HttpSession session = request.getSession(false);
-			if (session != null) {
-				AuthenticationException ex = (AuthenticationException) session
-					.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-				errorMsg = (ex != null) ? ex.getMessage() : "Invalid credentials";
-			}
-		}
+		String errorMsg = loginError ? getLoginErrorMessage(request) : "Invalid credentials";
 		String contextPath = request.getContextPath();
 		StringBuilder sb = new StringBuilder();
 		sb.append("<!DOCTYPE html>\n");
@@ -257,15 +200,10 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 		sb.append("    <meta name=\"description\" content=\"\">\n");
 		sb.append("    <meta name=\"author\" content=\"\">\n");
 		sb.append("    <title>Please sign in</title>\n");
-		// sb.append(" <link
-		// href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css\"
-		// "
-		// + "rel=\"stylesheet\"
-		// integrity=\"sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M\"
-		// crossorigin=\"anonymous\">\n");
-		// sb.append(" <link
-		// href=\"https://getbootstrap.com/docs/4.0/examples/signin/signin.css\" "
-		// + "rel=\"stylesheet\" crossorigin=\"anonymous\"/>\n");
+		sb.append("    <link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css\" "
+				+ "rel=\"stylesheet\" integrity=\"sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M\" crossorigin=\"anonymous\">\n");
+		sb.append("    <link href=\"https://getbootstrap.com/docs/4.0/examples/signin/signin.css\" "
+				+ "rel=\"stylesheet\" integrity=\"sha384-oOE/3m0LUMPub4kaC09mrdEhIc+e3exm4xOGxAmuFXhBNF4hcg/6MiAXAf5p0P56\" crossorigin=\"anonymous\"/>\n");
 		sb.append("  </head>\n");
 		sb.append("  <body>\n");
 		sb.append("     <div class=\"container\">\n");
@@ -284,19 +222,6 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 					+ "\" class=\"form-control\" placeholder=\"Password\" required>\n");
 			sb.append("        </p>\n");
 			sb.append(createRememberMe(this.rememberMeParameter) + renderHiddenInputs(request));
-			sb.append("        <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Sign in</button>\n");
-			sb.append("      </form>\n");
-		}
-		if (this.openIdEnabled) {
-			sb.append("      <form name=\"oidf\" class=\"form-signin\" method=\"post\" action=\"" + contextPath
-					+ this.openIDauthenticationUrl + "\">\n");
-			sb.append("        <h2 class=\"form-signin-heading\">Login with OpenID Identity</h2>\n");
-			sb.append(createError(loginError, errorMsg) + createLogoutSuccess(logoutSuccess) + "        <p>\n");
-			sb.append("          <label for=\"username\" class=\"sr-only\">Identity</label>\n");
-			sb.append("          <input type=\"text\" id=\"username\" name=\"" + this.openIDusernameParameter
-					+ "\" class=\"form-control\" placeholder=\"Username\" required autofocus>\n");
-			sb.append("        </p>\n");
-			sb.append(createRememberMe(this.openIDrememberMeParameter) + renderHiddenInputs(request));
 			sb.append("        <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Sign in</button>\n");
 			sb.append("      </form>\n");
 		}
@@ -339,6 +264,21 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 		return sb.toString();
 	}
 
+	private String getLoginErrorMessage(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			return "Invalid credentials";
+		}
+		if (!(session
+			.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION) instanceof AuthenticationException exception)) {
+			return "Invalid credentials";
+		}
+		if (!StringUtils.hasText(exception.getMessage())) {
+			return "Invalid credentials";
+		}
+		return exception.getMessage();
+	}
+
 	private String renderHiddenInputs(HttpServletRequest request) {
 		StringBuilder sb = new StringBuilder();
 		for (Map.Entry<String, String> input : this.resolveHiddenInputs.apply(request).entrySet()) {
@@ -370,14 +310,14 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 		return matches(request, this.failureUrl);
 	}
 
-	private static String createError(boolean isError, String message) {
+	private String createError(boolean isError, String message) {
 		if (!isError) {
 			return "";
 		}
 		return "<div class=\"alert alert-danger\" role=\"alert\">" + HtmlUtils.htmlEscape(message) + "</div>";
 	}
 
-	private static String createLogoutSuccess(boolean isLogoutSuccess) {
+	private String createLogoutSuccess(boolean isLogoutSuccess) {
 		if (!isLogoutSuccess) {
 			return "";
 		}

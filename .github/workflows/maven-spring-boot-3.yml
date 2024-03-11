@@ -1,0 +1,118 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven Spring Boot 3
+
+on:
+  push:
+    branches: [ "spring-boot-3" ]
+  pull_request:
+    branches: [ "spring-boot-3" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    env:
+      XUXIAOWEI_DATABASE_USERNAME: root
+      XUXIAOWEI_DATABASE_PASSWORD: xuxiaowei.com.cn
+      XUXIAOWEI_DATABASE: spring_cloud_xuxiaowei
+
+      XUXIAOWEI_NACOS_MYSQL_USERNAME: root
+      XUXIAOWEI_NACOS_MYSQL_PASSWORD: xuxiaowei.com.cn
+      XUXIAOWEI_NACOS_MYSQL_DATABASE: spring_cloud_xuxiaowei_nacos
+
+    services:
+      mysql:
+        image: mysql:8.0.36
+        env:
+          MYSQL_DATABASE: ${{ env.XUXIAOWEI_DATABASE }}
+          MYSQL_ROOT_PASSWORD: ${{ env.XUXIAOWEI_DATABASE_PASSWORD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Wait for MySQL
+        run: |
+          sleep 10
+          until docker exec $(docker ps -qf "ancestor=mysql:8.0.36") mysqladmin ping --silent; do
+              echo 'Waiting for MySQL to be available...'
+              sleep 10
+          done
+          sleep 10
+
+      - name: Set ENV
+        shell: sh
+        run: |
+          docker ps
+          XUXIAOWEI_DATABASE_HOST=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -qf 'ancestor=mysql:8.0.36')`
+          echo "XUXIAOWEI_DATABASE_HOST=$XUXIAOWEI_DATABASE_HOST"
+          echo "XUXIAOWEI_DATABASE_HOST=$XUXIAOWEI_DATABASE_HOST" >> $GITHUB_ENV
+          echo "XUXIAOWEI_NACOS_MYSQL_HOST=$XUXIAOWEI_DATABASE_HOST"
+          echo "XUXIAOWEI_NACOS_MYSQL_HOST=$XUXIAOWEI_DATABASE_HOST" >> $GITHUB_ENV
+          echo "XUXIAOWEI_FILE_LOCAL_FILE_PREFIX=$GITHUB_WORKSPACE"
+          echo "XUXIAOWEI_FILE_LOCAL_FILE_PREFIX=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+          echo "XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS=$GITHUB_WORKSPACE"
+          echo "XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+          echo ${{ env.XUXIAOWEI_DATABASE_HOST }}
+          echo ${{ env.XUXIAOWEI_NACOS_MYSQL_HOST }}
+          echo ${{ env.XUXIAOWEI_FILE_LOCAL_FILE_PREFIX }}
+          echo ${{ env.XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS }}
+
+      - name: Get ENV
+        shell: sh
+        run: |
+          echo ${{ env.XUXIAOWEI_DATABASE_HOST }}
+          echo ${{ env.XUXIAOWEI_NACOS_MYSQL_HOST }}
+          echo ${{ env.XUXIAOWEI_FILE_LOCAL_FILE_PREFIX }}
+          echo ${{ env.XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS }}
+
+      - name: Init MySQL
+        run: |
+          mysql --version
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/1-nacos-mysql-schema.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/2-nacos-mysql-data.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/3-security-mysql-schema.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/4-security-mysql-data.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/5-oauth-2.1-mysql-schema.sql
+          mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/6-oauth-2.1-mysql-data.sql
+
+      - name: Java version
+        run: java -version
+
+      - name: Maven version
+        run: mvn -v
+
+      - name: Build
+        run: mvn clean package source:jar javadoc:jar -U -DskipTests=true
+
+      - name: Run Nacos
+        run: |
+          nohup java -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup-nacos.out 2>&1 &
+          sleep 20s
+          cat nohup-nacos.out
+          curl "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=&search=blur" && echo
+          cat nohup-nacos.out
+
+      - name: Run Passport
+        run: |
+          nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup-passport.out 2>&1 &
+          sleep 15s
+          cat nohup-passport.out
+
+      - name: Test
+        run: mvn test -DskipTests=false

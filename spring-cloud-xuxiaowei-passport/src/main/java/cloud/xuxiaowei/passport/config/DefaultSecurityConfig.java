@@ -18,8 +18,8 @@ package cloud.xuxiaowei.passport.config;
 import cloud.xuxiaowei.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
@@ -37,7 +37,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
  * @author xuxiaowei
  * @since 0.1.0
  */
-@EnableWebSecurity
+@Configuration
 public class DefaultSecurityConfig {
 
 	private SecurityProperties securityProperties;
@@ -56,23 +56,28 @@ public class DefaultSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests(authorizeRequests -> authorizeRequests
-			// 端点：允许所有人访问
-			.regexMatchers("^/actuator(/.*)?$")
-			.permitAll()
-			// API 文档：允许所有人访问
-			.regexMatchers("^/(swagger-ui|v3/api-docs)(/.*)?$")
-			.permitAll()
-			// 其他地址：需要授权访问
-			.anyRequest()
-			.authenticated()).formLogin(withDefaults());
 
-		http.oauth2ResourceServer().jwt(oauth2ResourceServer -> {
-			RSAPublicKey rsaPublicKey = securityProperties.rsaPublicKey();
-			NimbusJwtDecoder.PublicKeyJwtDecoderBuilder publicKeyJwtDecoderBuilder = NimbusJwtDecoder
-				.withPublicKey(rsaPublicKey);
-			NimbusJwtDecoder nimbusJwtDecoder = publicKeyJwtDecoderBuilder.build();
-			oauth2ResourceServer.decoder(nimbusJwtDecoder);
+		http.authorizeHttpRequests(authorizeRequestsCustomizer -> {
+			authorizeRequestsCustomizer
+				// 端点：允许所有人访问
+				.requestMatchers("/actuator/**")
+				.permitAll()
+				// API 文档：允许所有人访问
+				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
+				.permitAll()
+				// 其他地址：需要授权访问
+				.anyRequest()
+				.authenticated();
+		}).formLogin(withDefaults());
+
+		http.oauth2ResourceServer(oauth2ResourceServerCustomizer -> {
+			oauth2ResourceServerCustomizer.jwt(oauth2ResourceServer -> {
+				RSAPublicKey rsaPublicKey = securityProperties.rsaPublicKey();
+				NimbusJwtDecoder.PublicKeyJwtDecoderBuilder publicKeyJwtDecoderBuilder = NimbusJwtDecoder
+					.withPublicKey(rsaPublicKey);
+				NimbusJwtDecoder nimbusJwtDecoder = publicKeyJwtDecoderBuilder.build();
+				oauth2ResourceServer.decoder(nimbusJwtDecoder);
+			});
 		});
 
 		return http.build();

@@ -2,7 +2,7 @@ package cloud.xuxiaowei.file.config;
 
 import cloud.xuxiaowei.file.properties.FileProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.SwaggerUiConfigParameters;
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.webmvc.ui.SwaggerIndexTransformer;
 import org.springdoc.webmvc.ui.SwaggerResourceResolver;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springdoc.core.Constants.*;
+import static org.springdoc.core.utils.Constants.*;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**

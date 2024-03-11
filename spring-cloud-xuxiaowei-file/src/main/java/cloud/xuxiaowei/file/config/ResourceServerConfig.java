@@ -36,23 +36,27 @@ public class ResourceServerConfig {
 	@Bean
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests(authorizeRequests -> authorizeRequests
-			// 端点：允许所有人访问
-			.regexMatchers("^/actuator(/.*)?$")
-			.permitAll()
-			// API 文档：允许所有人访问
-			.regexMatchers("^/(swagger-ui|v3/api-docs)(/.*)?$")
-			.permitAll()
-			// 其他地址：需要授权访问
-			.anyRequest()
-			.authenticated());
+		http.authorizeHttpRequests(authorizeRequestsCustomizer -> {
+			authorizeRequestsCustomizer
+				// 端点：允许所有人访问
+				.requestMatchers("/actuator/**")
+				.permitAll()
+				// API 文档：允许所有人访问
+				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
+				.permitAll()
+				// 其他地址：需要授权访问
+				.anyRequest()
+				.authenticated();
+		});
 
-		http.oauth2ResourceServer().jwt(oauth2ResourceServer -> {
-			RSAPublicKey rsaPublicKey = securityProperties.rsaPublicKey();
-			NimbusJwtDecoder.PublicKeyJwtDecoderBuilder publicKeyJwtDecoderBuilder = NimbusJwtDecoder
-				.withPublicKey(rsaPublicKey);
-			NimbusJwtDecoder nimbusJwtDecoder = publicKeyJwtDecoderBuilder.build();
-			oauth2ResourceServer.decoder(nimbusJwtDecoder);
+		http.oauth2ResourceServer(oauth2ResourceServerCustomizer -> {
+			oauth2ResourceServerCustomizer.jwt(oauth2ResourceServer -> {
+				RSAPublicKey rsaPublicKey = securityProperties.rsaPublicKey();
+				NimbusJwtDecoder.PublicKeyJwtDecoderBuilder publicKeyJwtDecoderBuilder = NimbusJwtDecoder
+					.withPublicKey(rsaPublicKey);
+				NimbusJwtDecoder nimbusJwtDecoder = publicKeyJwtDecoderBuilder.build();
+				oauth2ResourceServer.decoder(nimbusJwtDecoder);
+			});
 		});
 
 		return http.build();
