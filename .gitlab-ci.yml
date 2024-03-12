@@ -123,9 +123,6 @@ gemnasium-maven-dependency_scanning:
   variables:
     GEMNASIUM_DB_REMOTE_URL: https://jihulab.com/mirrors/security-products/gemnasium-db.git
   rules:
-    - changes:
-        - pom.xml
-        - "**/pom.xml"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $DEPENDENCY_SCANNING == "true"
 
 secret_detection:
