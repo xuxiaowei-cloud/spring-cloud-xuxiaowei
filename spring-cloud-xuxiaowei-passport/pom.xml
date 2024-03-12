@@ -58,6 +58,11 @@
         </dependency>
 
         <dependency>
+            <groupId>cloud.xuxiaowei.api</groupId>
+            <artifactId>spring-cloud-xuxiaowei-api-passport</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
