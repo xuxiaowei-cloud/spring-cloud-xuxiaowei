@@ -56,16 +56,18 @@ public class DefaultSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+
+		// @formatter:off
 		http.authorizeRequests(authorizeRequests -> authorizeRequests
+			// 静态资源：允许所有人访问
+			.regexMatchers("/favicon.ico").permitAll()
 			// 端点：允许所有人访问
-			.regexMatchers("^/actuator(/.*)?$")
-			.permitAll()
+			.regexMatchers("^/actuator(/.*)?$").permitAll()
 			// API 文档：允许所有人访问
-			.regexMatchers("^/(swagger-ui|v3/api-docs)(/.*)?$")
-			.permitAll()
+			.regexMatchers("^/(swagger-ui|v3/api-docs)(/.*)?$").permitAll()
 			// 其他地址：需要授权访问
-			.anyRequest()
-			.authenticated()).formLogin(withDefaults());
+			.anyRequest().authenticated()).formLogin(withDefaults());
+		// @formatter:on
 
 		http.oauth2ResourceServer().jwt(oauth2ResourceServer -> {
 			RSAPublicKey rsaPublicKey = securityProperties.rsaPublicKey();
