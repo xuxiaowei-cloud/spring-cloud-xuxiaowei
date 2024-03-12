@@ -31,6 +31,10 @@
             <groupId>cloud.xuxiaowei.commons</groupId>
             <artifactId>spring-cloud-xuxiaowei-commons-loadbalancer</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cloud.xuxiaowei.commons</groupId>
+            <artifactId>spring-cloud-xuxiaowei-commons-utils</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>de.codecentric</groupId>

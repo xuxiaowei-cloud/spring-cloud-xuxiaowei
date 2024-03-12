@@ -18,6 +18,11 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
+        <!-- 提供日志功能 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

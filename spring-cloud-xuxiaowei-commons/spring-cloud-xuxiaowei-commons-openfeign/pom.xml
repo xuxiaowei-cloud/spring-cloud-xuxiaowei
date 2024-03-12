@@ -9,15 +9,20 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>cloud.xuxiaowei.commons</groupId>
-    <artifactId>spring-cloud-xuxiaowei-commons-core</artifactId>
+    <artifactId>spring-cloud-xuxiaowei-commons-openfeign</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-cloud-xuxiaowei-commons-core</name>
-    <description>公共模块-核心模块</description>
+    <name>spring-cloud-xuxiaowei-commons-openfeign</name>
+    <description>公共模块-openfeign模块</description>
     <inceptionYear>2024</inceptionYear>
     <properties>
-        <java.version>17</java.version>
+        <java.version>1.8</java.version>
     </properties>
     <dependencies>
+        <!-- 提供日志功能 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>cloud.xuxiaowei.commons</groupId>
@@ -25,14 +30,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <!-- 提供 javax.servlet.http 包，仅编译 -->
@@ -43,15 +42,10 @@
         </dependency>
 
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -90,18 +84,5 @@
             <organizationUrl>http://xuxiaowei.com.cn</organizationUrl>
         </developer>
     </developers>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

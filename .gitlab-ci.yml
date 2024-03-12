@@ -57,6 +57,9 @@ variables:
   - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup-passport.out 2>&1 &
   - sleep 15s
   - cat nohup-passport.out
+  - nohup java -jar spring-cloud-xuxiaowei-file/target/spring-cloud-xuxiaowei-file-0.0.1-SNAPSHOT.jar > nohup-file.out 2>&1 &
+  - sleep 15s
+  - cat nohup-file.out
   - mvn test -DskipTests=false -s settings.xml
 
 .mvnw: &mvnw
@@ -71,6 +74,9 @@ variables:
   - nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup-passport.out 2>&1 &
   - sleep 15s
   - cat nohup-passport.out
+  - nohup java -jar spring-cloud-xuxiaowei-file/target/spring-cloud-xuxiaowei-file-0.0.1-SNAPSHOT.jar > nohup-file.out 2>&1 &
+  - sleep 15s
+  - cat nohup-file.out
   - ./mvnw test -DskipTests=false -s settings.xml
 
 build:mvn:spring-boot-2:

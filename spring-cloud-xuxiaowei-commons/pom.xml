@@ -23,6 +23,7 @@
         <module>spring-cloud-xuxiaowei-commons-aop</module>
         <module>spring-cloud-xuxiaowei-commons-core</module>
         <module>spring-cloud-xuxiaowei-commons-loadbalancer</module>
+        <module>spring-cloud-xuxiaowei-commons-openfeign</module>
         <module>spring-cloud-xuxiaowei-commons-utils</module>
         <module>spring-cloud-xuxiaowei-commons-validation</module>
     </modules>

@@ -1,9 +1,15 @@
 package cloud.xuxiaowei.utils;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.slf4j.MDC;
 
 import java.io.Serializable;
+import java.util.UUID;
+
+import static cloud.xuxiaowei.utils.constant.LogConstant.C_REQUEST_ID;
 
 /**
  * 响应数据父类
@@ -36,35 +42,51 @@ public class Response<T> implements Serializable {
 	private String message;
 
 	/**
+	 * 请求 ID
+	 */
+	@Setter(AccessLevel.PRIVATE)
+	private String requestId;
+
+	/**
 	 * 响应数据
 	 */
 	private T data;
 
 	public Response() {
+		this.requestId = requestId();
 	}
 
 	public Response(T data) {
+		this.requestId = requestId();
 		this.data = data;
 	}
 
 	public static <T> Response<T> ok() {
-		return new Response<T>().setSuccess(true);
+		return new Response<T>().setSuccess(true).setRequestId(requestId());
 	}
 
 	public static <T> Response<T> ok(String message) {
-		return new Response<T>().setSuccess(true).setMessage(message);
+		return new Response<T>().setSuccess(true).setMessage(message).setRequestId(requestId());
 	}
 
 	public static <T> Response<T> error() {
-		return new Response<T>().setCode("500").setMessage("系统异常");
+		return new Response<T>().setCode("500").setMessage("系统异常").setRequestId(requestId());
 	}
 
 	public static <T> Response<T> error(String message) {
-		return new Response<T>().setMessage(message);
+		return new Response<T>().setMessage(message).setRequestId(requestId());
 	}
 
 	public static <T> Response<T> error(String code, String message) {
-		return new Response<T>().setCode(code).setMessage(message);
+		return new Response<T>().setCode(code).setMessage(message).setRequestId(requestId());
+	}
+
+	private static String requestId() {
+		String id = MDC.get(C_REQUEST_ID);
+		if (id == null || id.isEmpty()) {
+			id = UUID.randomUUID().toString();
+		}
+		return id;
 	}
 
 }

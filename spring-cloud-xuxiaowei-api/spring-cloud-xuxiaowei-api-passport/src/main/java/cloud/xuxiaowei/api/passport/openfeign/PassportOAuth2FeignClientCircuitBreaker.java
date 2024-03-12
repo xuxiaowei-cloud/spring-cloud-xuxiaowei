@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.api.passport.openfeign;
 
+import cloud.xuxiaowei.utils.Response;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,21 @@ public class PassportOAuth2FeignClientCircuitBreaker {
 		return passportOAuth2FeignClient.oauthAuthorizationServer();
 	}
 
+	@CircuitBreaker(name = "#root.methodName", fallbackMethod = "indexFallbackMethod")
+	public Response<?> index() {
+		return passportOAuth2FeignClient.index();
+	}
+
 	public Map<String, Object> oauthAuthorizationServerFallbackMethod(Throwable throwable) {
 		log.error("请求异常：", throwable);
 		Map<String, Object> map = new HashMap<>();
 		map.put("msg", String.format("请求异常：%s", throwable));
 		return map;
+	}
+
+	public Response<?> indexFallbackMethod(Throwable throwable) {
+		log.error("请求异常：", throwable);
+		return Response.error(String.format("请求异常：%s", throwable));
 	}
 
 }
