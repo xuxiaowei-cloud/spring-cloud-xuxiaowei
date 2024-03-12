@@ -113,6 +113,7 @@
     - [Gitee](https://gitee.com/xuxiaowei-io/nacos)
     - [github](https://github.com/xuxiaowei-io/nacos)
     - [pipelines](https://framagit.org/xuxiaowei-io/nacos/-/pipelines)
+- [编译工具](https://gitee.com/xuxiaowei-com-cn/maven-dependencies)
 
 ### OAuth 2.1
 
