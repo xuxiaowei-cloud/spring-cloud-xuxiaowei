@@ -57,18 +57,17 @@ public class DefaultSecurityConfig {
 	@Bean
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-		http.authorizeHttpRequests(authorizeRequestsCustomizer -> {
-			authorizeRequestsCustomizer
-				// 端点：允许所有人访问
-				.requestMatchers("/actuator/**")
-				.permitAll()
-				// API 文档：允许所有人访问
-				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
-				.permitAll()
-				// 其他地址：需要授权访问
-				.anyRequest()
-				.authenticated();
-		}).formLogin(withDefaults());
+		// @formatter:off
+		http.authorizeHttpRequests(authorizeRequestsCustomizer -> authorizeRequestsCustomizer
+			// 静态资源：允许所有人访问
+			.requestMatchers("/favicon.ico").permitAll()
+			// 端点：允许所有人访问
+			.requestMatchers("/actuator/**").permitAll()
+			// API 文档：允许所有人访问
+			.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+			// 其他地址：需要授权访问
+			.anyRequest().authenticated()).formLogin(withDefaults());
+		// @formatter:on
 
 		http.oauth2ResourceServer(oauth2ResourceServerCustomizer -> {
 			oauth2ResourceServerCustomizer.jwt(oauth2ResourceServer -> {
