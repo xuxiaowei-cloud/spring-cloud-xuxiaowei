@@ -125,6 +125,14 @@
 - [oauth2-authorization-consent-schema.sql](https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/resources/org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql)
 - [oauth2-authorization-schema.sql](https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/resources/org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql)
 
+### Spring
+
+#### HttpExchange
+
+- https://docs.spring.io/spring-framework/reference/web/webflux/controller/ann-requestmapping.html#webflux-ann-httpexchange-annotation
+- https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html#mvc-ann-httpexchange-annotation
+- https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-http-interface
+
 ### Springdoc (API)
 
 - [Spring Boot 2.x](https://springdoc.org/v1)
