@@ -94,6 +94,9 @@ jobs:
       - name: Java version
         run: java -version
 
+      - name: Free
+        run: free -h
+
       - name: Maven version
         run: mvn -v
 
@@ -120,5 +123,11 @@ jobs:
           sleep 15s
           cat nohup-file.out
 
+      - name: Free
+        run: free -h
+
       - name: Test
         run: mvn test -DskipTests=false
+
+      - name: Free
+        run: free -h
