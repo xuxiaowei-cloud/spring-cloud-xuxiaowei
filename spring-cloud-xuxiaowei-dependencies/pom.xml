@@ -8,7 +8,7 @@
         <version>3.2.3</version>
         <relativePath/>
     </parent>
-    <groupId>cloud.xuxiaowei</groupId>
+    <groupId>cloud.xuxiaowei.next</groupId>
     <artifactId>spring-cloud-xuxiaowei-dependencies</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -117,38 +117,38 @@
             </dependency>
 
             <dependency>
-                <groupId>cloud.xuxiaowei.commons</groupId>
+                <groupId>cloud.xuxiaowei.next.commons</groupId>
                 <artifactId>spring-cloud-xuxiaowei-commons-aop</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>cloud.xuxiaowei.commons</groupId>
+                <groupId>cloud.xuxiaowei.next.commons</groupId>
                 <artifactId>spring-cloud-xuxiaowei-commons-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>cloud.xuxiaowei.commons</groupId>
+                <groupId>cloud.xuxiaowei.next.commons</groupId>
                 <artifactId>spring-cloud-xuxiaowei-commons-loadbalancer</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>cloud.xuxiaowei.commons</groupId>
+                <groupId>cloud.xuxiaowei.next.commons</groupId>
                 <artifactId>spring-cloud-xuxiaowei-commons-openfeign</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>cloud.xuxiaowei.commons</groupId>
+                <groupId>cloud.xuxiaowei.next.commons</groupId>
                 <artifactId>spring-cloud-xuxiaowei-commons-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>cloud.xuxiaowei.commons</groupId>
+                <groupId>cloud.xuxiaowei.next.commons</groupId>
                 <artifactId>spring-cloud-xuxiaowei-commons-validation</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>cloud.xuxiaowei.api</groupId>
+                <groupId>cloud.xuxiaowei.next.api</groupId>
                 <artifactId>spring-cloud-xuxiaowei-api-passport</artifactId>
                 <version>${project.version}</version>
             </dependency>
