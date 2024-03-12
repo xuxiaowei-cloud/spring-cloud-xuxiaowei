@@ -9,7 +9,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static cloud.xuxiaowei.utils.constant.LogConstant.*;
+import static cloud.xuxiaowei.utils.constant.LogConstant.C_REQUEST_ID;
 
 /**
  * 请求 ID 拦截器
@@ -30,8 +30,6 @@ public class RequestIdRequestInterceptor implements RequestInterceptor {
 		HttpServletRequest request = servletRequestAttributes.getRequest();
 
 		template.header(C_REQUEST_ID, request.getHeader(C_REQUEST_ID));
-		template.header(C_HOST_NAME, request.getHeader(C_HOST_NAME));
-		template.header(C_HOST_ADDRESS, request.getHeader(C_HOST_ADDRESS));
 	}
 
 }
