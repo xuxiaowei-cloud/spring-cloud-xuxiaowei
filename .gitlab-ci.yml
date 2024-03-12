@@ -47,7 +47,6 @@ variables:
   - mysql -u ${XUXIAOWEI_DATABASE_USERNAME} -p${XUXIAOWEI_DATABASE_PASSWORD} --host=${XUXIAOWEI_DATABASE_HOST} ${XUXIAOWEI_DATABASE} < sql/6-oauth-2.1-mysql-data.sql
 
 .mvn: &mvn
-  - free -h
   - mvn -v
   - mvn clean package source:jar javadoc:jar -U -DskipTests=true -s settings.xml
   - nohup java -Xms128m -Xmx256m -jar nacos/target/nacos-0.0.1-SNAPSHOT.jar > nohup-nacos.out 2>&1 &
@@ -61,12 +60,9 @@ variables:
   - nohup java -Xms128m -Xmx256m -jar spring-cloud-xuxiaowei-file/target/spring-cloud-xuxiaowei-file-0.0.1-SNAPSHOT.jar > nohup-file.out 2>&1 &
   - sleep 15s
   - cat nohup-file.out
-  - free -h
   - mvn test -DskipTests=false -s settings.xml
-  - free -h
 
 .mvnw: &mvnw
-  - free -h
   - chmod +x mvnw
   - ./mvnw -v
   - ./mvnw clean package source:jar javadoc:jar -U -DskipTests=true -s settings.xml
@@ -81,9 +77,7 @@ variables:
   - nohup java -Xms128m -Xmx256m -jar spring-cloud-xuxiaowei-file/target/spring-cloud-xuxiaowei-file-0.0.1-SNAPSHOT.jar > nohup-file.out 2>&1 &
   - sleep 15s
   - cat nohup-file.out
-  - free -h
   - ./mvnw test -DskipTests=false -s settings.xml
-  - free -h
 
 build:mvn:spring-boot-2:
   stage: build
