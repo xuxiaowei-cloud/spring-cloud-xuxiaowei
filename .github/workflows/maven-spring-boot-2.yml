@@ -114,5 +114,11 @@ jobs:
           sleep 15s
           cat nohup-passport.out
 
+      - name: Run File
+        run: |
+          nohup java -jar spring-cloud-xuxiaowei-file/target/spring-cloud-xuxiaowei-file-0.0.1-SNAPSHOT.jar > nohup-file.out 2>&1 &
+          sleep 15s
+          cat nohup-file.out
+
       - name: Test
         run: mvn test -DskipTests=false
