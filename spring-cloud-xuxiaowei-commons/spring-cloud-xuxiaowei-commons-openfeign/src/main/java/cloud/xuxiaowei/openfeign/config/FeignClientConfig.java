@@ -1,4 +1,4 @@
-package cloud.xuxiaowei.api.passport.config;
+package cloud.xuxiaowei.openfeign.config;
 
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 0.0.1
  */
 @Configuration
-@EnableFeignClients("cloud.xuxiaowei.api.passport.openfeign")
-public class PassportFeignClientConfig {
+@EnableFeignClients({ "cloud.xuxiaowei.api.passport.openfeign" })
+public class FeignClientConfig {
 
 }

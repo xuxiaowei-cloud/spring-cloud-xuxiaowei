@@ -1,2 +1,1 @@
-cloud.xuxiaowei.api.passport.config.PassportFeignClientConfig
 cloud.xuxiaowei.api.passport.openfeign.PassportOAuth2FeignClientCircuitBreaker
