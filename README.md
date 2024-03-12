@@ -36,7 +36,7 @@
 
 ### OAuth 2.1
 
-- 基于 OAuth 2.1 的 0.4.5 标签默认示例配置
+- 基于 OAuth 2.1 的 1.2.2 标签默认示例配置
     - 其中 `bWVzc2FnaW5nLWNsaWVudDpzZWNyZXQ=` 是 `客户ID:客户秘钥` `messaging-client:secret` 计算 base64 得到的
 
 | 名称              | 值                                                                                                                                                                                                                                                                                                  | 自动化测试                                                                                                                                   |
@@ -116,10 +116,10 @@
 
 ### OAuth 2.1
 
-- [AuthorizationServerConfig](https://github.com/spring-projects/spring-authorization-server/blob/0.4.5/samples/default-authorizationserver/src/main/java/sample/config/AuthorizationServerConfig.java)
-- [DefaultSecurityConfig](https://github.com/spring-projects/spring-authorization-server/blob/0.4.5/samples/default-authorizationserver/src/main/java/sample/config/DefaultSecurityConfig.java)
-- [Jwks](https://github.com/spring-projects/spring-authorization-server/blob/0.4.5/samples/default-authorizationserver/src/main/java/sample/jose/Jwks.java)
-- [KeyGeneratorUtils](https://github.com/spring-projects/spring-authorization-server/blob/0.4.5/samples/default-authorizationserver/src/main/java/sample/jose/KeyGeneratorUtils.java)
+- [AuthorizationServerConfig](https://github.com/spring-projects/spring-authorization-server/blob/1.2.2/samples/demo-authorizationserver/src/main/java/sample/config/AuthorizationServerConfig.java)
+- [DefaultSecurityConfig](https://github.com/spring-projects/spring-authorization-server/blob/1.2.2/samples/demo-authorizationserver/src/main/java/sample/config/DefaultSecurityConfig.java)
+- [Jwks](https://github.com/spring-projects/spring-authorization-server/blob/1.2.2/samples/demo-authorizationserver/src/main/java/sample/jose/Jwks.java)
+- [KeyGeneratorUtils](https://github.com/spring-projects/spring-authorization-server/blob/1.2.2/samples/demo-authorizationserver/src/main/java/sample/jose/KeyGeneratorUtils.java)
 - [users.ddl](https://github.com/spring-projects/spring-security/blob/main/core/src/main/resources/org/springframework/security/core/userdetails/jdbc/users.ddl)
 - [oauth2-registered-client-schema.sql](https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/resources/org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql)
 - [oauth2-authorization-consent-schema.sql](https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/resources/org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql)
