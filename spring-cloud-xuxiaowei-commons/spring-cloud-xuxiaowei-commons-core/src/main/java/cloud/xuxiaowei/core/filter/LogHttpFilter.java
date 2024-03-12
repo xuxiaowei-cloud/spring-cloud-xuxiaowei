@@ -55,8 +55,6 @@ public class LogHttpFilter extends HttpFilter implements Ordered {
 
 		log.debug("URI: {}, {}: {}, {}: {}", uri, C_REMOTE_HOST, remoteHost, C_REMOTE_ADDR, remoteAddr);
 
-		MDC.put(C_REMOTE_HOST, remoteHost);
-
 		super.doFilter(request, response, chain);
 	}
 
