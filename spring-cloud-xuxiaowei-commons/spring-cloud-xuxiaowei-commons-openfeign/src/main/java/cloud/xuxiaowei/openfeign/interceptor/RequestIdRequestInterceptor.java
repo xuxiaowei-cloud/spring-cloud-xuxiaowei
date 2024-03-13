@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.openfeign.interceptor;
 
+import cloud.xuxiaowei.utils.constant.LogConstants;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import static cloud.xuxiaowei.utils.constant.LogConstant.C_REQUEST_ID;
 
 /**
  * 请求 ID 拦截器
@@ -28,7 +27,7 @@ public class RequestIdRequestInterceptor implements RequestInterceptor {
 		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
 		HttpServletRequest request = servletRequestAttributes.getRequest();
 
-		template.header(C_REQUEST_ID, request.getHeader(C_REQUEST_ID));
+		template.header(LogConstants.C_REQUEST_ID, request.getHeader(LogConstants.C_REQUEST_ID));
 	}
 
 }

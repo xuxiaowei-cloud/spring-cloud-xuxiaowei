@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.gateway.filter;
 
+import cloud.xuxiaowei.utils.constant.LogConstants;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -14,8 +15,6 @@ import reactor.core.publisher.Mono;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.function.Consumer;
-
-import static cloud.xuxiaowei.utils.constant.LogConstant.*;
 
 /**
  * 请求头 过滤器
@@ -50,9 +49,9 @@ public class RequestHeaderGlobalFilter implements GlobalFilter, Ordered {
 		String hostAddress = address.getHostAddress();
 
 		Consumer<HttpHeaders> httpHeaders = httpHeader -> {
-			httpHeader.set(C_REQUEST_ID, id);
-			httpHeader.set(C_HOST_NAME, hostName);
-			httpHeader.set(C_HOST_ADDRESS, hostAddress);
+			httpHeader.set(LogConstants.C_REQUEST_ID, id);
+			httpHeader.set(LogConstants.C_HOST_NAME, hostName);
+			httpHeader.set(LogConstants.C_HOST_ADDRESS, hostAddress);
 			httpHeader.set(HttpHeaders.AUTHORIZATION, authorization);
 		};
 

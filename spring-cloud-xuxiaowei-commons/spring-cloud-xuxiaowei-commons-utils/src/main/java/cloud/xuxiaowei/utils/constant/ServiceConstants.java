@@ -6,7 +6,7 @@ package cloud.xuxiaowei.utils.constant;
  * @author xuxiaowei
  * @since 0.0.1
  */
-public class ServiceConstant {
+public class ServiceConstants {
 
 	/**
 	 * 登录授权服务

@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.core.filter;
 
+import cloud.xuxiaowei.utils.constant.LogConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-
-import static cloud.xuxiaowei.utils.constant.LogConstant.*;
 
 /**
  * 日志 过滤器
@@ -45,15 +44,16 @@ public class LogHttpFilter extends HttpFilter implements Ordered {
 		String remoteHost = request.getRemoteHost();
 		String remoteAddr = request.getRemoteAddr();
 
-		String id = request.getHeader(C_REQUEST_ID);
+		String id = request.getHeader(LogConstants.C_REQUEST_ID);
 		if (!StringUtils.hasText(id)) {
 			id = RandomStringUtils.randomAlphanumeric(8);
 		}
 
-		MDC.put(C_REQUEST_ID, id);
-		MDC.put(C_IP, remoteHost);
+		MDC.put(LogConstants.C_REQUEST_ID, id);
+		MDC.put(LogConstants.C_IP, remoteHost);
 
-		log.debug("URI: {}, {}: {}, {}: {}", uri, C_REMOTE_HOST, remoteHost, C_REMOTE_ADDR, remoteAddr);
+		log.debug("URI: {}, {}: {}, {}: {}", uri, LogConstants.C_REMOTE_HOST, remoteHost, LogConstants.C_REMOTE_ADDR,
+				remoteAddr);
 
 		super.doFilter(request, response, chain);
 	}

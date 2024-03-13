@@ -1,6 +1,7 @@
 package cloud.xuxiaowei.gateway.filter;
 
 import cloud.xuxiaowei.utils.Response;
+import cloud.xuxiaowei.utils.constant.LogConstants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import static cloud.xuxiaowei.gateway.SpringCloudXuxiaoweiGatewayApplicationTests.clientCredentialsAccessToken;
-import static cloud.xuxiaowei.utils.constant.LogConstant.C_REQUEST_ID;
 
 /**
  * 测试网关 请求头 过滤器
@@ -72,7 +72,7 @@ class RequestHeaderGlobalFilterTests {
 		String requestId = body.getRequestId();
 		assert requestId != null;
 
-		String header = headers.getFirst(C_REQUEST_ID);
+		String header = headers.getFirst(LogConstants.C_REQUEST_ID);
 		assert header != null;
 
 		Assert.isTrue(header.equals(requestId), "请求 ID 传递异常");
