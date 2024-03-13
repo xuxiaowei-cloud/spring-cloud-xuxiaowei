@@ -27,7 +27,7 @@
         <guava.version>33.0.0-jre</guava.version>
         <p6spy.version>3.9.1</p6spy.version>
 
-        <springdoc.version>1.7.0</springdoc.version>
+        <springdoc.version>1.8.0</springdoc.version>
         <therapi-runtime-javadoc-scribe.version>0.15.0</therapi-runtime-javadoc-scribe.version>
 
         <unit.version>0.0.3</unit.version>
