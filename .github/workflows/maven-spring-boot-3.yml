@@ -19,6 +19,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        java-version: [ 17, 21 ]
+
     env:
       XUXIAOWEI_DATABASE_USERNAME: root
       XUXIAOWEI_DATABASE_PASSWORD: xuxiaowei.com.cn
@@ -39,10 +43,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK 17
+      - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
           cache: maven
 
