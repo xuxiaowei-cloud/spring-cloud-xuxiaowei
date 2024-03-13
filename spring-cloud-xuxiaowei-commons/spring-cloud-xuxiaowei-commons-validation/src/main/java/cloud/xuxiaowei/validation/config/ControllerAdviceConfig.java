@@ -135,7 +135,7 @@ public class ControllerAdviceConfig {
 	 */
 	@ResponseBody
 	@ExceptionHandler(MissingServletRequestPartException.class)
-	public Response<?> MissingServletRequestPartException(MissingServletRequestPartException exception,
+	public Response<?> missingServletRequestPartException(MissingServletRequestPartException exception,
 			HttpServletRequest request, HttpServletResponse response) {
 		String requestPartName = exception.getRequestPartName();
 		return Response.error(String.format("缺少参数: %s", requestPartName));
