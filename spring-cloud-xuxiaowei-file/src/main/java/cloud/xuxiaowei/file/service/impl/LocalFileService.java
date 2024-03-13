@@ -1,6 +1,7 @@
 package cloud.xuxiaowei.file.service.impl;
 
 import cloud.xuxiaowei.file.service.FileService;
+import cloud.xuxiaowei.utils.FileUtils;
 import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
 import cn.com.xuxiaowei.utils.unit.DataSize;
 import jakarta.servlet.http.HttpServletRequest;
@@ -80,6 +81,9 @@ public class LocalFileService implements FileService {
 
 		log.info("上传文件路径: {}", filePath);
 
+		FileUtils.checkFileName(fileName);
+		FileUtils.checkPath(parent);
+
 		File folder = new File(parent);
 
 		if (!folder.exists()) {
@@ -88,6 +92,7 @@ public class LocalFileService implements FileService {
 		}
 
 		Path target = Paths.get(parent, fileName);
+
 		try {
 			Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 		}
