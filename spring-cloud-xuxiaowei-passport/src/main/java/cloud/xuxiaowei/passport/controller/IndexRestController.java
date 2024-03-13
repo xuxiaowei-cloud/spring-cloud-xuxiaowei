@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,7 +29,7 @@ public class IndexRestController {
 	}
 
 	@Operation(summary = "首页", description = "未完成，仅测试")
-	@RequestMapping
+	@RequestMapping(method = { RequestMethod.GET, RequestMethod.POST })
 	public Response<String> index(HttpServletRequest request, HttpServletResponse response) {
 
 		String title = passportProperties.getTitle();
