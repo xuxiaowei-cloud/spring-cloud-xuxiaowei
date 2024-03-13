@@ -19,7 +19,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -29,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static cloud.xuxiaowei.file.SpringCloudXuxiaoweiFileApplicationTests.clientCredentialsAccessToken;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -95,13 +95,11 @@ class UploadLocalRestControllerTests {
 			boolean success = result.isSuccess();
 
 			if ("file2".equals(name)) {
-				Assert.isTrue(!success, "非预期响应结果");
-				log.info("统一异常处理，已完成测试");
-				log.info("上传文件，文件名不是 file，返回失败结果，已完成测试");
+				assertFalse(success);
 				break;
 			}
 
-			Assert.isTrue(success, "非预期响应结果");
+			assertTrue(success);
 
 			String fileUrl = result.getData();
 
@@ -113,12 +111,13 @@ class UploadLocalRestControllerTests {
 
 			ResponseEntity<String> entity = new RestTemplate().getForEntity(fileUrl, String.class);
 
-			Assert.isTrue(entity.getStatusCodeValue() == 200, String.format("文件: %s HTTP 状态码不正常", fileUrl));
+			assertEquals(entity.getStatusCodeValue(), 200);
 
 			String body = entity.getBody();
 			log.info("网络文件：{} 内容：{}", fileUrl, body);
 			log.info("本地文件内容：{}", fileContext);
-			Assert.isTrue(fileContext.equals(body), String.format("网络文件: %s 与本地文件 内容不同", fileUrl));
+
+			assertEquals(fileContext, body);
 		}
 	}
 

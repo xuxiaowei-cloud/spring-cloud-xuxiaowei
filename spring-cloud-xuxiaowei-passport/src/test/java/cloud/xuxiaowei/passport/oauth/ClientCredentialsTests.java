@@ -18,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * @author xuxiaowei
  * @since 0.0.1
@@ -48,10 +50,17 @@ class ClientCredentialsTests {
 		Map map = restTemplate.postForObject(String.format("http://127.0.0.1:%d/oauth2/token", serverPort), httpEntity,
 				Map.class);
 
+		assertNotNull(map);
+
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
 		log.info("token:\n{}", objectWriter.writeValueAsString(map));
+
+		assertNotNull(map.get("access_token"));
+		assertNotNull(map.get("scope"));
+		assertNotNull(map.get("token_type"));
+		assertNotNull(map.get("expires_in"));
 	}
 
 }

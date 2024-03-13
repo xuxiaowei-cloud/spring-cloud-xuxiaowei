@@ -9,11 +9,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * 测试网关 Swagger 过滤器
@@ -37,22 +39,24 @@ class SwaggerGlobalFilterTests {
 
 		ResponseEntity<Map> entity = new RestTemplate().getForEntity(url, Map.class);
 
-		Assert.isTrue(entity.getStatusCodeValue() == 200, String.format("%s HTTP 状态码不正常", url));
+		assertEquals(entity.getStatusCodeValue(), 200);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
 		Map body = entity.getBody();
-		log.info("url: \n{}", objectWriter.writeValueAsString(body));
 
-		assert body != null;
+		assertNotNull(body);
+
+		log.info("url: \n{}", objectWriter.writeValueAsString(body));
 
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> servers = (List<Map<String, Object>>) body.get("servers");
 
 		for (Map<String, Object> server : servers) {
 			Object urlObj = server.get("url");
-			Assert.isTrue(expectResult.equals(urlObj), "网关修改 Swagger 接口响应结果失败");
+
+			assertEquals(expectResult, urlObj);
 		}
 	}
 

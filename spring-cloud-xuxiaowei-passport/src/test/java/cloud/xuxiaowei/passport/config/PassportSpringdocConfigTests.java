@@ -10,10 +10,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * SpringDoc 配置 测试类
@@ -35,7 +37,7 @@ class PassportSpringdocConfigTests {
 
 		ResponseEntity<Map> entity = new RestTemplate().getForEntity(url, Map.class);
 
-		Assert.isTrue(entity.getStatusCodeValue() == 200, String.format("%s HTTP 状态码不正常", url));
+		assertEquals(entity.getStatusCodeValue(), 200);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
@@ -44,13 +46,16 @@ class PassportSpringdocConfigTests {
 		String value = objectWriter.writeValueAsString(body);
 		log.info("url: \n{}", value);
 
-		assert body != null;
-		String openapi = body.get("openapi").toString();
-		Assert.isTrue("3.0.1".equals(openapi), String.format("%s openapi 版本号不正确", url));
+		assertNotNull(body);
+
+		Object openapi = body.get("openapi");
+
+		assertEquals(openapi, "3.0.1");
 
 		String tokenUrl = JsonUtils.getValue(value,
 				"components.securitySchemes.oauth2_clientCredentials.flows.clientCredentials.tokenUrl");
-		Assert.isTrue(tokenUrl != null, String.format("%s swagger securitySchemes 配置不正确", url));
+
+		assertNotNull(tokenUrl);
 	}
 
 	@Test
@@ -59,17 +64,20 @@ class PassportSpringdocConfigTests {
 
 		ResponseEntity<Map> entity = new RestTemplate().getForEntity(url, Map.class);
 
-		Assert.isTrue(entity.getStatusCodeValue() == 200, String.format("%s HTTP 状态码不正常", url));
+		assertEquals(entity.getStatusCodeValue(), 200);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
 		Map body = entity.getBody();
+
+		assertNotNull(body);
+
 		log.info("url: \n{}", objectWriter.writeValueAsString(body));
 
-		assert body != null;
-		String configUrl = body.get("configUrl").toString();
-		Assert.isTrue("/v3/api-docs/swagger-config".equals(configUrl), String.format("%s swagger 配置地址不正确", url));
+		Object configUrl = body.get("configUrl");
+
+		assertEquals(configUrl, "/v3/api-docs/swagger-config");
 	}
 
 }
