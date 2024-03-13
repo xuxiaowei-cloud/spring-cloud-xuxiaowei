@@ -3,6 +3,8 @@ package cloud.xuxiaowei.utils.exception;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * 微服务父异常
  *
@@ -18,6 +20,11 @@ public class CloudException extends Exception {
 	 * 错误代码
 	 */
 	private String code;
+
+	/**
+	 * 参考
+	 */
+	private List<String> references;
 
 	public CloudException(String message) {
 		super(message);
