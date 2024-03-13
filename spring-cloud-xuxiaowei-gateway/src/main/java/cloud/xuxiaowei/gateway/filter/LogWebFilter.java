@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.gateway.filter;
 
+import cloud.xuxiaowei.utils.constant.LogConstants;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -17,8 +18,6 @@ import reactor.core.publisher.Mono;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
-
-import static cloud.xuxiaowei.utils.constant.LogConstant.*;
 
 /**
  * 日志 过滤器
@@ -56,12 +55,13 @@ public class LogWebFilter implements WebFilter, Ordered {
 		String hostName = address.getHostName();
 		String hostAddress = address.getHostAddress();
 
-		MDC.put(C_REQUEST_ID, id);
-		MDC.put(C_IP, hostName);
+		MDC.put(LogConstants.C_REQUEST_ID, id);
+		MDC.put(LogConstants.C_IP, hostName);
 
-		log.debug("URI: {}, {}: {}, {}: {}", uri, C_HOST_NAME, hostName, C_HOST_ADDRESS, hostAddress);
+		log.debug("URI: {}, {}: {}, {}: {}", uri, LogConstants.C_HOST_NAME, hostName, LogConstants.C_HOST_ADDRESS,
+				hostAddress);
 
-		headers.set(C_REQUEST_ID, id);
+		headers.set(LogConstants.C_REQUEST_ID, id);
 
 		return chain.filter(exchange);
 	}

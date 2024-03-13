@@ -6,7 +6,7 @@ package cloud.xuxiaowei.utils.constant;
  * @author xuxiaowei
  * @since 0.0.1
  */
-public class LogConstant {
+public class LogConstants {
 
 	/**
 	 * 微服务：用户 请求 ID

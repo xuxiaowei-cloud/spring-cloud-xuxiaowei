@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.utils;
 
+import cloud.xuxiaowei.utils.constant.LogConstants;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -8,8 +9,6 @@ import org.slf4j.MDC;
 
 import java.io.Serializable;
 import java.util.UUID;
-
-import static cloud.xuxiaowei.utils.constant.LogConstant.C_REQUEST_ID;
 
 /**
  * 响应数据父类
@@ -82,7 +81,7 @@ public class Response<T> implements Serializable {
 	}
 
 	private static String requestId() {
-		String id = MDC.get(C_REQUEST_ID);
+		String id = MDC.get(LogConstants.C_REQUEST_ID);
 		if (id == null || id.isEmpty()) {
 			id = UUID.randomUUID().toString();
 		}
