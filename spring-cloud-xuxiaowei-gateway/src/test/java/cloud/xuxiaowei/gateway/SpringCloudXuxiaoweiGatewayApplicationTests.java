@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +22,6 @@ public class SpringCloudXuxiaoweiGatewayApplicationTests {
 	static final String CLIENT_ID = "messaging-client";
 
 	static final String CLIENT_SECRET = "secret";
-
-	@Test
-	void contextLoads() {
-	}
 
 	public static String clientCredentialsAccessToken(RestTemplate restTemplate) throws JsonProcessingException {
 		return clientCredentialsMap(restTemplate).get("access_token").toString();
