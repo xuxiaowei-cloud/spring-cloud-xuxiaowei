@@ -9,12 +9,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * SpringDoc 配置 测试类
@@ -36,17 +37,20 @@ class GatewaySpringdocConfigTests {
 
 		ResponseEntity<Map> entity = new RestTemplate().getForEntity(url, Map.class);
 
-		Assert.isTrue(entity.getStatusCodeValue() == 200, String.format("%s HTTP 状态码不正常", url));
+		assertEquals(entity.getStatusCodeValue(), 200);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
 		Map body = entity.getBody();
+
+		assertNotNull(body);
+
 		log.info("url: \n{}", objectWriter.writeValueAsString(body));
 
-		assert body != null;
-		String openapi = body.get("openapi").toString();
-		Assert.isTrue("3.0.1".equals(openapi), String.format("%s openapi 版本号不正确", url));
+		Object openapi = body.get("openapi");
+
+		assertEquals(openapi, "3.0.1");
 	}
 
 	@Test
@@ -55,17 +59,20 @@ class GatewaySpringdocConfigTests {
 
 		ResponseEntity<Map> entity = new RestTemplate().getForEntity(url, Map.class);
 
-		Assert.isTrue(entity.getStatusCodeValue() == 200, String.format("%s HTTP 状态码不正常", url));
+		assertEquals(entity.getStatusCodeValue(), 200);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
 		Map body = entity.getBody();
+
+		assertNotNull(body);
+
 		log.info("url: \n{}", objectWriter.writeValueAsString(body));
 
-		assert body != null;
-		String configUrl = body.get("configUrl").toString();
-		Assert.isTrue("/v3/api-docs/swagger-config".equals(configUrl), String.format("%s swagger 配置地址不正确", url));
+		Object configUrl = body.get("configUrl");
+
+		assertEquals(configUrl, "/v3/api-docs/swagger-config");
 
 		@SuppressWarnings("all")
 		List<Map<String, String>> urls = (List<Map<String, String>>) body.get("urls");
@@ -76,10 +83,10 @@ class GatewaySpringdocConfigTests {
 			String u = map.get("url");
 			String name = map.get("name");
 			if ("passport".equals(name)) {
-				Assert.isTrue("/passport/v3/api-docs".equals(u), "passport 配置的 springdoc 不正确");
+				assertEquals(u, "/passport/v3/api-docs");
 			}
 			else if ("file".equals(name)) {
-				Assert.isTrue("/file/v3/api-docs".equals(u), "passport 配置的 springdoc 不正确");
+				assertEquals(u, "/file/v3/api-docs");
 			}
 			else {
 				errs.add(map);
@@ -88,7 +95,7 @@ class GatewaySpringdocConfigTests {
 
 		log.info("errs:\n{}", objectWriter.writeValueAsString(errs));
 
-		Assert.isTrue(errs.isEmpty(), "存在未验证的 springdoc 配置");
+		assertTrue(errs.isEmpty());
 	}
 
 }

@@ -16,6 +16,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * OAuth 2.1 客户服务 测试类
  *
@@ -66,7 +68,8 @@ class RegisteredClientRepositoryTests {
 		registeredClientRepository.save(registeredClient);
 
 		RegisteredClient byId = registeredClientRepository.findById(registeredClient.getId());
-		assert byId != null;
+
+		assertNotNull(byId);
 
 		log.info("byId id: {}", byId.getId());
 		log.info("byId clientId: {}", byId.getClientId());
@@ -82,7 +85,8 @@ class RegisteredClientRepositoryTests {
 		log.info("byId tokenSettings: {}", byId.getTokenSettings());
 
 		RegisteredClient byClientId = registeredClientRepository.findByClientId(registeredClient.getClientId());
-		assert byClientId != null;
+
+		assertNotNull(byClientId);
 
 		log.info("byClientId id: {}", byClientId.getId());
 		log.info("byClientId clientId: {}", byClientId.getClientId());

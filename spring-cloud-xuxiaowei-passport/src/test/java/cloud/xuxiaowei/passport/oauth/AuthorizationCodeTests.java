@@ -19,7 +19,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -29,6 +28,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author xuxiaowei
@@ -109,6 +111,13 @@ class AuthorizationCodeTests {
 			Map<?, ?> token = getToken(clientId, clientSecret, code, redirectUri, tokenUrl);
 			log.info("token:\n{}", objectWriter.writeValueAsString(token));
 
+			assertNotNull(token.get("access_token"));
+			assertNotNull(token.get("refresh_token"));
+			assertNotNull(token.get("scope"));
+			assertNotNull(token.get("id_token"));
+			assertNotNull(token.get("token_type"));
+			assertNotNull(token.get("expires_in"));
+
 			String accessToken = token.get("access_token").toString();
 
 			RestTemplate restTemplate = new RestTemplate();
@@ -116,21 +125,33 @@ class AuthorizationCodeTests {
 			ResponseEntity<Response> entity = restTemplate.getForEntity(
 					String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken), Response.class);
 
-			Assert.isTrue(entity.getStatusCodeValue() == 200, "HTTP 状态码不正常");
+			assertEquals(entity.getStatusCodeValue(), 200);
 
 			@SuppressWarnings("unchecked")
 			Response<String> response = entity.getBody();
-			log.info("\n{}", objectWriter.writeValueAsString(response));
-			assert response != null;
-			String title = response.getData();
-			assert title != null;
 
-			Assert.isTrue("徐晓伟微服务".equals(title), "title 数据验证失败");
+			assertNotNull(response);
+
+			log.info("\n{}", objectWriter.writeValueAsString(response));
+
+			String title = response.getData();
+
+			assertEquals("徐晓伟微服务", title);
 
 			String refreshToken = token.get("refresh_token").toString();
 
 			Map<?, ?> refresh = refreshToken(clientId, clientSecret, refreshToken, tokenUrl);
+
+			assertNotNull(refresh);
+
 			log.info("refresh:\n{}", objectWriter.writeValueAsString(refresh));
+
+			assertNotNull(refresh.get("access_token"));
+			assertNotNull(refresh.get("refresh_token"));
+			assertNotNull(refresh.get("scope"));
+			assertNotNull(refresh.get("id_token"));
+			assertNotNull(refresh.get("token_type"));
+			assertNotNull(refresh.get("expires_in"));
 		}
 	}
 

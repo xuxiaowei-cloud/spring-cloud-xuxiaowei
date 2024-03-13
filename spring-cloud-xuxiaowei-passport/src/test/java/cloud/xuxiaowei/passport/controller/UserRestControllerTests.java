@@ -14,7 +14,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static cloud.xuxiaowei.passport.SpringCloudXuxiaoweiPassportApplicationTests.clientCredentialsAccessToken;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author xuxiaowei
@@ -69,19 +69,18 @@ class UserRestControllerTests {
 			@SuppressWarnings("unchecked")
 			Response<UserInfoVO> response = new RestTemplate().postForObject(url, httpEntity, Response.class);
 
+			assertNotNull(response);
+
 			log.info("Response<UserInfoVO>:\n{}", objectWriter.writeValueAsString(response));
 
-			assert response != null;
 			boolean success = response.isSuccess();
 
 			if ("".equals(username)) {
-				Assert.isTrue(!success, "非预期响应结果");
-				log.info("统一异常处理，已完成测试");
-				log.info("验证注解，数据不合法，返回失败结果，已完成测试");
+				assertFalse(success);
 				break;
 			}
 
-			Assert.isTrue(success, "非预期响应结果");
+			assertTrue(success);
 		}
 
 	}

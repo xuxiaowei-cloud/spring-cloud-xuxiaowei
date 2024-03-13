@@ -15,13 +15,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
 
 import static cloud.xuxiaowei.gateway.SpringCloudXuxiaoweiGatewayApplicationTests.clientCredentialsAccessToken;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * 测试网关 请求头 过滤器
@@ -53,9 +54,11 @@ class RequestHeaderGlobalFilterTests {
 		HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(httpHeaders);
 		ResponseEntity<Response> entity = new RestTemplate().postForEntity(url, httpEntity, Response.class);
 
-		Assert.isTrue(entity.getStatusCodeValue() == 200, String.format("%s HTTP 状态码不正常", url));
+		assertEquals(entity.getStatusCodeValue(), 200);
 
 		Response<?> body = entity.getBody();
+
+		assertNotNull(body);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
@@ -68,14 +71,15 @@ class RequestHeaderGlobalFilterTests {
 			log.info("{}: {}", entry.getKey(), entry.getValue());
 		}
 
-		assert body != null;
 		String requestId = body.getRequestId();
-		assert requestId != null;
+
+		assertNotNull(requestId);
 
 		String header = headers.getFirst(LogConstants.C_REQUEST_ID);
-		assert header != null;
 
-		Assert.isTrue(header.equals(requestId), "请求 ID 传递异常");
+		assertNotNull(header);
+
+		assertEquals(header, requestId);
 
 	}
 

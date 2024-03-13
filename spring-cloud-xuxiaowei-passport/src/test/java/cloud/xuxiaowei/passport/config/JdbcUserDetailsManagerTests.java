@@ -1,5 +1,8 @@
 package cloud.xuxiaowei.passport.config;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,8 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * JDBC 用户管理服务 测试类
@@ -43,7 +48,7 @@ class JdbcUserDetailsManagerTests {
 	 * 创建用户
 	 */
 	@Test
-	void createUser() {
+	void createUser() throws JsonProcessingException {
 		String username = "xuxiaowei-" + RandomStringUtils.randomNumeric(3);
 		String password = UUID.randomUUID().toString();
 		List<GrantedAuthority> authorities = new ArrayList<>();
@@ -61,10 +66,17 @@ class JdbcUserDetailsManagerTests {
 		jdbcUserDetailsManager.createUser(user);
 
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-		assert userDetails != null;
 
-		log.info("UserDetails: {}", userDetails);
-		log.info("UserDetails Password: {}", userDetails.getPassword());
+		assertNotNull(userDetails);
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+
+		log.info("\n{}", objectWriter.writeValueAsString(userDetails));
+
+		assertNotNull(userDetails.getUsername());
+		assertNotNull(userDetails.getPassword());
+		assertNotNull(userDetails.getAuthorities());
 	}
 
 }

@@ -10,12 +10,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author xuxiaowei
@@ -47,14 +49,29 @@ class AuthorizationServerSettingsTests {
 
 			ResponseEntity<Map> entity = restTemplate.getForEntity(String.format(url), Map.class);
 
-			Assert.isTrue(entity.getStatusCodeValue() == 200, "HTTP 状态码不正常");
+			assertEquals(entity.getStatusCodeValue(), 200);
 
 			Map body = entity.getBody();
+
+			assertNotNull(body);
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
 			log.info("AuthorizationServerSettings:\n{}", objectWriter.writeValueAsString(body));
+
+			assertNotNull(body.get("issuer"));
+			assertNotNull(body.get("authorization_endpoint"));
+			assertNotNull(body.get("token_endpoint"));
+			assertNotNull(body.get("token_endpoint_auth_methods_supported"));
+			assertNotNull(body.get("jwks_uri"));
+			assertNotNull(body.get("response_types_supported"));
+			assertNotNull(body.get("grant_types_supported"));
+			assertNotNull(body.get("revocation_endpoint"));
+			assertNotNull(body.get("revocation_endpoint_auth_methods_supported"));
+			assertNotNull(body.get("introspection_endpoint"));
+			assertNotNull(body.get("introspection_endpoint_auth_methods_supported"));
+			assertNotNull(body.get("code_challenge_methods_supported"));
 		}
 	}
 
@@ -70,14 +87,29 @@ class AuthorizationServerSettingsTests {
 		for (String url : list) {
 			ResponseEntity<Map> entity = restTemplate.getForEntity(url, Map.class);
 
-			Assert.isTrue(entity.getStatusCodeValue() == 200, "HTTP 状态码不正常");
+			assertEquals(entity.getStatusCodeValue(), 200);
 
 			Map body = entity.getBody();
+
+			assertNotNull(body);
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
 			log.info("AuthorizationServerSettings:\n{}", objectWriter.writeValueAsString(body));
+
+			assertNotNull(body.get("issuer"));
+			assertNotNull(body.get("authorization_endpoint"));
+			assertNotNull(body.get("token_endpoint"));
+			assertNotNull(body.get("token_endpoint_auth_methods_supported"));
+			assertNotNull(body.get("jwks_uri"));
+			assertNotNull(body.get("response_types_supported"));
+			assertNotNull(body.get("grant_types_supported"));
+			assertNotNull(body.get("revocation_endpoint"));
+			assertNotNull(body.get("revocation_endpoint_auth_methods_supported"));
+			assertNotNull(body.get("introspection_endpoint"));
+			assertNotNull(body.get("introspection_endpoint_auth_methods_supported"));
+			assertNotNull(body.get("code_challenge_methods_supported"));
 		}
 	}
 
