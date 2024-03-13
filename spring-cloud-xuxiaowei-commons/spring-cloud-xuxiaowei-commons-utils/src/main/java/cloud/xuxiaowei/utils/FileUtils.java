@@ -64,7 +64,7 @@ public class FileUtils {
 				"https://cwe.mitre.org/data/definitions/73.html");
 		// @formatter:on
 
-		if (path.toString().contains("..")) {
+		if (path.contains("..")) {
 			CloudRuntimeException throwable = new CloudRuntimeException("路径异常");
 			throwable.setReferences(references);
 			throw throwable;
