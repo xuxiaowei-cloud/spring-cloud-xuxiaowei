@@ -111,13 +111,13 @@ jobs:
       - name: Run Passport
         run: |
           nohup java -jar spring-cloud-xuxiaowei-passport/target/spring-cloud-xuxiaowei-passport-0.0.1-SNAPSHOT.jar > nohup-passport.out 2>&1 &
-          sleep 15s
+          sleep 20s
           cat nohup-passport.out
 
       - name: Run File
         run: |
           nohup java -jar spring-cloud-xuxiaowei-file/target/spring-cloud-xuxiaowei-file-0.0.1-SNAPSHOT.jar > nohup-file.out 2>&1 &
-          sleep 15s
+          sleep 20s
           cat nohup-file.out
 
       - name: Test
