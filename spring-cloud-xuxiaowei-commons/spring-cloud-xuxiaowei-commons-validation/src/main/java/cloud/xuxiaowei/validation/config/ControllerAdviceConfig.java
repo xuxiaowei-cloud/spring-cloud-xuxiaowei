@@ -5,8 +5,6 @@ import cloud.xuxiaowei.utils.exception.CloudException;
 import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
 import com.google.common.base.Joiner;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.MethodParameter;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@link org.springframework.stereotype.Controller}、{@link org.springframework.web.bind.annotation.RestController}
@@ -90,16 +87,16 @@ public class ControllerAdviceConfig {
 	public Response<?> methodArgumentNotValidException(MethodArgumentNotValidException exception,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		String objectName = exception.getObjectName();
+		// String objectName = exception.getObjectName();
 
 		FieldError fieldError = exception.getFieldError();
 		List<ObjectError> allErrors = exception.getAllErrors();
 
-		int errorCount = exception.getErrorCount();
-		Map<String, Object> model = exception.getModel();
+		// int errorCount = exception.getErrorCount();
+		// Map<String, Object> model = exception.getModel();
 
-		BindingResult bindingResult = exception.getBindingResult();
-		MethodParameter parameter = exception.getParameter();
+		// BindingResult bindingResult = exception.getBindingResult();
+		// MethodParameter parameter = exception.getParameter();
 
 		int fieldErrorCount = exception.getFieldErrorCount();
 
