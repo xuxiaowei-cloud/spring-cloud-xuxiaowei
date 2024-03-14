@@ -126,7 +126,7 @@ build:mvn:spring-boot-3:
       - .m2/repository
   only:
     variables:
-      - $CI_COMMIT_BRANCH == "spring-boot-3"
+      - $CI_COMMIT_BRANCH == "spring-boot-3" && $MVN == "true"
 
 build:mvnw:spring-boot-2:
   stage: build
