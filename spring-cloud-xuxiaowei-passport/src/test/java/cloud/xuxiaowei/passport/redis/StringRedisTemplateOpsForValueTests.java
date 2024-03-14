@@ -1,17 +1,15 @@
-package cloud.xuxiaowei.file;
+package cloud.xuxiaowei.passport.redis;
 
-import cloud.xuxiaowei.utils.constant.RedisConstants;
+import cloud.xuxiaowei.redis.constant.RedisConstants;
+import cloud.xuxiaowei.redis.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
-import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -25,13 +23,13 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Slf4j
 @SpringBootTest
-public class StringRedisTemplateTests {
+public class StringRedisTemplateOpsForValueTests {
 
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
 
 	@Test
-	void stringRedisTemplateOpsForValue() {
+	void start() {
 		// 产生一个随机 key
 		String key = RandomStringUtils.randomAlphabetic(4);
 
@@ -72,7 +70,7 @@ public class StringRedisTemplateTests {
 		// 比较过期时间
 		assertEquals(timeout, time);
 
-		String redisVersion = redisVersion();
+		String redisVersion = RedisUtils.redisVersion(stringRedisTemplate);
 		assertNotNull(redisVersion);
 
 		int compare = StringUtils.compare(redisVersion, RedisConstants.GETEX_VERSION);
@@ -131,6 +129,30 @@ public class StringRedisTemplateTests {
 		value = stringRedisTemplate.opsForValue().get(key);
 		// 结果为 null
 		assertNull(value);
+
+		// 自增 1
+		String numKey = RandomStringUtils.randomAlphabetic(4);
+		int i = 5;
+		stringRedisTemplate.opsForValue().set(numKey, i + "");
+		String numStr = stringRedisTemplate.opsForValue().get(numKey);
+		assertNotNull(numStr);
+		int i1 = Integer.parseInt(numStr);
+		assertEquals(i1, i);
+		Long i2 = stringRedisTemplate.opsForValue().increment(numKey);
+		assertNotNull(i2);
+		assertEquals(i2, i + 1);
+
+		// 计算
+		int i3 = 6;
+		Long i4 = stringRedisTemplate.opsForValue().increment(numKey, i3);
+		assertNotNull(i4);
+		assertEquals(i4, i2 + i3);
+
+		// 计算后的方法的返回值 和 重新查询 Redis 的值是相同的
+		String string = stringRedisTemplate.opsForValue().get(numKey);
+		assertNotNull(string);
+		int i5 = Integer.parseInt(string);
+		assertEquals(i4, i5);
 	}
 
 	@Test
@@ -140,7 +162,7 @@ public class StringRedisTemplateTests {
 		String uuid = UUID.randomUUID().toString();
 		stringRedisTemplate.opsForValue().set(key, uuid);
 
-		String redisVersion = redisVersion();
+		String redisVersion = RedisUtils.redisVersion(stringRedisTemplate);
 		assertNotNull(redisVersion);
 		int compare = StringUtils.compare(redisVersion, RedisConstants.GETDEL_VERSION);
 
@@ -161,15 +183,6 @@ public class StringRedisTemplateTests {
 			assertNull(value);
 		}
 
-	}
-
-	String redisVersion() {
-		RedisConnectionFactory connectionFactory = stringRedisTemplate.getConnectionFactory();
-		assertNotNull(connectionFactory);
-		RedisConnection connection = connectionFactory.getConnection();
-		Properties info = connection.info();
-		assertNotNull(info);
-		return info.getProperty("redis_version");
 	}
 
 }

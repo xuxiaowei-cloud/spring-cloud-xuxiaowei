@@ -6,31 +6,27 @@
         <groupId>cloud.xuxiaowei.next</groupId>
         <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
-    <groupId>cloud.xuxiaowei.next</groupId>
-    <artifactId>spring-cloud-xuxiaowei-commons</artifactId>
+    <groupId>cloud.xuxiaowei.next.commons</groupId>
+    <artifactId>spring-cloud-xuxiaowei-commons-redis</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>spring-cloud-xuxiaowei-commons</name>
-    <description>公共模块-顶级项目</description>
+    <name>spring-cloud-xuxiaowei-commons-redis</name>
+    <description>公共模块-Redis组件</description>
     <inceptionYear>2024</inceptionYear>
     <properties>
-        <java.version>17</java.version>
+        <java.version>1.8</java.version>
     </properties>
-
-    <modules>
-        <module>spring-cloud-xuxiaowei-commons-aop</module>
-        <module>spring-cloud-xuxiaowei-commons-core</module>
-        <module>spring-cloud-xuxiaowei-commons-loadbalancer</module>
-        <module>spring-cloud-xuxiaowei-commons-openfeign</module>
-        <module>spring-cloud-xuxiaowei-commons-redis</module>
-        <module>spring-cloud-xuxiaowei-commons-utils</module>
-        <module>spring-cloud-xuxiaowei-commons-validation</module>
-    </modules>
-
     <dependencies>
+        <dependency>
+            <groupId>cloud.xuxiaowei.next.commons</groupId>
+            <artifactId>spring-cloud-xuxiaowei-commons-utils</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <licenses>
