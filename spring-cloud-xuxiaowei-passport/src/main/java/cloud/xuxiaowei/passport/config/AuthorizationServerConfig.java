@@ -60,10 +60,12 @@ public class AuthorizationServerConfig {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class).oidc(Customizer.withDefaults()); // Enable
-																										// OpenID
-																										// Connect
-																										// 1.0
+		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+			// Enable
+			// OpenID
+			// Connect
+			// 1.0
+			.oidc(Customizer.withDefaults());
 
 		// @formatter:off
 		http
