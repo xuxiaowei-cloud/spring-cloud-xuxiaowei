@@ -139,10 +139,12 @@ public class WebMvcConfigurationSupportConfig extends WebMvcConfigurationSupport
 		String swaggerPath = swaggerUiConfigParameters.getPath();
 
 		StringBuilder uiRootPath = new StringBuilder();
-		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
+		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR)) {
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
+		}
+		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort()) {
 			uiRootPath.append(actuatorProvider.get().getBasePath());
+		}
 
 		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/*" + SWAGGER_INITIALIZER_JS)
 			.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
