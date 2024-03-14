@@ -14,6 +14,9 @@ variables:
   XUXIAOWEI_NACOS_MYSQL_PASSWORD: $XUXIAOWEI_DATABASE_PASSWORD
   XUXIAOWEI_NACOS_MYSQL_DATABASE: spring_cloud_xuxiaowei_nacos
 
+  XUXIAOWEI_REDIS_HOST: redis
+  XUXIAOWEI_REDIS_PASSWORD: ""
+
   GLOBAL_MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
     -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
@@ -34,6 +37,10 @@ variables:
     variables:
       MYSQL_ROOT_PASSWORD: $XUXIAOWEI_DATABASE_PASSWORD
       MYSQL_DATABASE: $XUXIAOWEI_DATABASE
+
+.redis: &redis
+  - name: redis:7.2.4
+    alias: $XUXIAOWEI_REDIS_HOST
 
 .before_script: &before_script
   - if [ $CI_SERVER_HOST == 'gitlab.helm.xuxiaowei.cn' ]; then
@@ -84,6 +91,7 @@ build:mvn:spring-boot-2:
   image: xuxiaoweicomcn/maven-mysql-client:3.6.3-jdk-8
   services:
     - *mysql
+    - *redis
   variables:
     MAVEN_OPTS: $GLOBAL_MAVEN_OPTS
     MAVEN_CLI_OPTS: $GLOBAL_MAVEN_CLI_OPTS
@@ -104,6 +112,7 @@ build:mvnw:spring-boot-2:
   image: xuxiaoweicomcn/openjdk-mysql-client:8
   services:
     - *mysql
+    - *redis
   variables:
     MAVEN_OPTS: $GLOBAL_MAVEN_OPTS
     MAVEN_CLI_OPTS: $GLOBAL_MAVEN_CLI_OPTS
