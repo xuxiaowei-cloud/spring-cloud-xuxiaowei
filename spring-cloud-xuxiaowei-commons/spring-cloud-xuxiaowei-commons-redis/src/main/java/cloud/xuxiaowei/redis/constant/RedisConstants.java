@@ -1,4 +1,4 @@
-package cloud.xuxiaowei.utils.constant;
+package cloud.xuxiaowei.redis.constant;
 
 /**
  * Redis 常量
@@ -7,6 +7,11 @@ package cloud.xuxiaowei.utils.constant;
  * @since 0.0.1
  */
 public class RedisConstants {
+
+	/**
+	 * Redis 版本
+	 */
+	public static final String REDIS_VERSION = "redis_version";
 
 	/**
 	 * Redis 支持 GETEX（getAndExpire、getAndPersist）方法的最低版本
