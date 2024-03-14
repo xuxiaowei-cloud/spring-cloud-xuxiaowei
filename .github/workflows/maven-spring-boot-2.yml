@@ -28,12 +28,16 @@ jobs:
       XUXIAOWEI_NACOS_MYSQL_PASSWORD: xuxiaowei.com.cn
       XUXIAOWEI_NACOS_MYSQL_DATABASE: spring_cloud_xuxiaowei_nacos
 
+      XUXIAOWEI_REDIS_PASSWORD: ""
+
     services:
       mysql:
         image: mysql:8.0.36
         env:
           MYSQL_DATABASE: ${{ env.XUXIAOWEI_DATABASE }}
           MYSQL_ROOT_PASSWORD: ${{ env.XUXIAOWEI_DATABASE_PASSWORD }}
+      redis:
+        image: redis:7.2.4
 
     steps:
       - name: Checkout repository
@@ -60,15 +64,19 @@ jobs:
         run: |
           docker ps
           XUXIAOWEI_DATABASE_HOST=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -qf 'ancestor=mysql:8.0.36')`
+          XUXIAOWEI_REDIS_HOST=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -qf 'ancestor=redis:7.2.4')`
           echo "XUXIAOWEI_DATABASE_HOST=$XUXIAOWEI_DATABASE_HOST"
           echo "XUXIAOWEI_DATABASE_HOST=$XUXIAOWEI_DATABASE_HOST" >> $GITHUB_ENV
           echo "XUXIAOWEI_NACOS_MYSQL_HOST=$XUXIAOWEI_DATABASE_HOST"
           echo "XUXIAOWEI_NACOS_MYSQL_HOST=$XUXIAOWEI_DATABASE_HOST" >> $GITHUB_ENV
+          echo "XUXIAOWEI_REDIS_HOST=$XUXIAOWEI_REDIS_HOST"
+          echo "XUXIAOWEI_REDIS_HOST=$XUXIAOWEI_REDIS_HOST" >> $GITHUB_ENV
           echo "XUXIAOWEI_FILE_LOCAL_FILE_PREFIX=$GITHUB_WORKSPACE"
           echo "XUXIAOWEI_FILE_LOCAL_FILE_PREFIX=$GITHUB_WORKSPACE" >> $GITHUB_ENV
           echo "XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS=$GITHUB_WORKSPACE"
           echo "XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS=$GITHUB_WORKSPACE" >> $GITHUB_ENV
           echo ${{ env.XUXIAOWEI_DATABASE_HOST }}
+          echo ${{ env.XUXIAOWEI_REDIS_HOST }}
           echo ${{ env.XUXIAOWEI_NACOS_MYSQL_HOST }}
           echo ${{ env.XUXIAOWEI_FILE_LOCAL_FILE_PREFIX }}
           echo ${{ env.XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS }}
@@ -77,6 +85,7 @@ jobs:
         shell: sh
         run: |
           echo ${{ env.XUXIAOWEI_DATABASE_HOST }}
+          echo ${{ env.XUXIAOWEI_REDIS_HOST }}
           echo ${{ env.XUXIAOWEI_NACOS_MYSQL_HOST }}
           echo ${{ env.XUXIAOWEI_FILE_LOCAL_FILE_PREFIX }}
           echo ${{ env.XUXIAOWEI_FILE_ADD_RESOURCE_LOCATIONS }}
