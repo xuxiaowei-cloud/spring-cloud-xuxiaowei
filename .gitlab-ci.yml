@@ -112,6 +112,7 @@ build:mvn:spring-boot-3:
   image: xuxiaoweicomcn/maven-mysql-client:3.6.3-openjdk-17
   services:
     - *mysql
+    - *redis
   variables:
     MAVEN_OPTS: $GLOBAL_MAVEN_OPTS
     MAVEN_CLI_OPTS: $GLOBAL_MAVEN_CLI_OPTS
@@ -153,6 +154,7 @@ build:mvnw:spring-boot-3:
   image: xuxiaoweicomcn/openjdk-mysql-client:17.0-buster
   services:
     - *mysql
+    - *redis
   variables:
     MAVEN_OPTS: $GLOBAL_MAVEN_OPTS
     MAVEN_CLI_OPTS: $GLOBAL_MAVEN_CLI_OPTS

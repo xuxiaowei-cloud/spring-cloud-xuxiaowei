@@ -13,7 +13,7 @@ spring:
   config:
     import:
       - nacos:xuxiaowei.yml
-      - nacos:xuxiaowei-redis-2.yml
+      - nacos:xuxiaowei-redis-3.yml
   cloud:
     inetutils:
       ignored-interfaces:
