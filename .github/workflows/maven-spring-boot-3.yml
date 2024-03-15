@@ -135,3 +135,13 @@ jobs:
 
       - name: Test
         run: mvn test -DskipTests=false
+
+      - name: JaCoCo Report
+        if: ${{ matrix.java-version == 17 }}
+        run: mvn jacoco:report -pl spring-cloud-xuxiaowei-file,spring-cloud-xuxiaowei-gateway,spring-cloud-xuxiaowei-passport,spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-aop
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        if: ${{ matrix.java-version == 17 }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
