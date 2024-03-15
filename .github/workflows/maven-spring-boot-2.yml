@@ -134,7 +134,11 @@ jobs:
 
       - name: JaCoCo Report
         if: ${{ matrix.java-version == 8 }}
-        run: mvn jacoco:report -pl spring-cloud-xuxiaowei-file,spring-cloud-xuxiaowei-gateway,spring-cloud-xuxiaowei-passport,spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-aop
+        run: >-
+          mvn jacoco:report
+          -pl spring-cloud-xuxiaowei-file
+          -pl spring-cloud-xuxiaowei-gateway 
+          -pl spring-cloud-xuxiaowei-passport
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
