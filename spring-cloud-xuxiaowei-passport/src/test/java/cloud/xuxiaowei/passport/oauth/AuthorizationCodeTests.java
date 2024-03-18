@@ -33,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
+ * OAuth 2.1 授权码模式 自动化 测试类
+ *
  * @author xuxiaowei
  * @since 0.0.1
  */
@@ -47,6 +49,22 @@ class AuthorizationCodeTests {
 	@Autowired
 	private WebClient webClient;
 
+	// @formatter:off
+	/**
+	 *
+	 * 前提
+	 * <p>
+	 * 1. Redis 数据为空
+	 * <p>
+	 * 2. oauth2_authorization、oauth2_authorization_consent 表为空
+	 * <p>
+	 * 测试 10 次 授权码模式
+	 * <p>
+	 * 1. 使用 JDBC 实现：查询 oauth2_authorization 表 根据主键 31（更新数据前查询一次，故：存在重复查询）次，根据授权码 20 次，oauth2_registered_client 表 92 次，oauth2_authorization_consent 表 12 次
+	 * <p>
+	 * 2. 使用 Redis 实现：查询 oauth2_authorization 表 根据主键 31（更新数据前查询一次，故：存在重复查询）次，根据授权码 0 次，oauth2_registered_client 表 1 次，oauth2_authorization_consent 表 3 次
+	 */
+	// @formatter:on
 	@Test
 	void start() throws IOException {
 
@@ -59,7 +77,7 @@ class AuthorizationCodeTests {
 		String clientId = "messaging-client";
 		String clientSecret = "secret";
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 10; i++) {
 			String state = UUID.randomUUID().toString();
 
 			HtmlPage loginPage = webClient.getPage("/login");

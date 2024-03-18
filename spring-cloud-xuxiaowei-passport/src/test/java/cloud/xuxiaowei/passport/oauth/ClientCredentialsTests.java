@@ -21,6 +21,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
+ * OAuth 2.1 凭证式 自动化 测试类
+ *
  * @author xuxiaowei
  * @since 0.0.1
  */
@@ -32,6 +34,21 @@ class ClientCredentialsTests {
 	@LocalServerPort
 	private int serverPort;
 
+	// @formatter:off
+	/**
+	 * 前提
+	 * <p>
+	 * 1. Redis 数据为空
+	 * <p>
+	 * 2. oauth2_authorization、oauth2_authorization_consent（此处使用 凭证式，与此表无关） 表为空
+	 * <p>
+	 * 测试 10 次 凭证式
+	 * <p>
+	 * 1. 使用 JDBC 实现：查询 oauth2_authorization 表 10 次（无重复查询）、oauth2_registered_client 表 10 次
+	 * <p>
+	 * 2. 使用 Redis 实现：查询 oauth2_authorization 表 10 次（无重复查询）、oauth2_registered_client 表 1 次
+	 */
+	// @formatter:on
 	@Test
 	void start() throws JsonProcessingException {
 
