@@ -30,10 +30,11 @@
 1. 本项目为重构项目，与原始项目存在较大差异
 2. 本项目从头开发，并有配套视频（充电专属），B站网址（搜索 `重构微服务` 或者直接查看充电专属视频）:
    https://space.bilibili.com/198580655
-3. 将原始项目功能重构完成后，将会合并到原始项目中
-4. 原始项目地址:
-    1. Gitee: https://gitee.com/xuxiaowei-cloud/xuxiaowei-cloud
-    2. GitHub: https://github.com/xuxiaowei-cloud/xuxiaowei-cloud
+3. [CodeCov 代码覆盖率](https://app.codecov.io/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei/)
+4. 将原始项目功能重构完成后，将会合并到原始项目中
+5. 原始项目地址:
+   1. Gitee: https://gitee.com/xuxiaowei-cloud/xuxiaowei-cloud
+   2. GitHub: https://github.com/xuxiaowei-cloud/xuxiaowei-cloud
 
 ## 项目功能
 
