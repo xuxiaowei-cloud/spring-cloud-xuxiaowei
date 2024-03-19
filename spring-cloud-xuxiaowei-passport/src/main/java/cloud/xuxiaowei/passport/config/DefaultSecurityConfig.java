@@ -16,6 +16,7 @@
 package cloud.xuxiaowei.passport.config;
 
 import cloud.xuxiaowei.core.properties.SecurityProperties;
+import cloud.xuxiaowei.core.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +30,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -57,17 +59,16 @@ public class DefaultSecurityConfig {
 	@Bean
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-		// @formatter:off
-		http.authorizeRequests(authorizeRequests -> authorizeRequests
-			// 静态资源：允许所有人访问
-			.regexMatchers("/favicon.ico").permitAll()
-			// 端点：允许所有人访问
-			.regexMatchers("^/actuator(/.*)?$").permitAll()
-			// API 文档：允许所有人访问
-			.regexMatchers("^/(swagger-ui|v3/api-docs)(/.*)?$").permitAll()
-			// 其他地址：需要授权访问
-			.anyRequest().authenticated()).formLogin(withDefaults());
-		// @formatter:on
+		List<SecurityProperties.RequestMatcher> requestMatchers = securityProperties.getRequestMatchers();
+
+		http.authorizeRequests(authorizeRequests -> {
+
+			SecurityUtils.authorizeRequests(requestMatchers, authorizeRequests);
+
+			// 其他地址：需要授权访问，此配置要放在最后一行
+			authorizeRequests.anyRequest().authenticated();
+
+		}).formLogin(withDefaults());
 
 		http.oauth2ResourceServer().jwt(oauth2ResourceServer -> {
 			RSAPublicKey rsaPublicKey = securityProperties.rsaPublicKey();
