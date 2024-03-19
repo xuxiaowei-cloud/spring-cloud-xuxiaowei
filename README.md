@@ -13,6 +13,9 @@
     <a target="_blank" href="https://app.codacy.com/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade">
         <img alt="Codacy Badge" src="https://app.codacy.com/project/badge/Grade/3d8354e4593c4fbea4ad325910b32ada"/>
     </a>
+    <a target="_blank" href="https://codecov.io/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei">
+        <img alt="Codecov Badge" src="https://codecov.io/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei/graph/badge.svg?token=XS72L4GIAX"/> 
+    </a>
 </div>
 
 <p></p>
