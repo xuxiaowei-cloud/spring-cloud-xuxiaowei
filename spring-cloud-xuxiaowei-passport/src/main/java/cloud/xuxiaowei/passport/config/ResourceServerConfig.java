@@ -40,7 +40,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
  * @since 0.1.0
  */
 @EnableWebSecurity
-public class DefaultSecurityConfig {
+public class ResourceServerConfig {
 
 	private SecurityProperties securityProperties;
 
@@ -49,6 +49,9 @@ public class DefaultSecurityConfig {
 		this.securityProperties = securityProperties;
 	}
 
+	/**
+	 * 允许从 URL 参数中获取 Token，参数名 access_token
+	 */
 	@Bean
 	public BearerTokenResolver bearerTokenResolver() {
 		DefaultBearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
