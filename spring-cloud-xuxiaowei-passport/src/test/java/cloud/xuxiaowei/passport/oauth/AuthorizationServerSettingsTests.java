@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationServerMetadataClaimNames;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -50,18 +51,19 @@ class AuthorizationServerSettingsTests {
 
 		log.info("AuthorizationServerSettings:\n{}", objectWriter.writeValueAsString(body));
 
-		assertNotNull(body.get("issuer"));
-		assertNotNull(body.get("authorization_endpoint"));
-		assertNotNull(body.get("token_endpoint"));
-		assertNotNull(body.get("token_endpoint_auth_methods_supported"));
-		assertNotNull(body.get("jwks_uri"));
-		assertNotNull(body.get("response_types_supported"));
-		assertNotNull(body.get("grant_types_supported"));
-		assertNotNull(body.get("revocation_endpoint"));
-		assertNotNull(body.get("revocation_endpoint_auth_methods_supported"));
-		assertNotNull(body.get("introspection_endpoint"));
-		assertNotNull(body.get("introspection_endpoint_auth_methods_supported"));
-		assertNotNull(body.get("code_challenge_methods_supported"));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.ISSUER));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.AUTHORIZATION_ENDPOINT));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.TOKEN_ENDPOINT));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.TOKEN_ENDPOINT_AUTH_METHODS_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.JWKS_URI));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.RESPONSE_TYPES_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.GRANT_TYPES_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.REVOCATION_ENDPOINT));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.REVOCATION_ENDPOINT_AUTH_METHODS_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.INTROSPECTION_ENDPOINT));
+		assertNotNull(
+				body.get(OAuth2AuthorizationServerMetadataClaimNames.INTROSPECTION_ENDPOINT_AUTH_METHODS_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.CODE_CHALLENGE_METHODS_SUPPORTED));
 	}
 
 	@Test
@@ -82,18 +84,19 @@ class AuthorizationServerSettingsTests {
 
 		log.info("AuthorizationServerSettings:\n{}", objectWriter.writeValueAsString(body));
 
-		assertNotNull(body.get("issuer"));
-		assertNotNull(body.get("authorization_endpoint"));
-		assertNotNull(body.get("token_endpoint"));
-		assertNotNull(body.get("token_endpoint_auth_methods_supported"));
-		assertNotNull(body.get("jwks_uri"));
-		assertNotNull(body.get("response_types_supported"));
-		assertNotNull(body.get("grant_types_supported"));
-		assertNotNull(body.get("revocation_endpoint"));
-		assertNotNull(body.get("revocation_endpoint_auth_methods_supported"));
-		assertNotNull(body.get("introspection_endpoint"));
-		assertNotNull(body.get("introspection_endpoint_auth_methods_supported"));
-		assertNotNull(body.get("code_challenge_methods_supported"));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.ISSUER));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.AUTHORIZATION_ENDPOINT));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.TOKEN_ENDPOINT));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.TOKEN_ENDPOINT_AUTH_METHODS_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.JWKS_URI));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.RESPONSE_TYPES_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.GRANT_TYPES_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.REVOCATION_ENDPOINT));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.REVOCATION_ENDPOINT_AUTH_METHODS_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.INTROSPECTION_ENDPOINT));
+		assertNotNull(
+				body.get(OAuth2AuthorizationServerMetadataClaimNames.INTROSPECTION_ENDPOINT_AUTH_METHODS_SUPPORTED));
+		assertNotNull(body.get(OAuth2AuthorizationServerMetadataClaimNames.CODE_CHALLENGE_METHODS_SUPPORTED));
 	}
 
 }
