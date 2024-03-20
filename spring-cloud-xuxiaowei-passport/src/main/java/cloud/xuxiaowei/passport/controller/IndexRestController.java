@@ -8,8 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -29,7 +30,20 @@ public class IndexRestController {
 	}
 
 	@Operation(summary = "首页", description = "未完成，仅测试")
-	@RequestMapping(method = { RequestMethod.GET, RequestMethod.POST })
+	@GetMapping
+	public Response<String> indexGet(HttpServletRequest request, HttpServletResponse response) {
+
+		String title = passportProperties.getTitle();
+
+		Response<String> resp = Response.ok();
+		resp.setData(title);
+
+		return resp;
+	}
+
+	@Operation(summary = "首页", description = "未完成，仅测试")
+	@PostMapping
+	@PreAuthorize("hasAnyAuthority('message.read')")
 	public Response<String> index(HttpServletRequest request, HttpServletResponse response) {
 
 		String title = passportProperties.getTitle();

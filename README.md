@@ -36,8 +36,8 @@
 3. [CodeCov 代码覆盖率](https://app.codecov.io/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei/)
 4. 将原始项目功能重构完成后，将会合并到原始项目中
 5. 原始项目地址:
-   1. Gitee: https://gitee.com/xuxiaowei-cloud/xuxiaowei-cloud
-   2. GitHub: https://github.com/xuxiaowei-cloud/xuxiaowei-cloud
+    1. Gitee: https://gitee.com/xuxiaowei-cloud/xuxiaowei-cloud
+    2. GitHub: https://github.com/xuxiaowei-cloud/xuxiaowei-cloud
 
 ## 项目功能
 
@@ -132,6 +132,14 @@
 - [oauth2-registered-client-schema.sql](https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/resources/org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql)
 - [oauth2-authorization-consent-schema.sql](https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/resources/org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql)
 - [oauth2-authorization-schema.sql](https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/resources/org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql)
+- [OAuth2](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html)
+    - [OAuth 2.0 Login](https://docs.spring.io/spring-security/reference/servlet/oauth2/login/index.html)
+        - [Core Configuration](https://docs.spring.io/spring-security/reference/servlet/oauth2/login/core.html)
+        - [Advanced Configuration](https://docs.spring.io/spring-security/reference/servlet/oauth2/login/advanced.html)
+    - [OAuth 2.0 Resource Server](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html)
+        - [JWT](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html)
+        - [OAuth 2.0 Resource Server Multi-tenancy](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/multitenancy.html)
+        - [OAuth 2.0 Bearer Tokens](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/bearer-tokens.html)
 
 ### Spring
 
