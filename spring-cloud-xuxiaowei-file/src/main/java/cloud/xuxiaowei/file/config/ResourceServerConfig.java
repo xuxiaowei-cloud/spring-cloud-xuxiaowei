@@ -28,6 +28,9 @@ public class ResourceServerConfig {
 		this.securityProperties = securityProperties;
 	}
 
+	/**
+	 * 允许从 URL 参数中获取 Token，参数名 access_token
+	 */
 	@Bean
 	public BearerTokenResolver bearerTokenResolver() {
 		DefaultBearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
