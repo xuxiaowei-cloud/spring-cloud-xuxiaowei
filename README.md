@@ -140,6 +140,13 @@
         - [JWT](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html)
         - [OAuth 2.0 Resource Server Multi-tenancy](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/multitenancy.html)
         - [OAuth 2.0 Bearer Tokens](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/bearer-tokens.html)
+    - [Add custom claims to JWT access tokens](https://docs.spring.io/spring-authorization-server/reference/guides/how-to-custom-claims-authorities.html#custom-claims)
+    - [OAuth2TokenCustomizer](https://docs.spring.io/spring-authorization-server/reference/core-model-components.html#oauth2-token-customizer)
+    - [Map Claims to an ID Token](https://docs.spring.io/spring-authorization-server/reference/guides/how-to-social-login.html#advanced-use-cases-map-claims)
+
+### Spring
+
+- [Search](https://docs.spring.io/spring-security/reference/search.html)
 
 ### Springdoc (API)
 
