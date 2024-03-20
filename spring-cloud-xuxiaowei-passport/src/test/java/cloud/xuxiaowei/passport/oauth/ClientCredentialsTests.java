@@ -1,6 +1,6 @@
 package cloud.xuxiaowei.passport.oauth;
 
-import cloud.xuxiaowei.utils.constant.OAuth2Constants;
+import cloud.xuxiaowei.oauth2.constant.OAuth2Constants;
 import cn.hutool.core.codec.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package cloud.xuxiaowei.utils.constant;
+package cloud.xuxiaowei.oauth2.constant;
 
 /**
  * OAuth2 常量
