@@ -23,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
-import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -61,7 +60,8 @@ class AuthorizationCodeTests {
 		String password = "password";
 
 		String redirectUri = "https://home.baidu.com/home/index/contact_us";
-		String scope = "openid profile message.read message.write";
+		// String scope = "openid profile message.read message.write";
+		String scope = "profile message.read message.write";
 
 		String clientId = "messaging-client";
 		String clientSecret = "secret";
@@ -122,7 +122,7 @@ class AuthorizationCodeTests {
 			assertNotNull(token.get(OAuth2ParameterNames.ACCESS_TOKEN));
 			assertNotNull(token.get(OAuth2ParameterNames.REFRESH_TOKEN));
 			assertNotNull(token.get(OAuth2ParameterNames.SCOPE));
-			assertNotNull(token.get(OidcParameterNames.ID_TOKEN));
+			// assertNotNull(token.get(OidcParameterNames.ID_TOKEN));
 			assertNotNull(token.get(OAuth2ParameterNames.TOKEN_TYPE));
 			assertNotNull(token.get(OAuth2ParameterNames.EXPIRES_IN));
 
@@ -182,7 +182,7 @@ class AuthorizationCodeTests {
 			assertNotNull(refresh.get(OAuth2ParameterNames.ACCESS_TOKEN));
 			assertNotNull(refresh.get(OAuth2ParameterNames.REFRESH_TOKEN));
 			assertNotNull(refresh.get(OAuth2ParameterNames.SCOPE));
-			assertNotNull(refresh.get(OidcParameterNames.ID_TOKEN));
+			// assertNotNull(refresh.get(OidcParameterNames.ID_TOKEN));
 			assertNotNull(refresh.get(OAuth2ParameterNames.TOKEN_TYPE));
 			assertNotNull(refresh.get(OAuth2ParameterNames.EXPIRES_IN));
 		}

@@ -1,6 +1,6 @@
 package cloud.xuxiaowei.passport;
 
-import cloud.xuxiaowei.passport.annotation.EnableOAuth2JdbcAnnotation;
+import cn.com.xuxiaowei.boot.oauth2.annotation.EnableOAuth2Redis;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author xuxiaowei
  * @since 0.0.1
  */
-@EnableOAuth2JdbcAnnotation
+@EnableOAuth2Redis
 @SpringBootApplication
 public class SpringCloudXuxiaoweiPassportApplication {
 
