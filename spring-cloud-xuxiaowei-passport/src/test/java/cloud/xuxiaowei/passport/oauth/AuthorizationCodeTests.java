@@ -1,7 +1,8 @@
 package cloud.xuxiaowei.passport.oauth;
 
-import cloud.xuxiaowei.utils.Response;
 import cloud.xuxiaowei.oauth2.constant.OAuth2Constants;
+import cloud.xuxiaowei.utils.Response;
+import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
 import cn.hutool.core.codec.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -17,15 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.*;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
@@ -52,6 +52,9 @@ class AuthorizationCodeTests {
 
 	@Autowired
 	private WebClient webClient;
+
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate;
 
 	@Test
 	void start() throws IOException {
@@ -157,9 +160,30 @@ class AuthorizationCodeTests {
 			assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.AUD), clientId);
 
 			RestTemplate restTemplate = new RestTemplate();
-			@SuppressWarnings("all")
-			ResponseEntity<Response> entity = restTemplate.getForEntity(
-					String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken), Response.class);
+
+			ResponseEntity<Response> entity;
+			if (i == 1) {
+
+				String key = "spring-authorization-server:oauth2_authorization:token:access_token:" + accessToken;
+
+				stringRedisTemplate.delete(key);
+
+				try {
+					entity = restTemplate.getForEntity(
+							String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken),
+							Response.class);
+				}
+				catch (HttpClientErrorException.Unauthorized e) {
+					assertEquals(e.getStatusCode(), HttpStatus.UNAUTHORIZED);
+					continue;
+				}
+
+				throw new CloudRuntimeException("测试异常，未复现 Redis 中不存在授权 Token 的情况");
+			}
+			else {
+				entity = restTemplate.getForEntity(
+						String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken), Response.class);
+			}
 
 			assertEquals(entity.getStatusCodeValue(), 200);
 

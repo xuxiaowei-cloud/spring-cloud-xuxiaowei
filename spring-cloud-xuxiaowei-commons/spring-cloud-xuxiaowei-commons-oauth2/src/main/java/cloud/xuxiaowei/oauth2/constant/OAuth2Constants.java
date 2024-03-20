@@ -13,4 +13,9 @@ public class OAuth2Constants {
 	 */
 	public static final String AUTHORITIES = "authorities";
 
+	/**
+	 * 权限前缀
+	 */
+	public static final String AUTHORITY_PREFIX = "";
+
 }

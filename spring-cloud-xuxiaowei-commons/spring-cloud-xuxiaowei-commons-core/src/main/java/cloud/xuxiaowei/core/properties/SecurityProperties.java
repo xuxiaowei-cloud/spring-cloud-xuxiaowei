@@ -36,6 +36,11 @@ public class SecurityProperties {
 	 */
 	private List<RequestMatcher> requestMatchers;
 
+	/**
+	 * 检查 Token 时 Redis 的前缀
+	 */
+	public String tokenCheckPrefix = "spring-authorization-server:oauth2_authorization:token:access_token:";
+
 	public PublicKey publicKey() {
 		return new RSA(null, this.publicKey).getPublicKey();
 	}

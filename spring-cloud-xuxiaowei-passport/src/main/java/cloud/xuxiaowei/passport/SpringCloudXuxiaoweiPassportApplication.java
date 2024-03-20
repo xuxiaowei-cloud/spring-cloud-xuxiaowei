@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.passport;
 
+import cloud.xuxiaowei.oauth2.annotation.EnableOAuth2TokenCheck;
 import cn.com.xuxiaowei.boot.oauth2.annotation.EnableOAuth2Redis;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 0.0.1
  */
 @EnableOAuth2Redis
+@EnableOAuth2TokenCheck
 @SpringBootApplication
 public class SpringCloudXuxiaoweiPassportApplication {
 
