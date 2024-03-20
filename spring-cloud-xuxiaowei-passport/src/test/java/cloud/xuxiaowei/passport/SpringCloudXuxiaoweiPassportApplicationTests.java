@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -28,7 +30,7 @@ public class SpringCloudXuxiaoweiPassportApplicationTests {
 	static final String CLIENT_SECRET = "secret";
 
 	public static String clientCredentialsAccessToken(RestTemplate restTemplate) throws JsonProcessingException {
-		return clientCredentialsMap(restTemplate).get("access_token").toString();
+		return clientCredentialsMap(restTemplate).get(OAuth2ParameterNames.ACCESS_TOKEN).toString();
 	}
 
 	public static Map clientCredentialsMap(RestTemplate restTemplate) throws JsonProcessingException {
@@ -37,8 +39,10 @@ public class SpringCloudXuxiaoweiPassportApplicationTests {
 		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		httpHeaders.setBasicAuth(CLIENT_ID, CLIENT_SECRET);
 		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-		requestBody.put("grant_type", Collections.singletonList("client_credentials"));
-		requestBody.put("scope", Collections.singletonList("openid profile message.read message.write"));
+		requestBody.put(OAuth2ParameterNames.GRANT_TYPE,
+				Collections.singletonList(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()));
+		requestBody.put(OAuth2ParameterNames.SCOPE,
+				Collections.singletonList("openid profile message.read message.write"));
 		HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
 
 		ObjectMapper objectMapper = new ObjectMapper();

@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.passport.oauth;
 
+import cn.hutool.core.codec.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -11,6 +12,9 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -43,8 +48,10 @@ class ClientCredentialsTests {
 		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		httpHeaders.setBasicAuth(clientId, clientSecret);
 		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-		requestBody.put("grant_type", Collections.singletonList("client_credentials"));
-		requestBody.put("scope", Collections.singletonList("openid profile message.read message.write"));
+		requestBody.put(OAuth2ParameterNames.GRANT_TYPE,
+				Collections.singletonList(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()));
+		requestBody.put(OAuth2ParameterNames.SCOPE,
+				Collections.singletonList("openid profile message.read message.write"));
 		HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
 
 		Map map = restTemplate.postForObject(String.format("http://127.0.0.1:%d/oauth2/token", serverPort), httpEntity,
@@ -57,10 +64,38 @@ class ClientCredentialsTests {
 
 		log.info("token:\n{}", objectWriter.writeValueAsString(map));
 
-		assertNotNull(map.get("access_token"));
-		assertNotNull(map.get("scope"));
-		assertNotNull(map.get("token_type"));
-		assertNotNull(map.get("expires_in"));
+		assertNotNull(map.get(OAuth2ParameterNames.ACCESS_TOKEN));
+		assertNotNull(map.get(OAuth2ParameterNames.SCOPE));
+		assertNotNull(map.get(OAuth2ParameterNames.TOKEN_TYPE));
+		assertNotNull(map.get(OAuth2ParameterNames.EXPIRES_IN));
+
+		String accessToken = map.get(OAuth2ParameterNames.ACCESS_TOKEN).toString();
+
+		String[] split = accessToken.split("\\.");
+		assertEquals(split.length, 3);
+
+		String payloadEncode = split[1];
+
+		String payloadDecode = Base64.decodeStr(payloadEncode);
+
+		Map payload = objectMapper.readValue(payloadDecode, Map.class);
+
+		log.info("payload:\n{}", objectWriter.writeValueAsString(payload));
+
+		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.SUB));
+		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.AUD));
+		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.NBF));
+		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.SCOPE));
+		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.ISS));
+		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.EXP));
+		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.IAT));
+
+		// 凭证式模式：
+		// sub：代表用户名，由于凭证式是自己给自己授权，所以 sub 和 aud 相同，都是 客户ID
+		// aud：代表客户ID
+		assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.SUB), clientId);
+		assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.AUD), clientId);
+
 	}
 
 }
