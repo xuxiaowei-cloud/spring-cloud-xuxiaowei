@@ -17,18 +17,12 @@ package cloud.xuxiaowei.passport.config;
 
 import cloud.xuxiaowei.core.properties.SecurityProperties;
 import cloud.xuxiaowei.core.utils.SecurityUtils;
-import cloud.xuxiaowei.utils.constant.OAuth2Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
-import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -44,7 +38,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
  * @since 0.1.0
  */
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig {
 
 	private SecurityProperties securityProperties;
@@ -52,36 +45,6 @@ public class ResourceServerConfig {
 	@Autowired
 	public void setSecurityProperties(SecurityProperties securityProperties) {
 		this.securityProperties = securityProperties;
-	}
-
-	/**
-	 * 允许从 URL 参数中获取 Token，参数名 access_token
-	 */
-	@Bean
-	public BearerTokenResolver bearerTokenResolver() {
-		DefaultBearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
-		bearerTokenResolver.setAllowUriQueryParameter(true);
-		return bearerTokenResolver;
-	}
-
-	/**
-	 * 权限数据读取位置、设置为无权限前缀
-	 * <p>
-	 * 需要搭配 {@link EnableGlobalMethodSecurity#prePostEnabled} 设置为 {@link Boolean#TRUE} 使用
-	 */
-	@Bean
-	public JwtAuthenticationConverter jwtAuthenticationConverter() {
-		JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-
-		// 设置 Token 中获取权限数据的声明名称
-		grantedAuthoritiesConverter.setAuthoritiesClaimName(OAuth2Constants.AUTHORITIES);
-
-		// 设置成无前缀
-		grantedAuthoritiesConverter.setAuthorityPrefix("");
-
-		JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-		return jwtAuthenticationConverter;
 	}
 
 	@Bean

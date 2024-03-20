@@ -1,0 +1,2 @@
+cloud.xuxiaowei.oauth2.config.BearerTokenResolverConfig
+cloud.xuxiaowei.oauth2.config.JwtAuthenticationConverterConfig

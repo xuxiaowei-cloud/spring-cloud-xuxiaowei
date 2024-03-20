@@ -6,32 +6,26 @@
         <groupId>cloud.xuxiaowei</groupId>
         <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
-    <groupId>cloud.xuxiaowei</groupId>
-    <artifactId>spring-cloud-xuxiaowei-commons</artifactId>
+    <groupId>cloud.xuxiaowei.commons</groupId>
+    <artifactId>spring-cloud-xuxiaowei-commons-oauth2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>spring-cloud-xuxiaowei-commons</name>
-    <description>公共模块-顶级项目</description>
+    <name>spring-cloud-xuxiaowei-commons-oauth2</name>
+    <description>公共模块-OAuth2组件</description>
     <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
     </properties>
-
-    <modules>
-        <module>spring-cloud-xuxiaowei-commons-aop</module>
-        <module>spring-cloud-xuxiaowei-commons-core</module>
-        <module>spring-cloud-xuxiaowei-commons-loadbalancer</module>
-        <module>spring-cloud-xuxiaowei-commons-oauth2</module>
-        <module>spring-cloud-xuxiaowei-commons-openfeign</module>
-        <module>spring-cloud-xuxiaowei-commons-redis</module>
-        <module>spring-cloud-xuxiaowei-commons-utils</module>
-        <module>spring-cloud-xuxiaowei-commons-validation</module>
-    </modules>
-
     <dependencies>
-
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
     </dependencies>
 
     <licenses>
@@ -65,5 +59,28 @@
             <organizationUrl>http://xuxiaowei.com.cn</organizationUrl>
         </developer>
     </developers>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.github.therapi</groupId>
+                            <artifactId>therapi-runtime-javadoc-scribe</artifactId>
+                            <version>${therapi-runtime-javadoc-scribe.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

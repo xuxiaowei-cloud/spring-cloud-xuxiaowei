@@ -137,6 +137,11 @@
             </dependency>
             <dependency>
                 <groupId>cloud.xuxiaowei.commons</groupId>
+                <artifactId>spring-cloud-xuxiaowei-commons-oauth2</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cloud.xuxiaowei.commons</groupId>
                 <artifactId>spring-cloud-xuxiaowei-commons-openfeign</artifactId>
                 <version>${project.version}</version>
             </dependency>

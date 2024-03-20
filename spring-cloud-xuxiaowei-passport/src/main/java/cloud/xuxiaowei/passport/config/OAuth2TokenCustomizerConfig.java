@@ -1,6 +1,6 @@
 package cloud.xuxiaowei.passport.config;
 
-import cloud.xuxiaowei.utils.constant.OAuth2Constants;
+import cloud.xuxiaowei.oauth2.constant.OAuth2Constants;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
