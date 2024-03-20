@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.passport.oauth;
 
+import cloud.xuxiaowei.core.properties.SecurityProperties;
 import cloud.xuxiaowei.oauth2.constant.OAuth2Constants;
 import cloud.xuxiaowei.utils.Response;
 import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
@@ -56,6 +57,9 @@ class AuthorizationCodeTests {
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
 
+	@Autowired
+	private SecurityProperties securityProperties;
+
 	@Test
 	void start() throws IOException {
 
@@ -68,6 +72,8 @@ class AuthorizationCodeTests {
 
 		String clientId = "messaging-client";
 		String clientSecret = "secret";
+
+		String tokenCheckPrefix = securityProperties.getTokenCheckPrefix();
 
 		for (int i = 0; i < 3; i++) {
 
@@ -164,7 +170,7 @@ class AuthorizationCodeTests {
 			ResponseEntity<Response> entity;
 			if (i == 1) {
 
-				String key = "spring-authorization-server:oauth2_authorization:token:access_token:" + accessToken;
+				String key = tokenCheckPrefix + accessToken;
 
 				stringRedisTemplate.delete(key);
 
