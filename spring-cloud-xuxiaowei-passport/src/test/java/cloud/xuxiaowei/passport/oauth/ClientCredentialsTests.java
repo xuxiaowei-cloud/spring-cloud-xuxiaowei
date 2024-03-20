@@ -1,5 +1,6 @@
 package cloud.xuxiaowei.passport.oauth;
 
+import cloud.xuxiaowei.utils.constant.OAuth2Constants;
 import cn.hutool.core.codec.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,6 +90,8 @@ class ClientCredentialsTests {
 		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.ISS));
 		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.EXP));
 		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.IAT));
+		assertNotNull(payload.get(OAuth2Constants.AUTHORITIES));
+		assertEquals(payload.get(OAuth2Constants.AUTHORITIES), payload.get(OAuth2TokenIntrospectionClaimNames.SCOPE));
 
 		// 凭证式模式：
 		// sub：代表用户名，由于凭证式是自己给自己授权，所以 sub 和 aud 相同，都是 客户ID

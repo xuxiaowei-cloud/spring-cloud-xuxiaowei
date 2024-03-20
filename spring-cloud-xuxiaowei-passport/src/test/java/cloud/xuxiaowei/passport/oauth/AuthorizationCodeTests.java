@@ -1,6 +1,7 @@
 package cloud.xuxiaowei.passport.oauth;
 
 import cloud.xuxiaowei.utils.Response;
+import cloud.xuxiaowei.utils.constant.OAuth2Constants;
 import cn.hutool.core.codec.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -33,8 +34,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * OAuth 2.1 授权码模式 自动化 测试类
@@ -146,6 +146,9 @@ class AuthorizationCodeTests {
 			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.ISS));
 			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.EXP));
 			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.IAT));
+			assertNotNull(payload.get(OAuth2Constants.AUTHORITIES));
+			assertNotEquals(payload.get(OAuth2Constants.AUTHORITIES),
+					payload.get(OAuth2TokenIntrospectionClaimNames.SCOPE));
 
 			// 授权码模式：
 			// sub：代表用户名
