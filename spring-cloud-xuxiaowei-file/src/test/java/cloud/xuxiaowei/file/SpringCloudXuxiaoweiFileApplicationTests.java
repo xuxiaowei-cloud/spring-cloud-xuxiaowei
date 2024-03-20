@@ -31,14 +31,24 @@ public class SpringCloudXuxiaoweiFileApplicationTests {
 		return clientCredentialsMap(restTemplate).get("access_token").toString();
 	}
 
+	public static String clientCredentialsAccessToken(RestTemplate restTemplate, String scope)
+			throws JsonProcessingException {
+		return clientCredentialsMap(restTemplate, scope).get("access_token").toString();
+	}
+
 	public static Map clientCredentialsMap(RestTemplate restTemplate) throws JsonProcessingException {
+		String scope = "openid profile message.read message.write";
+		return clientCredentialsMap(restTemplate, scope);
+	}
+
+	public static Map clientCredentialsMap(RestTemplate restTemplate, String scope) throws JsonProcessingException {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		httpHeaders.setBasicAuth(CLIENT_ID, CLIENT_SECRET);
 		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
 		requestBody.put("grant_type", Collections.singletonList("client_credentials"));
-		requestBody.put("scope", Collections.singletonList("openid profile message.read message.write"));
+		requestBody.put("scope", Collections.singletonList(scope));
 		HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
 
 		ObjectMapper objectMapper = new ObjectMapper();
