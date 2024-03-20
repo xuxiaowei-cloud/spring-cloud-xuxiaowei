@@ -66,123 +66,126 @@ class AuthorizationCodeTests {
 		String clientId = "messaging-client";
 		String clientSecret = "secret";
 
-		String state = UUID.randomUUID().toString();
+		for (int i = 0; i < 3; i++) {
 
-		HtmlPage loginPage = webClient.getPage("/login");
+			String state = UUID.randomUUID().toString();
 
-		HtmlInput usernameInput = loginPage.querySelector("input[name=\"username\"]");
-		HtmlInput passwordInput = loginPage.querySelector("input[name=\"password\"]");
-		usernameInput.type(username);
-		passwordInput.type(password);
+			HtmlPage loginPage = webClient.getPage("/login");
 
-		HtmlButton signInButton = loginPage.querySelector("button");
-		Page signInPage = signInButton.click();
-		log.info("signIn Page URL: {}", signInPage.getUrl());
+			HtmlInput usernameInput = loginPage.querySelector("input[name=\"username\"]");
+			HtmlInput passwordInput = loginPage.querySelector("input[name=\"password\"]");
+			usernameInput.type(username);
+			passwordInput.type(password);
 
-		HtmlPage authorize = webClient.getPage(
-				String.format("/oauth2/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s",
-						clientId, redirectUri, scope, state));
+			HtmlButton signInButton = loginPage.querySelector("button");
+			Page signInPage = signInButton.click();
+			log.info("signIn Page URL: {}", signInPage.getUrl());
 
-		String authorizeUrl = authorize.getUrl().toString();
-		log.info("authorize URL: {}", authorize.getUrl());
+			HtmlPage authorize = webClient.getPage(
+					String.format("/oauth2/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s",
+							clientId, redirectUri, scope, state));
 
-		String url;
-		if (authorizeUrl.startsWith(redirectUri)) {
-			url = authorizeUrl;
+			String authorizeUrl = authorize.getUrl().toString();
+			log.info("authorize URL: {}", authorize.getUrl());
+
+			String url;
+			if (authorizeUrl.startsWith(redirectUri)) {
+				url = authorizeUrl;
+			}
+			else {
+				HtmlCheckBoxInput profile = authorize.querySelector("input[id=\"profile\"]");
+				HtmlCheckBoxInput messageRead = authorize.querySelector("input[id=\"message.read\"]");
+				HtmlCheckBoxInput messageWrite = authorize.querySelector("input[id=\"message.write\"]");
+				HtmlButton submitButton = authorize.querySelector("button");
+
+				profile.setChecked(true);
+				messageRead.setChecked(true);
+				messageWrite.setChecked(true);
+
+				Page authorized = submitButton.click();
+				url = authorized.getUrl().toString();
+				log.info("authorized URL: {}", url);
+			}
+
+			UriTemplate uriTemplate = new UriTemplate(String.format("%s?code={code}&state={state}", redirectUri));
+			Map<String, String> match = uriTemplate.match(url);
+			String code = match.get("code");
+
+			String tokenUrl = String.format("http://127.0.0.1:%d/oauth2/token", serverPort);
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+
+			Map<?, ?> token = getToken(clientId, clientSecret, code, redirectUri, tokenUrl);
+			log.info("token:\n{}", objectWriter.writeValueAsString(token));
+
+			assertNotNull(token.get(OAuth2ParameterNames.ACCESS_TOKEN));
+			assertNotNull(token.get(OAuth2ParameterNames.REFRESH_TOKEN));
+			assertNotNull(token.get(OAuth2ParameterNames.SCOPE));
+			assertNotNull(token.get(OidcParameterNames.ID_TOKEN));
+			assertNotNull(token.get(OAuth2ParameterNames.TOKEN_TYPE));
+			assertNotNull(token.get(OAuth2ParameterNames.EXPIRES_IN));
+
+			String accessToken = token.get(OAuth2ParameterNames.ACCESS_TOKEN).toString();
+
+			String[] split = accessToken.split("\\.");
+			assertEquals(split.length, 3);
+
+			String payloadEncode = split[1];
+
+			String payloadDecode = Base64.decodeStr(payloadEncode);
+
+			Map payload = objectMapper.readValue(payloadDecode, Map.class);
+
+			log.info("payload:\n{}", objectWriter.writeValueAsString(payload));
+
+			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.SUB));
+			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.AUD));
+			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.NBF));
+			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.SCOPE));
+			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.ISS));
+			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.EXP));
+			assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.IAT));
+
+			// 授权码模式：
+			// sub：代表用户名
+			// aud：代表客户ID
+			assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.SUB), username);
+			assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.AUD), clientId);
+
+			RestTemplate restTemplate = new RestTemplate();
+			@SuppressWarnings("all")
+			ResponseEntity<Response> entity = restTemplate.getForEntity(
+					String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken), Response.class);
+
+			assertEquals(entity.getStatusCodeValue(), 200);
+
+			@SuppressWarnings("unchecked")
+			Response<String> response = entity.getBody();
+
+			assertNotNull(response);
+
+			log.info("\n{}", objectWriter.writeValueAsString(response));
+
+			String title = response.getData();
+
+			assertEquals("徐晓伟微服务", title);
+
+			String refreshToken = token.get(OAuth2ParameterNames.REFRESH_TOKEN).toString();
+
+			Map<?, ?> refresh = refreshToken(clientId, clientSecret, refreshToken, tokenUrl);
+
+			assertNotNull(refresh);
+
+			log.info("refresh:\n{}", objectWriter.writeValueAsString(refresh));
+
+			assertNotNull(refresh.get(OAuth2ParameterNames.ACCESS_TOKEN));
+			assertNotNull(refresh.get(OAuth2ParameterNames.REFRESH_TOKEN));
+			assertNotNull(refresh.get(OAuth2ParameterNames.SCOPE));
+			assertNotNull(refresh.get(OidcParameterNames.ID_TOKEN));
+			assertNotNull(refresh.get(OAuth2ParameterNames.TOKEN_TYPE));
+			assertNotNull(refresh.get(OAuth2ParameterNames.EXPIRES_IN));
 		}
-		else {
-			HtmlCheckBoxInput profile = authorize.querySelector("input[id=\"profile\"]");
-			HtmlCheckBoxInput messageRead = authorize.querySelector("input[id=\"message.read\"]");
-			HtmlCheckBoxInput messageWrite = authorize.querySelector("input[id=\"message.write\"]");
-			HtmlButton submitButton = authorize.querySelector("button");
-
-			profile.setChecked(true);
-			messageRead.setChecked(true);
-			messageWrite.setChecked(true);
-
-			Page authorized = submitButton.click();
-			url = authorized.getUrl().toString();
-			log.info("authorized URL: {}", url);
-		}
-
-		UriTemplate uriTemplate = new UriTemplate(String.format("%s?code={code}&state={state}", redirectUri));
-		Map<String, String> match = uriTemplate.match(url);
-		String code = match.get("code");
-
-		String tokenUrl = String.format("http://127.0.0.1:%d/oauth2/token", serverPort);
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
-
-		Map<?, ?> token = getToken(clientId, clientSecret, code, redirectUri, tokenUrl);
-		log.info("token:\n{}", objectWriter.writeValueAsString(token));
-
-		assertNotNull(token.get(OAuth2ParameterNames.ACCESS_TOKEN));
-		assertNotNull(token.get(OAuth2ParameterNames.REFRESH_TOKEN));
-		assertNotNull(token.get(OAuth2ParameterNames.SCOPE));
-		assertNotNull(token.get(OidcParameterNames.ID_TOKEN));
-		assertNotNull(token.get(OAuth2ParameterNames.TOKEN_TYPE));
-		assertNotNull(token.get(OAuth2ParameterNames.EXPIRES_IN));
-
-		String accessToken = token.get(OAuth2ParameterNames.ACCESS_TOKEN).toString();
-
-		String[] split = accessToken.split("\\.");
-		assertEquals(split.length, 3);
-
-		String payloadEncode = split[1];
-
-		String payloadDecode = Base64.decodeStr(payloadEncode);
-
-		Map payload = objectMapper.readValue(payloadDecode, Map.class);
-
-		log.info("payload:\n{}", objectWriter.writeValueAsString(payload));
-
-		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.SUB));
-		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.AUD));
-		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.NBF));
-		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.SCOPE));
-		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.ISS));
-		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.EXP));
-		assertNotNull(payload.get(OAuth2TokenIntrospectionClaimNames.IAT));
-
-		// 授权码模式：
-		// sub：代表用户名
-		// aud：代表客户ID
-		assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.SUB), username);
-		assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.AUD), clientId);
-
-		RestTemplate restTemplate = new RestTemplate();
-		@SuppressWarnings("all")
-		ResponseEntity<Response> entity = restTemplate.getForEntity(
-				String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken), Response.class);
-
-		assertEquals(entity.getStatusCodeValue(), 200);
-
-		@SuppressWarnings("unchecked")
-		Response<String> response = entity.getBody();
-
-		assertNotNull(response);
-
-		log.info("\n{}", objectWriter.writeValueAsString(response));
-
-		String title = response.getData();
-
-		assertEquals("徐晓伟微服务", title);
-
-		String refreshToken = token.get(OAuth2ParameterNames.REFRESH_TOKEN).toString();
-
-		Map<?, ?> refresh = refreshToken(clientId, clientSecret, refreshToken, tokenUrl);
-
-		assertNotNull(refresh);
-
-		log.info("refresh:\n{}", objectWriter.writeValueAsString(refresh));
-
-		assertNotNull(refresh.get(OAuth2ParameterNames.ACCESS_TOKEN));
-		assertNotNull(refresh.get(OAuth2ParameterNames.REFRESH_TOKEN));
-		assertNotNull(refresh.get(OAuth2ParameterNames.SCOPE));
-		assertNotNull(refresh.get(OidcParameterNames.ID_TOKEN));
-		assertNotNull(refresh.get(OAuth2ParameterNames.TOKEN_TYPE));
-		assertNotNull(refresh.get(OAuth2ParameterNames.EXPIRES_IN));
 	}
 
 	private Map<?, ?> getToken(String clientId, String clientSecret, String code, String redirectUri, String tokenUrl) {
