@@ -4,6 +4,7 @@ import cloud.xuxiaowei.redis.constant.RedisConstants;
 import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.core.RedisAccessor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -32,7 +33,8 @@ public class RedisUtils {
 		}
 
 		RedisConnection connection = connectionFactory.getConnection();
-		Properties info = connection.info();
+		RedisServerCommands serverCommands = connection.serverCommands();
+		Properties info = serverCommands.info();
 
 		if (info == null) {
 			throw new CloudRuntimeException("Redis 连接属性 为 null");
