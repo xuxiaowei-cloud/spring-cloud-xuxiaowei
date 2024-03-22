@@ -19,6 +19,7 @@
         <slf4j.version>1.7.36</slf4j.version>
         <spring-boot.version>2.7.18</spring-boot.version>
 
+        <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
 
     </properties>
@@ -82,8 +83,62 @@
         </dependency>
     </dependencies>
 
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+        <license>
+            <name>996.ICU</name>
+            <url>https://github.com/996icu/996.ICU/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+            <comments>The name 996.ICU refers to "Work by '996', sick in ICU", an ironic saying among Chinese
+                developers, which means that by following the "996" work schedule, you are risking yourself getting into
+                the ICU (Intensive Care Unit).
+            </comments>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>徐晓伟工作室</name>
+        <url>http://xuxiaowei.com.cn</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>徐晓伟</name>
+            <email>xuxiaowei@xuxiaowei.com.cn</email>
+            <organization>徐晓伟工作室</organization>
+            <organizationUrl>http://xuxiaowei.com.cn</organizationUrl>
+        </developer>
+    </developers>
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>${git-commit-id-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <offline>true</offline>
+                    <dateFormatTimeZone>GMT+8</dateFormatTimeZone>
+                    <dateFormat>yyyy-MM-dd HH:mm:ss</dateFormat>
+                    <format>json</format>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.json
+                    </generateGitPropertiesFilename>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
