@@ -73,7 +73,7 @@ public class Response<T> implements Serializable {
 	}
 
 	public static <T> Response<T> error(String message) {
-		return new Response<T>().setMessage(message).setRequestId(requestId());
+		return new Response<T>().setCode("500").setMessage(message).setRequestId(requestId());
 	}
 
 	public static <T> Response<T> error(String code, String message) {
