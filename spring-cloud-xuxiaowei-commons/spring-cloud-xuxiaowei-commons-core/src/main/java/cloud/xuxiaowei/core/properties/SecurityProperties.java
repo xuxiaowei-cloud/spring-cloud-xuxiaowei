@@ -1,6 +1,6 @@
 package cloud.xuxiaowei.core.properties;
 
-import cn.hutool.crypto.asymmetric.RSA;
+import cloud.xuxiaowei.utils.RSAUtils;
 import lombok.Data;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -42,7 +42,7 @@ public class SecurityProperties {
 	private String tokenCheckPrefix = "spring-authorization-server:oauth2_authorization:access_token:";
 
 	public PublicKey publicKey() {
-		return new RSA(null, this.publicKey).getPublicKey();
+		return RSAUtils.publicKey(this.publicKey);
 	}
 
 	public RSAPublicKey rsaPublicKey() {
@@ -50,7 +50,7 @@ public class SecurityProperties {
 	}
 
 	public PrivateKey privateKey() {
-		return new RSA(this.privateKey, null).getPrivateKey();
+		return RSAUtils.privateKey(this.privateKey);
 	}
 
 	/**
