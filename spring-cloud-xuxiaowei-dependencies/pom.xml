@@ -22,7 +22,6 @@
         <spring-boot-admin.version>2.7.15</spring-boot-admin.version>
         <spring-security-oauth2-authorization-server.version>0.4.5</spring-security-oauth2-authorization-server.version>
 
-        <hutool-all.version>5.8.26</hutool-all.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <guava.version>33.1.0-jre</guava.version>
         <p6spy.version>3.9.1</p6spy.version>
@@ -67,11 +66,6 @@
                 <version>${spring-security-oauth2-authorization-server.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool-all.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>

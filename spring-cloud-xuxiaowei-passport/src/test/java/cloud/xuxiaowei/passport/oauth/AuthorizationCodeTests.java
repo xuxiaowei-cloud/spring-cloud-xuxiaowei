@@ -2,9 +2,9 @@ package cloud.xuxiaowei.passport.oauth;
 
 import cloud.xuxiaowei.core.properties.SecurityProperties;
 import cloud.xuxiaowei.oauth2.constant.OAuth2Constants;
+import cloud.xuxiaowei.utils.Base64Utils;
 import cloud.xuxiaowei.utils.Response;
 import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
-import cn.hutool.core.codec.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.gargoylesoftware.htmlunit.Page;
@@ -142,7 +142,7 @@ class AuthorizationCodeTests {
 
 			String payloadEncode = split[1];
 
-			String payloadDecode = Base64.decodeStr(payloadEncode);
+			String payloadDecode = Base64Utils.decodeStr(payloadEncode);
 
 			Map payload = objectMapper.readValue(payloadDecode, Map.class);
 

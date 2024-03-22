@@ -1,7 +1,7 @@
 package cloud.xuxiaowei.passport.oauth;
 
 import cloud.xuxiaowei.oauth2.constant.OAuth2Constants;
-import cn.hutool.core.codec.Base64;
+import cloud.xuxiaowei.utils.Base64Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -79,7 +79,7 @@ class ClientCredentialsTests {
 
 		String payloadEncode = split[1];
 
-		String payloadDecode = Base64.decodeStr(payloadEncode);
+		String payloadDecode = Base64Utils.decodeStr(payloadEncode);
 
 		Map payload = objectMapper.readValue(payloadDecode, Map.class);
 
