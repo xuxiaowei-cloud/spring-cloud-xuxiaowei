@@ -16,6 +16,7 @@
 package cloud.xuxiaowei.passport.config;
 
 import cloud.xuxiaowei.core.properties.SecurityProperties;
+import cloud.xuxiaowei.passport.handler.ClientAuthenticationResponseHandler;
 import cloud.xuxiaowei.passport.handler.TokenEndpointErrorResponseHandler;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -63,6 +64,10 @@ public class AuthorizationServerConfig {
 
 		authorizationServerConfigurer.tokenEndpoint(tokenEndpointCustomizer -> {
 			tokenEndpointCustomizer.errorResponseHandler(new TokenEndpointErrorResponseHandler());
+		});
+
+		authorizationServerConfigurer.clientAuthentication(clientAuthenticationCustomizer -> {
+			clientAuthenticationCustomizer.errorResponseHandler(new ClientAuthenticationResponseHandler());
 		});
 
 		http.exceptionHandling(
