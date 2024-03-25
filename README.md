@@ -39,6 +39,42 @@
     1. Gitee: https://gitee.com/xuxiaowei-cloud/xuxiaowei-cloud
     2. GitHub: https://github.com/xuxiaowei-cloud/xuxiaowei-cloud
 
+## 项目开发的原则
+
+### 分支
+
+1. 功能同时更新 `spring-boot-2`、`spring-boot-3` 两个分支
+2. 先开发 `spring-boot-2` 分支，然后使用 `git cherry-pick`(`摘樱桃`) 将功能同步到 `spring-boot-3` 分支，并根据代码内容做调整
+
+### 依赖
+
+1. Spring 全家桶（不使用 `Shiro` 等其他安全框架）
+    1. Spring Security
+    2. Spring Security OAuth2 Authorization Server（OAuth 2.1）
+2. 尽量少的使用其他依赖
+    1. 使用 springdoc 生成 API 文档：支持 `OpenAPI 3`、`Swagger-ui`、`OAuth 2.1` 等
+    2. JSON 处理使用 `jackson`，不使用 `fastjson`、`hutool` 等
+    3. 其他工具类使用 `org.apache.commons:commons-lang3` 和 `com.google.guava:guava`，不使用 `hutool` 等
+3. 已上依赖不能满足的情况，自己写，并且包含完善的测试类
+4. 依赖保存最新
+    1. 使用 [dependabot.yml](.github/dependabot.yml) 检测依赖升级、创建升级依赖PR，执行自动化测试，由人工审核通过后，合并到目标分支
+
+### 代码格式
+
+1. 使用 [spring-javaformat](https://github.com/spring-io/spring-javaformat/)
+    1. Spring 提供：IntelliJ IDEA、Visual Studio Code、Eclipse 插件
+
+### 功能
+
+1. 每开发一个功能，要包含详细的自动化测试
+2. 每发现一个bug，修复时要包含详细的自动化测试，测试内容包含能复现 bug 的测试
+3. [十二要素应用宣言](https://12factor.net/zh_cn/)
+    1. [I. 基准代码](https://12factor.net/zh_cn/codebase) 一份基准代码（Codebase），多份部署（deploy）
+    2. [II. 依赖](https://12factor.net/zh_cn/dependencies) 显式声明依赖关系
+    3. [III. 配置](https://12factor.net/zh_cn/config) 在环境中存储配置
+    4. [V. 构建，发布，运行](https://12factor.net/zh_cn/build-release-run) 严格分离构建和运行
+    5. [X. 开发环境与线上环境等价](https://12factor.net/zh_cn/dev-prod-parity) 尽可能的保持开发，预发布，线上环境相同
+
 ## 项目功能
 
 ### OAuth 2.1
