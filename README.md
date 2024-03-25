@@ -52,12 +52,14 @@
     1. Spring Security
     2. Spring Security OAuth2 Authorization Server（OAuth 2.1）
 2. 尽量少的使用其他依赖
-    1. 使用 springdoc 生成 API 文档：支持 `OpenAPI 3`、`Swagger-ui`、`OAuth 2.1` 等
+    1. 使用 `springdoc` 生成 API 文档：支持 `OpenAPI 3`、`Swagger-ui`、`OAuth 2.1` 等
     2. JSON 处理使用 `jackson`，不使用 `fastjson`、`hutool` 等
-    3. 其他工具类使用 `org.apache.commons:commons-lang3` 和 `com.google.guava:guava`，不使用 `hutool` 等
+    3. 连接池使用 Spring Boot 默认的 `hikari`，不使用 `druid`
+    4. 其他工具类使用 `org.apache.commons:commons-lang3` 和 `com.google.guava:guava`，不使用 `hutool` 等
 3. 已上依赖不能满足的情况，自己写，并且包含完善的测试类
 4. 依赖保存最新
-    1. 使用 [dependabot.yml](.github/dependabot.yml) 检测依赖升级、创建升级依赖PR，执行自动化测试，由人工审核通过后，合并到目标分支
+    1. 使用 [dependabot.yml](.github/dependabot.yml) `检测依赖升级`、`创建升级依赖PR`，`执行自动化测试`，`人工审核`，
+       通过后合并到目标分支
 
 ### 代码格式
 
@@ -74,6 +76,13 @@
     3. [III. 配置](https://12factor.net/zh_cn/config) 在环境中存储配置
     4. [V. 构建，发布，运行](https://12factor.net/zh_cn/build-release-run) 严格分离构建和运行
     5. [X. 开发环境与线上环境等价](https://12factor.net/zh_cn/dev-prod-parity) 尽可能的保持开发，预发布，线上环境相同
+4. 测试
+    1. 支持 [GitLab 流水线](.gitlab-ci.yml)
+       [自动化测试](https://jihulab.com/xuxiaowei-jihu/xuxiaowei-cloud/spring-cloud-xuxiaowei/-/pipelines?page=1&scope=all&ref=spring-boot-3)
+    2. 支持 [GitHub 流水线](.github/workflows/maven-spring-boot-3.yml)
+       [自动化测试](https://github.com/xuxiaowei-cloud/spring-cloud-xuxiaowei/actions/workflows/maven-spring-boot-3.yml)
+    3. 测试开始时，创建一个空白的数据库，自动化脚本创建数据库与表结构，导入基础数据，然后再打包，运行单元测试、集成测试
+5. 评价一个项目是否优秀的其中一个因素：在不修改基础代码和基础数据的情况下，是否可以随时开源
 
 ## 项目功能
 
