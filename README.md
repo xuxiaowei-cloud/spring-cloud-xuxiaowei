@@ -209,3 +209,16 @@
 - [spring-javaformat-intellij-idea-plugin](https://repo1.maven.org/maven2/io/spring/javaformat/spring-javaformat-intellij-idea-plugin/)
 
 ### [十二要素应用宣言](https://12factor.net/zh_cn/)
+
+## 问题
+
+1. 无法读取 Nacos 配置 ？
+
+   启动项目出现错误，yaml 配置文件无法正确读取
+
+    ```
+    Caused by: org.yaml.snakeyaml.error.YAMLException: java.nio.charset.MalformedInputException: Input length = 1
+    ```
+
+    1. 使用 `java -Dfile.encoding=UTF-8 -jar *.jar`
+    2. 如果 Windows 控制台中文乱码，执行 `chcp 65001 && java -Dfile.encoding=UTF-8 -jar *.jar`
