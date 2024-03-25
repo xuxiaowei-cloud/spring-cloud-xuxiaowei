@@ -1,6 +1,7 @@
 <div align="center" style="text-align: center;">
     <h1>spring-cloud-xuxiaowei</h1>
     <h3>徐晓伟微服务</h3>
+    <h4>支持 Spring Boot 2、3 最新版</h4>
     <a target="_blank" href="https://github.com/996icu/996.ICU/blob/master/LICENSE">
         <img alt="License-Anti" src="https://img.shields.io/badge/License-Anti 996-blue.svg">
     </a>
@@ -36,8 +37,11 @@
 3. 表结构、数据（包含 Nacos 配置）在 [sql](sql)
 4. [CodeCov 代码覆盖率](https://app.codecov.io/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei/)
 5. 原始项目地址:
-    1. Gitee: https://gitee.com/xuxiaowei-cloud/xuxiaowei-cloud
-    2. GitHub: https://github.com/xuxiaowei-cloud/xuxiaowei-cloud
+
+|               | Gitee                                                  | GitHub                                                  |
+|---------------|--------------------------------------------------------|---------------------------------------------------------|
+| Spring Boot 2 | https://gitee.com/xuxiaowei-cloud/xuxiaowei-cloud      | https://github.com/xuxiaowei-cloud/xuxiaowei-cloud      |
+| Spring Boot 3 | https://gitee.com/xuxiaowei-cloud/xuxiaowei-cloud-next | https://github.com/xuxiaowei-cloud/xuxiaowei-cloud-next |
 
 ## 项目开发的原则
 
