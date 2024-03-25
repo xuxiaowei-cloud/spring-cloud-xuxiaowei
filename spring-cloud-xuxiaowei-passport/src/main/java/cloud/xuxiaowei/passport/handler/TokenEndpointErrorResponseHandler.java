@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import java.io.IOException;
 
 /**
- * OAuth 2.1 异常处理
+ * OAuth 2.1 Token 异常处理
  *
  * @author xuxiaowei
  * @since 0.0.1
@@ -26,7 +26,7 @@ public class TokenEndpointErrorResponseHandler implements AuthenticationFailureH
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 
-		log.error("身份验证失败处理程序：", exception);
+		log.error("OAuth 2.1 Token 异常处理：", exception);
 
 		Response<?> error = Response.error();
 
