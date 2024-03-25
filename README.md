@@ -31,8 +31,9 @@
 ## 项目说明
 
 1. 本项目为重构项目，与原始项目存在较大差异
-2. 本项目从头开发，并有配套视频（充电专属），B站网址（搜索 `重构微服务` 或者直接查看充电专属视频）:
-   https://space.bilibili.com/198580655
+2. 本项目从头开发，在 [B站](https://www.bilibili.com/) 有配套视频（充电专属）
+    1. 搜索 [重构微服务](https://search.bilibili.com/video?keyword=%E9%87%8D%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1)
+    2. 查看 [充电专属视频](https://space.bilibili.com/198580655)
 3. 表结构、数据（包含 Nacos 配置）在 [sql](sql)
 4. [CodeCov 代码覆盖率](https://app.codecov.io/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei/)
 5. 原始项目地址:
