@@ -41,6 +41,11 @@ public class Response<T> implements Serializable {
 	private String message;
 
 	/**
+	 * 错误描述地址
+	 */
+	private String url;
+
+	/**
 	 * 请求 ID
 	 */
 	@Setter(AccessLevel.PRIVATE)

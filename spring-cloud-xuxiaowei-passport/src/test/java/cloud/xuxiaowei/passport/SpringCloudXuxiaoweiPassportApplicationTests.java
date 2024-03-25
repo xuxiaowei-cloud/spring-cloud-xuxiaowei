@@ -23,9 +23,9 @@ import java.util.Map;
 @SpringBootTest
 public class SpringCloudXuxiaoweiPassportApplicationTests {
 
-	static final String CLIENT_ID = "messaging-client";
+	public static final String CLIENT_ID = "messaging-client";
 
-	static final String CLIENT_SECRET = "secret";
+	public static final String CLIENT_SECRET = "secret";
 
 	public static String clientCredentialsAccessToken(RestTemplate restTemplate) throws JsonProcessingException {
 		return clientCredentialsMap(restTemplate).get("access_token").toString();

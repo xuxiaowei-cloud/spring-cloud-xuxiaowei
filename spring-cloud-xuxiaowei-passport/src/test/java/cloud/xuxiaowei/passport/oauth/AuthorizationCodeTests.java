@@ -2,6 +2,7 @@ package cloud.xuxiaowei.passport.oauth;
 
 import cloud.xuxiaowei.core.properties.SecurityProperties;
 import cloud.xuxiaowei.oauth2.constant.OAuth2Constants;
+import cloud.xuxiaowei.passport.SpringCloudXuxiaoweiPassportApplicationTests;
 import cloud.xuxiaowei.utils.Base64Utils;
 import cloud.xuxiaowei.utils.Response;
 import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
@@ -70,9 +71,6 @@ class AuthorizationCodeTests {
 		String redirectUri = "https://home.baidu.com/home/index/contact_us";
 		String scope = "openid profile message.read message.write";
 
-		String clientId = "messaging-client";
-		String clientSecret = "secret";
-
 		String tokenCheckPrefix = securityProperties.getTokenCheckPrefix();
 
 		for (int i = 0; i < 3; i++) {
@@ -92,7 +90,7 @@ class AuthorizationCodeTests {
 
 			HtmlPage authorize = webClient.getPage(
 					String.format("/oauth2/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s",
-							clientId, redirectUri, scope, state));
+							SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID, redirectUri, scope, state));
 
 			String authorizeUrl = authorize.getUrl().toString();
 			log.info("authorize URL: {}", authorize.getUrl());
@@ -125,7 +123,8 @@ class AuthorizationCodeTests {
 			ObjectMapper objectMapper = new ObjectMapper();
 			ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
-			Map<?, ?> token = getToken(clientId, clientSecret, code, redirectUri, tokenUrl);
+			Map<?, ?> token = getToken(SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID,
+					SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_SECRET, code, redirectUri, tokenUrl);
 			log.info("token:\n{}", objectWriter.writeValueAsString(token));
 
 			assertNotNull(token.get(OAuth2ParameterNames.ACCESS_TOKEN));
@@ -163,7 +162,8 @@ class AuthorizationCodeTests {
 			// sub：代表用户名
 			// aud：代表客户ID
 			assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.SUB), username);
-			assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.AUD), clientId);
+			assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.AUD),
+					SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID);
 
 			RestTemplate restTemplate = new RestTemplate();
 
@@ -206,7 +206,8 @@ class AuthorizationCodeTests {
 
 			String refreshToken = token.get(OAuth2ParameterNames.REFRESH_TOKEN).toString();
 
-			Map<?, ?> refresh = refreshToken(clientId, clientSecret, refreshToken, tokenUrl);
+			Map<?, ?> refresh = refreshToken(SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID,
+					SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_SECRET, refreshToken, tokenUrl);
 
 			assertNotNull(refresh);
 
@@ -219,6 +220,110 @@ class AuthorizationCodeTests {
 			assertNotNull(refresh.get(OAuth2ParameterNames.TOKEN_TYPE));
 			assertNotNull(refresh.get(OAuth2ParameterNames.EXPIRES_IN));
 		}
+	}
+
+	@Test
+	void codeMissingError() {
+
+		String tokenUrl = String.format("http://127.0.0.1:%d/oauth2/token", serverPort);
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		httpHeaders.setBasicAuth(SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID,
+				SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_SECRET);
+		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+		requestBody.put(OAuth2ParameterNames.GRANT_TYPE,
+				Collections.singletonList(AuthorizationGrantType.AUTHORIZATION_CODE.getValue()));
+		HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
+
+		Response<?> response = restTemplate.postForObject(tokenUrl, httpEntity, Response.class);
+
+		assertNotNull(response);
+		assertFalse(response.isSuccess());
+		assertEquals("invalid_request", response.getCode());
+		assertEquals("OAuth 2.0 Parameter: code", response.getMessage());
+		assertEquals("https://datatracker.ietf.org/doc/html/rfc6749#section-5.2", response.getUrl());
+		assertNotNull(response.getRequestId());
+		assertNull(response.getData());
+	}
+
+	@Test
+	void redirectUriError() throws IOException {
+
+		String username = "user1";
+		String password = "password";
+
+		String redirectUri = "https://home.baidu.com/home/index/contact_us";
+		String scope = "openid profile message.read message.write";
+
+		String tokenUrl = String.format("http://127.0.0.1:%d/oauth2/token", serverPort);
+
+		String state = UUID.randomUUID().toString();
+
+		HtmlPage loginPage = webClient.getPage("/login");
+
+		HtmlInput usernameInput = loginPage.querySelector("input[name=\"username\"]");
+		HtmlInput passwordInput = loginPage.querySelector("input[name=\"password\"]");
+		usernameInput.type(username);
+		passwordInput.type(password);
+
+		HtmlButton signInButton = loginPage.querySelector("button");
+		Page signInPage = signInButton.click();
+		log.info("signIn Page URL: {}", signInPage.getUrl());
+
+		HtmlPage authorize = webClient.getPage(
+				String.format("/oauth2/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s",
+						SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID, redirectUri, scope, state));
+
+		String authorizeUrl = authorize.getUrl().toString();
+		log.info("authorize URL: {}", authorize.getUrl());
+
+		String url;
+		if (authorizeUrl.startsWith(redirectUri)) {
+			url = authorizeUrl;
+		}
+		else {
+			HtmlCheckBoxInput profile = authorize.querySelector("input[id=\"profile\"]");
+			HtmlCheckBoxInput messageRead = authorize.querySelector("input[id=\"message.read\"]");
+			HtmlCheckBoxInput messageWrite = authorize.querySelector("input[id=\"message.write\"]");
+			HtmlButton submitButton = authorize.querySelector("button");
+
+			profile.setChecked(true);
+			messageRead.setChecked(true);
+			messageWrite.setChecked(true);
+
+			Page authorized = submitButton.click();
+			url = authorized.getUrl().toString();
+			log.info("authorized URL: {}", url);
+		}
+
+		UriTemplate uriTemplate = new UriTemplate(String.format("%s?code={code}&state={state}", redirectUri));
+		Map<String, String> match = uriTemplate.match(url);
+		String code = match.get("code");
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		httpHeaders.setBasicAuth(SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID,
+				SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_SECRET);
+		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+		requestBody.put(OAuth2ParameterNames.CODE, Collections.singletonList(code));
+		requestBody.put(OAuth2ParameterNames.GRANT_TYPE,
+				Collections.singletonList(AuthorizationGrantType.AUTHORIZATION_CODE.getValue()));
+		requestBody.put(OAuth2ParameterNames.REDIRECT_URI, Collections.singletonList(redirectUri + "test"));
+
+		HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
+
+		Response<?> response = restTemplate.postForObject(tokenUrl, httpEntity, Response.class);
+
+		assertNotNull(response);
+		assertFalse(response.isSuccess());
+		assertEquals("invalid_grant", response.getCode());
+		assertNull(response.getMessage());
+		assertNull(response.getUrl());
+		assertNotNull(response.getRequestId());
+		assertNull(response.getData());
 	}
 
 	private Map<?, ?> getToken(String clientId, String clientSecret, String code, String redirectUri, String tokenUrl) {

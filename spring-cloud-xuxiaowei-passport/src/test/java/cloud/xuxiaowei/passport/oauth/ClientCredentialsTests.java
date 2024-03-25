@@ -1,7 +1,9 @@
 package cloud.xuxiaowei.passport.oauth;
 
 import cloud.xuxiaowei.oauth2.constant.OAuth2Constants;
+import cloud.xuxiaowei.passport.SpringCloudXuxiaoweiPassportApplicationTests;
 import cloud.xuxiaowei.utils.Base64Utils;
+import cloud.xuxiaowei.utils.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -23,8 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * OAuth 2.1 凭证式 自动化 测试类
@@ -43,13 +44,11 @@ class ClientCredentialsTests {
 	@Test
 	void start() throws JsonProcessingException {
 
-		String clientId = "messaging-client";
-		String clientSecret = "secret";
-
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		httpHeaders.setBasicAuth(clientId, clientSecret);
+		httpHeaders.setBasicAuth(SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID,
+				SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_SECRET);
 		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
 		requestBody.put(OAuth2ParameterNames.GRANT_TYPE,
 				Collections.singletonList(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()));
@@ -98,9 +97,61 @@ class ClientCredentialsTests {
 		// 凭证式模式：
 		// sub：代表用户名，由于凭证式是自己给自己授权，所以 sub 和 aud 相同，都是 客户ID
 		// aud：代表客户ID
-		assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.SUB), clientId);
-		assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.AUD), clientId);
+		assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.SUB),
+				SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID);
+		assertEquals(payload.get(OAuth2TokenIntrospectionClaimNames.AUD),
+				SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID);
 
+	}
+
+	@Test
+	void grantTypeMissingError() {
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		httpHeaders.setBasicAuth(SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID,
+				SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_SECRET);
+		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+		requestBody.put(OAuth2ParameterNames.SCOPE,
+				Collections.singletonList("openid profile message.read message.write"));
+		HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
+
+		Response<?> response = restTemplate.postForObject(String.format("http://127.0.0.1:%d/oauth2/token", serverPort),
+				httpEntity, Response.class);
+
+		assertNotNull(response);
+		assertFalse(response.isSuccess());
+		assertEquals("invalid_request", response.getCode());
+		assertEquals("OAuth 2.0 Parameter: grant_type", response.getMessage());
+		assertEquals("https://datatracker.ietf.org/doc/html/rfc6749#section-5.2", response.getUrl());
+		assertNotNull(response.getRequestId());
+		assertNull(response.getData());
+	}
+
+	@Test
+	void scopeInvalidError() {
+
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		httpHeaders.setBasicAuth(SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_ID,
+				SpringCloudXuxiaoweiPassportApplicationTests.CLIENT_SECRET);
+		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+		requestBody.put(OAuth2ParameterNames.GRANT_TYPE,
+				Collections.singletonList(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()));
+		requestBody.put(OAuth2ParameterNames.SCOPE, Collections.singletonList("a"));
+		HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
+
+		Response<?> response = restTemplate.postForObject(String.format("http://127.0.0.1:%d/oauth2/token", serverPort),
+				httpEntity, Response.class);
+
+		assertNotNull(response);
+		assertFalse(response.isSuccess());
+		assertEquals("invalid_scope", response.getCode());
+		assertNull(response.getMessage());
+		assertNotNull(response.getRequestId());
+		assertNull(response.getData());
 	}
 
 }

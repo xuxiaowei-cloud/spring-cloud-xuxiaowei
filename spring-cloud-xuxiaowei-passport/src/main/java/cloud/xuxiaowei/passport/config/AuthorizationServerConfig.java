@@ -16,6 +16,7 @@
 package cloud.xuxiaowei.passport.config;
 
 import cloud.xuxiaowei.core.properties.SecurityProperties;
+import cloud.xuxiaowei.passport.handler.TokenEndpointErrorResponseHandler;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -53,19 +54,20 @@ public class AuthorizationServerConfig {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-			// Enable
-			// OpenID
-			// Connect
-			// 1.0
-			.oidc(Customizer.withDefaults());
 
-		// @formatter:off
-		http
-			.exceptionHandling(exceptions ->
-				exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-			);
-		// @formatter:on
+		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http
+			.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
+
+		// Enable OpenID Connect 1.0
+		authorizationServerConfigurer.oidc(Customizer.withDefaults());
+
+		authorizationServerConfigurer.tokenEndpoint(tokenEndpointCustomizer -> {
+			tokenEndpointCustomizer.errorResponseHandler(new TokenEndpointErrorResponseHandler());
+		});
+
+		http.exceptionHandling(
+				exceptions -> exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")));
+
 		return http.build();
 	}
 
