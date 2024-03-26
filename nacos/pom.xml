@@ -7,6 +7,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>nacos</name>
     <description>Nacos 注册/配置中心</description>
+    <url>https://github.com/xuxiaowei-cloud/spring-cloud-xuxiaowei</url>
     <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
@@ -19,6 +20,7 @@
         <slf4j.version>1.7.36</slf4j.version>
         <spring-boot.version>2.7.18</spring-boot.version>
 
+        <maven-gpg-plugin.version>3.2.1</maven-gpg-plugin.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
 
@@ -101,6 +103,17 @@
         </license>
     </licenses>
 
+    <scm>
+        <url>https://github.com/xuxiaowei-cloud/spring-cloud-xuxiaowei</url>
+        <connection>scm:git:https://git@github.com/xuxiaowei-cloud/spring-cloud-xuxiaowei.git</connection>
+        <developerConnection>http://xuxiaowei.com.cn</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/xuxiaowei-cloud/spring-cloud-xuxiaowei/issues</url>
+    </issueManagement>
+
     <organization>
         <name>徐晓伟工作室</name>
         <url>http://xuxiaowei.com.cn</url>
@@ -168,5 +181,29 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>gpg</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven-gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
