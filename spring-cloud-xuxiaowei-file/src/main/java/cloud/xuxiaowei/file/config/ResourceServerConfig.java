@@ -2,6 +2,7 @@ package cloud.xuxiaowei.file.config;
 
 import cloud.xuxiaowei.core.properties.SecurityProperties;
 import cloud.xuxiaowei.core.utils.SecurityUtils;
+import cloud.xuxiaowei.oauth2.point.ResourceServerAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,6 +49,10 @@ public class ResourceServerConfig {
 				NimbusJwtDecoder nimbusJwtDecoder = publicKeyJwtDecoderBuilder.build();
 				oauth2ResourceServer.decoder(nimbusJwtDecoder);
 			});
+		});
+
+		http.oauth2ResourceServer(oauth2ResourceServerCustomizer -> {
+			oauth2ResourceServerCustomizer.authenticationEntryPoint(new ResourceServerAuthenticationEntryPoint());
 		});
 
 		return http.build();

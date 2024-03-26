@@ -5,7 +5,6 @@ import cloud.xuxiaowei.oauth2.constant.OAuth2Constants;
 import cloud.xuxiaowei.passport.SpringCloudXuxiaoweiPassportApplicationTests;
 import cloud.xuxiaowei.utils.Base64Utils;
 import cloud.xuxiaowei.utils.Response;
-import cloud.xuxiaowei.utils.exception.CloudRuntimeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.gargoylesoftware.htmlunit.Page;
@@ -21,14 +20,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
@@ -174,17 +175,19 @@ class AuthorizationCodeTests {
 
 				stringRedisTemplate.delete(key);
 
-				try {
-					entity = restTemplate.getForEntity(
-							String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken),
-							Response.class);
-				}
-				catch (HttpClientErrorException.Unauthorized e) {
-					assertEquals(e.getStatusCode(), HttpStatus.UNAUTHORIZED);
-					continue;
-				}
+				entity = restTemplate.getForEntity(
+						String.format("http://127.0.0.1:%d?access_token=%s", serverPort, accessToken), Response.class);
 
-				throw new CloudRuntimeException("测试异常，未复现 Redis 中不存在授权 Token 的情况");
+				Response<?> response = entity.getBody();
+
+				assertNotNull(response);
+				assertFalse(response.isSuccess());
+				assertEquals("invalid_token", response.getCode());
+				assertEquals("Invalid token", response.getMessage());
+				assertEquals("https://tools.ietf.org/html/rfc6750#section-3.1", response.getUrl());
+				assertNotNull(response.getRequestId());
+				assertNull(response.getData());
+				continue;
 			}
 			else {
 				entity = restTemplate.getForEntity(
@@ -200,9 +203,13 @@ class AuthorizationCodeTests {
 
 			log.info("\n{}", objectWriter.writeValueAsString(response));
 
-			String title = response.getData();
-
-			assertEquals("徐晓伟微服务", title);
+			assertNotNull(response);
+			assertTrue(response.isSuccess());
+			assertNull(response.getCode());
+			assertNull(response.getMessage());
+			assertNull(response.getUrl());
+			assertNotNull(response.getRequestId());
+			assertEquals("徐晓伟微服务", response.getData());
 
 			String refreshToken = token.get(OAuth2ParameterNames.REFRESH_TOKEN).toString();
 
