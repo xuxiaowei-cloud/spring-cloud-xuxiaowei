@@ -88,7 +88,7 @@
        [自动化测试](https://jihulab.com/xuxiaowei-jihu/xuxiaowei-cloud/spring-cloud-xuxiaowei/-/pipelines?page=1&scope=all&ref=spring-boot-2)
     2. 支持 [GitHub 流水线](.github/workflows/maven-spring-boot-2.yml)
        [自动化测试](https://github.com/xuxiaowei-cloud/spring-cloud-xuxiaowei/actions/workflows/maven-spring-boot-2.yml)
-    3. 支持 [Jenkins 流水线](Jenkinsfile)
+    3. 支持 [Jenkins 流水线](Jenkinsfile) 自动化测试
     4. 测试开始时，创建一个空白的数据库，自动化脚本创建数据库与表结构，导入基础数据，然后再打包，运行单元测试、集成测试
 5. 评价一个项目是否优秀的其中一个因素：在不修改基础代码和基础数据的情况下，是否可以随时开源
 
