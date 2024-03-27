@@ -15,7 +15,7 @@
         <img alt="Codacy Badge" src="https://app.codacy.com/project/badge/Grade/3d8354e4593c4fbea4ad325910b32ada"/>
     </a>
     <a target="_blank" href="https://codecov.io/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei">
-        <img alt="Codecov Badge" src="https://codecov.io/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei/graph/badge.svg?token=XS72L4GIAX"/> 
+        <img alt="Codecov Badge" src="https://codecov.io/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei/branch/spring-boot-2/graph/badge.svg?token=XS72L4GIAX"/> 
     </a>
 </div>
 
