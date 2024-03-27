@@ -58,9 +58,9 @@
     2. Spring Security OAuth2 Authorization Server（OAuth 2.1）
 2. 尽量少的使用其他依赖
     1. 使用 `springdoc` 生成 API 文档：支持 `OpenAPI 3`、`Swagger-ui`、`OAuth 2.1` 等
-    2. JSON 处理使用 `jackson`，不使用 `fastjson`、`hutool` 等
+    2. JSON 处理使用 `jackson` 的 `ObjectMapper`，不使用 `fastjson`、`hutool` 等
     3. 连接池使用 Spring Boot 默认的 `hikari`，不使用 `druid`
-    4. HTTP 请求使用 Spring 的 `RestTemplate`
+    4. HTTP 请求使用 Spring 的 `RestTemplate` 或 `WebClient`，不使用 `httpclient`、`hutool` 等
     5. Redis 操作使用 Spring 的 `StringRedisTemplate`、`RedisTemplate`
     6. 其他工具类使用 `org.apache.commons:commons-lang3` 和 `com.google.guava:guava`，不使用 `hutool` 等
 3. 已上依赖不能满足的情况，自己写，并且包含完善的测试类
