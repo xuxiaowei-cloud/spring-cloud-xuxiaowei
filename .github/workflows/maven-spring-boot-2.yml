@@ -140,6 +140,7 @@ jobs:
           -pl spring-cloud-xuxiaowei-gateway 
           -pl spring-cloud-xuxiaowei-passport
           -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-utils
+          -pl spring-cloud-xuxiaowei-commons/spring-cloud-xuxiaowei-commons-loadbalancer
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
