@@ -149,15 +149,42 @@
 
 ### Jenkins
 
-- Installing Jenkins
-    - [docker](https://www.jenkins.io/doc/book/installing/docker/)
-    - [kubernetes](https://www.jenkins.io/doc/book/installing/kubernetes/)
-    - [linux](https://www.jenkins.io/doc/book/installing/linux/)
-    - [macos](https://www.jenkins.io/doc/book/installing/macos/)
-    - [windows](https://www.jenkins.io/doc/book/installing/windows/)
-    - [war-file](https://www.jenkins.io/doc/book/installing/war-file/)
-    - [initial-settings](https://www.jenkins.io/doc/book/installing/initial-settings/)
-- [pipeline](https://www.jenkins.io/doc/book/pipeline/)
+- 中文文档更新慢或者已过时
+
+|                         | 英文                                                                           | 中文                                                                              |
+|-------------------------|------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| 在 Docker 安装 Jenkins     | https://www.jenkins.io/doc/book/installing/docker/                           |                                                                                 |
+| 在 Kubernetes 安装 Jenkins | https://www.jenkins.io/doc/book/installing/kubernetes/                       |                                                                                 |
+| 在 Linux 安装 Jenkins      | https://www.jenkins.io/doc/book/installing/linux/                            |                                                                                 |
+| 在 macos 安装 Jenkins      | https://www.jenkins.io/doc/book/installing/macos/                            |                                                                                 |
+| 在 Windows 安装 Jenkins    | https://www.jenkins.io/doc/book/installing/windows/                          |                                                                                 |
+| 使用 war-file 安装 Jenkins  | https://www.jenkins.io/doc/book/installing/war-file/                         |                                                                                 |
+| 初始化设置                   | https://www.jenkins.io/doc/book/installing/initial-settings/                 |                                                                                 |
+| 创建您的第一个Pipeline         | https://www.jenkins.io/doc/pipeline/tour/hello-world/                        | https://www.jenkins.io/zh/doc/pipeline/tour/hello-world/                        |
+| 执行多个步骤（step）            | https://www.jenkins.io/doc/pipeline/tour/running-multiple-steps/             | https://www.jenkins.io/zh/doc/pipeline/tour/running-multiple-steps/             |
+| 定义执行环境                  | https://www.jenkins.io/doc/pipeline/tour/agents/                             | https://www.jenkins.io/zh/doc/pipeline/tour/agents/                             |
+| 使用环境变量                  | https://www.jenkins.io/doc/pipeline/tour/environment/                        | https://www.jenkins.io/zh/doc/pipeline/tour/environment/                        |
+| 记录测试和构建结果               | https://www.jenkins.io/doc/pipeline/tour/tests-and-artifacts/                | https://www.jenkins.io/zh/doc/pipeline/tour/tests-and-artifacts/                |
+| 清理和通知                   | https://www.jenkins.io/doc/pipeline/tour/post/                               | https://www.jenkins.io/zh/doc/pipeline/tour/post/                               |
+| 部署                      | https://www.jenkins.io/doc/pipeline/tour/deployment/                         | https://www.jenkins.io/zh/doc/pipeline/tour/deployment/                         |
+| 使用Maven构建Java应用程序       | https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/            | https://www.jenkins.io/zh/doc/tutorials/build-a-java-app-with-maven/            |
+| 使用npm构建Node.js和React应用  | https://www.jenkins.io/doc/tutorials/build-a-node-js-and-react-app-with-npm/ | https://www.jenkins.io/zh/doc/tutorials/build-a-node-js-and-react-app-with-npm/ |
+| 使用PyInstaller构建Python应用 | https://www.jenkins.io/doc/tutorials/build-a-python-app-with-pyinstaller/    | https://www.jenkins.io/zh/doc/tutorials/build-a-python-app-with-pyinstaller/    |
+| 安装Jenkins               | https://www.jenkins.io/doc/book/installing/                                  | https://www.jenkins.io/zh/doc/book/installing/                                  |
+| 流水线                     | https://www.jenkins.io/doc/book/pipeline/                                    | https://www.jenkins.io/zh/doc/book/pipeline/                                    |
+| 流水线入门                   | https://www.jenkins.io/doc/book/pipeline/getting-started/                    | https://www.jenkins.io/zh/doc/book/pipeline/getting-started/                    |
+| 使用 Jenkinsfile          | https://www.jenkins.io/doc/book/pipeline/jenkinsfile/                        | https://www.jenkins.io/zh/doc/book/pipeline/jenkinsfile/                        |
+| 运行管道                    | https://www.jenkins.io/doc/book/pipeline/running-pipelines/                  |                                                                                 |
+| 分支和拉取请求                 | https://www.jenkins.io/doc/book/pipeline/multibranch/                        | https://www.jenkins.io/zh/doc/book/pipeline/multibranch/                        |
+| 在流水线中使用Docker           | https://www.jenkins.io/doc/book/pipeline/docker/                             | https://www.jenkins.io/zh/doc/book/pipeline/docker/                             |
+| 流水线语法                   | https://www.jenkins.io/doc/book/pipeline/syntax/                             | https://www.jenkins.io/zh/doc/book/pipeline/syntax/                             |
+| 构建多分支流水线项目              | https://www.jenkins.io/doc/tutorials/build-a-multibranch-pipeline-project/   | https://www.jenkins.io/zh/doc/tutorials/build-a-multibranch-pipeline-project/   |
+| 使用 credentials          | https://www.jenkins.io/doc/book/using/using-credentials/                     | https://www.jenkins.io/zh/doc/book/using/using-credentials/                     |
+| 使用当地语言                  | https://www.jenkins.io/doc/book/using/using-local-language/                  |                                                                                 |
+| 更改时区                    | https://www.jenkins.io/doc/book/using/change-time-zone/                      |                                                                                 |
+| 远程访问 API                | https://www.jenkins.io/doc/book/using/remote-access-api/                     |                                                                                 |
+| 使用 Jenkins 代理           | https://www.jenkins.io/doc/book/using/using-agents/                          |                                                                                 |
+| 术语表                     | https://www.jenkins.io/doc/book/glossary/                                    | https://www.jenkins.io/zh/doc/book/glossary/                                    |
 
 ### Maven
 
