@@ -60,7 +60,9 @@
     1. 使用 `springdoc` 生成 API 文档：支持 `OpenAPI 3`、`Swagger-ui`、`OAuth 2.1` 等
     2. JSON 处理使用 `jackson`，不使用 `fastjson`、`hutool` 等
     3. 连接池使用 Spring Boot 默认的 `hikari`，不使用 `druid`
-    4. 其他工具类使用 `org.apache.commons:commons-lang3` 和 `com.google.guava:guava`，不使用 `hutool` 等
+    4. HTTP 请求使用 Spring 的 `RestTemplate`
+    5. Redis 操作使用 Spring 的 `StringRedisTemplate`、`RedisTemplate`
+    6. 其他工具类使用 `org.apache.commons:commons-lang3` 和 `com.google.guava:guava`，不使用 `hutool` 等
 3. 已上依赖不能满足的情况，自己写，并且包含完善的测试类
 4. 依赖保存最新
     1. 使用 [dependabot.yml](.github/dependabot.yml) `检测依赖升级`、`创建升级依赖PR`，`执行自动化测试`，`人工审核`，
