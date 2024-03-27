@@ -1,13 +1,19 @@
 package cloud.xuxiaowei.aop.config;
 
 import cloud.xuxiaowei.aop.SpringCloudXuxiaoweiCommonsAopApplication;
+import cloud.xuxiaowei.utils.FileUtils;
 import cloud.xuxiaowei.utils.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,8 +29,18 @@ class ControllerLogAspectTests {
 	@LocalServerPort
 	private int serverPort;
 
+	@Autowired
+	private ConfigurableEnvironment environment;
+
 	@Test
-	void aroundOk() {
+	void aroundOk() throws IOException {
+		String loggingFileName = environment.getProperty("logging.file.name");
+
+		assertNotNull(loggingFileName);
+
+		List<String> list = FileUtils.readList(loggingFileName);
+		int startLine = list.size();
+
 		String url = String.format("http://127.0.0.1:%s/ok", serverPort);
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -36,10 +52,38 @@ class ControllerLogAspectTests {
 		assertNull(response.getUrl());
 		assertNotNull(response.getRequestId());
 		assertNull(response.getData());
+
+		list = FileUtils.readList(loggingFileName);
+		int endLine = list.size();
+
+		String target = "环绕通知";
+		String targetTime = "执行耗时";
+		boolean contains = false;
+		boolean containsTime = false;
+
+		for (int i = startLine; i < endLine; i++) {
+			String line = list.get(i);
+			if (line.contains(target)) {
+				contains = true;
+			}
+			if (line.contains(targetTime)) {
+				containsTime = true;
+			}
+		}
+
+		assertTrue(contains);
+		assertTrue(containsTime);
 	}
 
 	@Test
-	void aroundCloudRuntimeException() {
+	void aroundCloudRuntimeException() throws IOException {
+		String loggingFileName = environment.getProperty("logging.file.name");
+
+		assertNotNull(loggingFileName);
+
+		List<String> list = FileUtils.readList(loggingFileName);
+		int startLine = list.size();
+
 		String url = String.format("http://127.0.0.1:%s/cloud-runtime-exception", serverPort);
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -55,6 +99,27 @@ class ControllerLogAspectTests {
 		}
 
 		assertNull(response);
+
+		list = FileUtils.readList(loggingFileName);
+		int endLine = list.size();
+
+		String target = "异常通知";
+		String targetTime = "执行耗时";
+		boolean contains = false;
+		boolean containsTime = false;
+
+		for (int i = startLine; i < endLine; i++) {
+			String line = list.get(i);
+			if (line.contains(target)) {
+				contains = true;
+			}
+			if (line.contains(targetTime)) {
+				containsTime = true;
+			}
+		}
+
+		assertTrue(contains);
+		assertTrue(containsTime);
 	}
 
 }

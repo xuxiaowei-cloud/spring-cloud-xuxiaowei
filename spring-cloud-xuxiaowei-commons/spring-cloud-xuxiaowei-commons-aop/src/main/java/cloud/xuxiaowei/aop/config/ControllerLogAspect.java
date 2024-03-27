@@ -35,6 +35,8 @@ public class ControllerLogAspect {
 		String method = signature.getMethod().toString();
 		String methodName = annotation == null ? method : annotation.value();
 
+		log.info("环绕通知开始: {}", methodName);
+
 		try {
 			Object proceed = joinPoint.proceed();
 
@@ -45,7 +47,7 @@ public class ControllerLogAspect {
 			String duration = between.toString();
 			long millis = between.toMillis();
 
-			log.info("环绕通知: {}, 执行耗时: {}ms({})", methodName, millis, duration);
+			log.info("环绕通知结束: {}, 执行耗时: {}ms({})", methodName, millis, duration);
 
 			return proceed;
 		}
