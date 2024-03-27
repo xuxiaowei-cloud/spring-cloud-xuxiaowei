@@ -39,7 +39,7 @@ node {
                 sh 'mvn clean package source:jar javadoc:jar -U -DskipTests=true -s settings.xml'
 
                 sh 'mv nacos/target/nacos-0.0.1-SNAPSHOT.jar /root/nacos-0.0.1-SNAPSHOT.jar'
-                sh 'nohup java -jar /root/nacos-0.0.1-SNAPSHOT.jar > nohup-nacos.out 2>&1 &'
+                sh 'nohup java -Xms128m -Xmx256m -jar /root/nacos-0.0.1-SNAPSHOT.jar > nohup-nacos.out 2>&1 &'
                 sh 'sleep 20s'
                 sh 'cat nohup-nacos.out'
                 sh 'curl "http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=&search=blur" && echo'
