@@ -31,6 +31,8 @@
 
 ## 项目说明
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ecee10970ddf482f9d0c58ffe7187684)](https://app.codacy.com/gh/xuxiaowei-cloud/spring-cloud-xuxiaowei?utm_source=github.com&utm_medium=referral&utm_content=xuxiaowei-cloud/spring-cloud-xuxiaowei&utm_campaign=Badge_Grade)
+
 1. 本项目为重构项目，与原始项目存在较大差异
 2. 本项目从头开发，在 [B站](https://www.bilibili.com/) 有配套视频（充电专属）
     1. 搜索 [重构微服务](https://search.bilibili.com/video?keyword=%E9%87%8D%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1)
