@@ -34,7 +34,7 @@
         <spring-security-oauth2-authorization-server-redis.version>2.0.0
         </spring-security-oauth2-authorization-server-redis.version>
 
-        <maven-gpg-plugin.version>3.2.1</maven-gpg-plugin.version>
+        <maven-gpg-plugin.version>3.2.2</maven-gpg-plugin.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <spring-javaformat-maven-plugin.version>0.0.41</spring-javaformat-maven-plugin.version>
     </properties>
