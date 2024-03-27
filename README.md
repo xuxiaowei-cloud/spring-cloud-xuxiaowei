@@ -81,12 +81,13 @@
     3. [III. 配置](https://12factor.net/zh_cn/config) 在环境中存储配置
     4. [V. 构建，发布，运行](https://12factor.net/zh_cn/build-release-run) 严格分离构建和运行
     5. [X. 开发环境与线上环境等价](https://12factor.net/zh_cn/dev-prod-parity) 尽可能的保持开发，预发布，线上环境相同
-4. 测试
+4. 测试：包含自动化创建 MySQL（以及数据库表结构和数据初始化）、Redis、Maven 构建与测试
     1. 支持 [GitLab 流水线](.gitlab-ci.yml)
        [自动化测试](https://jihulab.com/xuxiaowei-jihu/xuxiaowei-cloud/spring-cloud-xuxiaowei/-/pipelines?page=1&scope=all&ref=spring-boot-3)
     2. 支持 [GitHub 流水线](.github/workflows/maven-spring-boot-3.yml)
        [自动化测试](https://github.com/xuxiaowei-cloud/spring-cloud-xuxiaowei/actions/workflows/maven-spring-boot-3.yml)
-    3. 测试开始时，创建一个空白的数据库，自动化脚本创建数据库与表结构，导入基础数据，然后再打包，运行单元测试、集成测试
+    3. 支持 [Jenkins 流水线](Jenkinsfile)
+    4. 测试开始时，创建一个空白的数据库，自动化脚本创建数据库与表结构，导入基础数据，然后再打包，运行单元测试、集成测试
 5. 评价一个项目是否优秀的其中一个因素：在不修改基础代码和基础数据的情况下，是否可以随时开源
 
 ## 项目功能

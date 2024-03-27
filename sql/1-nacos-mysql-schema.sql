@@ -18,6 +18,8 @@ CREATE DATABASE if NOT EXISTS `spring_cloud_xuxiaowei_nacos` CHARACTER SET 'utf8
 
 use `spring_cloud_xuxiaowei_nacos`;
 
+SET NAMES utf8mb4;
+
 /******************************************/
 /*   表名称 = config_info                  */
 /******************************************/

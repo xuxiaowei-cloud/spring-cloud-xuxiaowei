@@ -1,6 +1,8 @@
 
 use `spring_cloud_xuxiaowei`;
 
+SET NAMES utf8mb4;
+
 -- ----------------------------
 -- Records of oauth2_registered_client
 -- ----------------------------

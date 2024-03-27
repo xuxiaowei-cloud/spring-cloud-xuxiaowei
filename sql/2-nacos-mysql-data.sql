@@ -1,6 +1,8 @@
 
 use `spring_cloud_xuxiaowei_nacos`;
 
+SET NAMES utf8mb4;
+
 -- ----------------------------
 -- Records of config_info
 -- ----------------------------
