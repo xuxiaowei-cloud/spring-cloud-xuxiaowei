@@ -33,3 +33,7 @@ build/
 .vscode/
 
 /pom.xml.versionsBackup
+
+*.log
+/logs/
+/work/

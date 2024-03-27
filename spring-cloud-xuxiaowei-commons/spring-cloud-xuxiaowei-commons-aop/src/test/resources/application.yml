@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: spring-cloud-xuxiaowei-commons-aop
+logging:
+  level:
+    cloud.xuxiaowei: debug
+  file:
+    name: ./logs/${spring.application.name}/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 50MB
+      max-history: 365
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.log.gz
