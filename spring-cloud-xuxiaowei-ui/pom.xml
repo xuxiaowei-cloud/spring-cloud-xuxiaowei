@@ -4,38 +4,23 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cloud.xuxiaowei</groupId>
-        <artifactId>spring-cloud-xuxiaowei-dependencies</artifactId>
+        <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>./spring-cloud-xuxiaowei-dependencies/pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>cloud.xuxiaowei</groupId>
-    <artifactId>spring-cloud-xuxiaowei-parent</artifactId>
+    <artifactId>spring-cloud-xuxiaowei-ui</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>spring-cloud-xuxiaowei-parent</name>
-    <description>顶级项目</description>
+    <name>spring-cloud-xuxiaowei-ui</name>
+    <description>前端</description>
     <url>https://github.com/xuxiaowei-cloud/spring-cloud-xuxiaowei</url>
     <inceptionYear>2024</inceptionYear>
     <properties>
         <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <skipTests>true</skipTests>
     </properties>
+    <dependencies>
 
-    <modules>
-        <module>nacos</module>
-        <module>spring-cloud-xuxiaowei-admin-server</module>
-        <module>spring-cloud-xuxiaowei-api</module>
-        <module>spring-cloud-xuxiaowei-commons</module>
-        <module>spring-cloud-xuxiaowei-dependencies</module>
-        <module>spring-cloud-xuxiaowei-file</module>
-        <module>spring-cloud-xuxiaowei-gateway</module>
-        <module>spring-cloud-xuxiaowei-passport</module>
-        <module>spring-cloud-xuxiaowei-ui</module>
-    </modules>
+    </dependencies>
 
     <licenses>
         <license>
@@ -83,37 +68,61 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>get-the-git-infos</id>
+                        <id>install node and npm</id>
                         <goals>
-                            <goal>revision</goal>
+                            <goal>install-node-and-npm</goal>
                         </goals>
+                        <configuration>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
+                            <nodeDownloadRoot>${node-download-root}</nodeDownloadRoot>
+                            <npmDownloadRoot>${npm-download-root}</npmDownloadRoot>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>run pre:npm</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <offline>true</offline>
-                    <dateFormatTimeZone>GMT+8</dateFormatTimeZone>
-                    <dateFormat>yyyy-MM-dd HH:mm:ss</dateFormat>
-                    <format>json</format>
-                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.json
-                    </generateGitPropertiesFilename>
-                </configuration>
             </plugin>
             <plugin>
-                <groupId>io.spring.javaformat</groupId>
-                <artifactId>spring-javaformat-maven-plugin</artifactId>
-                <version>${spring-javaformat-maven-plugin.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
                 <executions>
                     <execution>
-                        <phase>validate</phase>
-                        <inherited>true</inherited>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
                         <goals>
-                            <goal>validate</goal>
+                            <goal>copy-resources</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/dist</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
