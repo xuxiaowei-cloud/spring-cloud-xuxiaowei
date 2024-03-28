@@ -1,0 +1,69 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "spring-boot-2", "spring-boot-3" ]
+  pull_request:
+    branches: [ "spring-boot-2", "spring-boot-3" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 16.x, 18.x, 20.x ]
+        command: [ npm, pnpm, yarn ]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Node Version
+        run: |
+          node -v
+          npm -v
+          yarn -v
+
+      - name: Install pnpm
+        if: ${{ matrix.command == 'pnpm' }}
+        run: npm install -g pnpm
+
+      - name: Node ${{ matrix.node-version }} npm build
+        if: ${{ matrix.command == 'npm' }}
+        run: |
+          cd spring-cloud-xuxiaowei-ui
+          npm install
+          npm run build
+
+      - name: Node ${{ matrix.node-version }} pnpm build
+        if: ${{ matrix.command == 'pnpm' }}
+        run: |
+          cd spring-cloud-xuxiaowei-ui
+          pnpm install
+          pnpm run build
+
+      - name: Node ${{ matrix.node-version }} yarn build --ignore-engines
+        if: ${{ matrix.command == 'yarn' && matrix.node-version == '16.x' }}
+        run: |
+          cd spring-cloud-xuxiaowei-ui
+          yarn install --ignore-engines
+          yarn run build
+
+      - name: Node ${{ matrix.node-version }} yarn build
+        if: ${{ matrix.command == 'yarn' && matrix.node-version != '16.x' }}
+        run: |
+          cd spring-cloud-xuxiaowei-ui
+          yarn install
+          yarn run build
