@@ -27,14 +27,15 @@
 2. 修改流水线 [.gitlab-ci.yml](.gitlab-ci.yml) 中使用的版本号
 3. 修改流水线 [maven.yml](.github/workflows/maven-spring-boot-2.yml) 中使用的版本号
 4. 修改流水线 [Jenkinsfile](Jenkinsfile) 中使用的版本号
-5. 修改 `SpringdocConfig` 类中的文档版本号
-6. 提交修改后的新版本号代码
-7. 在新提交中新建标签 `0.0.1`
-8. 将版本号修改为下一个快照 `0.0.2-SNAPSHOT`，修改的文件位置与上述相同
-9. 提交修改后的下一个快照代码
-10. 推送代码与标签
-11. 流水线测试快照代码
-12. 流水线发布标签到中央仓库
+5. 修改前端 [package.json](spring-cloud-xuxiaowei-ui/package.json) 中的版本号
+6. 修改 `SpringdocConfig` 类中的文档版本号
+7. 提交修改后的新版本号代码
+8. 在新提交中新建标签 `0.0.1`
+9. 将版本号修改为下一个快照 `0.0.2-SNAPSHOT`，修改的文件位置与上述相同
+10. 提交修改后的下一个快照代码
+11. 推送代码与标签
+12. 流水线测试快照代码
+13. 流水线发布标签到中央仓库
 
 ---
 
