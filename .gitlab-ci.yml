@@ -189,3 +189,7 @@ secret_detection:
 semgrep-sast:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $SEMGREP_SAST == "true"
+
+nodejs-scan-sast:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $SEMGREP_SAST == "true"
