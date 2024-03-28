@@ -40,3 +40,19 @@ updates:
       - dependency-name: org.springframework.boot:spring-boot-starter-security
         versions:
           - ">= 3"
+
+  - package-ecosystem: npm
+    directory: "/spring-cloud-xuxiaowei-ui"
+    target-branch: "spring-boot-2"
+    schedule:
+      interval: "daily"
+      time: "20:00"
+      timezone: "Asia/Shanghai"
+
+  - package-ecosystem: npm
+    directory: "/spring-cloud-xuxiaowei-ui"
+    target-branch: "spring-boot-3"
+    schedule:
+      interval: "daily"
+      time: "20:00"
+      timezone: "Asia/Shanghai"
