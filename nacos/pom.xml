@@ -17,7 +17,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <nacos.version>2.3.1</nacos.version>
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.12</slf4j.version>
         <spring-boot.version>2.7.18</spring-boot.version>
 
         <maven-gpg-plugin.version>3.2.2</maven-gpg-plugin.version>
