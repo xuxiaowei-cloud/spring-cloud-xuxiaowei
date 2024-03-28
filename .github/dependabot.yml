@@ -5,7 +5,7 @@ updates:
     target-branch: "spring-boot-2"
     schedule:
       interval: "daily"
-      time: "20:00"
+      time: "00:00"
       timezone: "Asia/Shanghai"
     ignore:
       - dependency-name: org.springframework.cloud:spring-cloud-dependencies
@@ -34,7 +34,7 @@ updates:
     target-branch: "spring-boot-3"
     schedule:
       interval: "daily"
-      time: "20:00"
+      time: "00:00"
       timezone: "Asia/Shanghai"
     ignore:
       - dependency-name: org.springframework.boot:spring-boot-starter-security
@@ -46,7 +46,7 @@ updates:
     target-branch: "spring-boot-2"
     schedule:
       interval: "daily"
-      time: "20:00"
+      time: "00:00"
       timezone: "Asia/Shanghai"
 
   - package-ecosystem: npm
@@ -54,5 +54,5 @@ updates:
     target-branch: "spring-boot-3"
     schedule:
       interval: "daily"
-      time: "20:00"
+      time: "00:00"
       timezone: "Asia/Shanghai"
